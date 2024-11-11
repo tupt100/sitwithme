@@ -4,7 +4,8 @@ backend:
     preBuild:
       commands:
         - npm install -g amplify-category-video
-        - npm i -S graphql-ttl-transformer
+        - npm i -S graphql-ttl-transformer --legacy-peer-deps
+
     build:
       commands:
         - amplify plugin scan
