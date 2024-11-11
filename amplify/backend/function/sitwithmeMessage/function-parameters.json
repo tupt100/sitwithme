@@ -1,0 +1,37 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "Following:@model(appsync)": [
+        "read"
+      ],
+      "Conversation:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Message:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileConversation:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Photo:@model(appsync)": [
+        "read"
+      ],
+      "Profile:@model(appsync)": [
+        "read"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ]
+    }
+  }
+}

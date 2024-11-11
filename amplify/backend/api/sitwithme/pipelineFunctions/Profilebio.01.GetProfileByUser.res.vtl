@@ -1,0 +1,20 @@
+#if($ctx.result.items.size() > 0)
+  #set($profile = $ctx.result.items[0])
+  $util.qr($ctx.stash.put("profile", $profile))
+
+  #if($ctx.stash.get("role") == "STAFF")
+    #set($staffID = $ctx.stash.get("profileID"))
+    #set($patronID = $profile.id)
+  #else
+    #set($staffID = $profile.id)
+    #set($patronID = $ctx.stash.get("profileID"))
+  #end
+
+  $util.qr($ctx.stash.put("patronID", $patronID))
+  $util.qr($ctx.stash.put("staffID", $staffID))
+  $util.toJson($ctx.result)
+#else
+  #return
+#end
+
+## call GetFollowing.req.vtl and GetFollowing.res.vtl

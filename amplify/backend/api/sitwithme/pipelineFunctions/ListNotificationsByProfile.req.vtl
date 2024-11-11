@@ -1,0 +1,29 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set( $profileID = $profile.id )
+
+#set( $limit = $util.defaultIfNull($context.args.limit, 100) )
+#set( $query = {
+  "expression": "#recipientProfileID = :recipientProfileID",
+  "expressionNames": {
+    "#recipientProfileID": "recipientProfileID"
+  },
+  "expressionValues": {
+    ":recipientProfileID": $util.dynamodb.toDynamoDB($profileID)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byRecipientProfileIDSortByEventUpdatedAt",
+  "scanIndexForward": false,
+  "limit": $limit,
+  "nextToken": $util.toJson($context.args.nextToken)
+}

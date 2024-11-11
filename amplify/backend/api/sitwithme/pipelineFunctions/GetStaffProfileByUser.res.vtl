@@ -1,0 +1,6 @@
+#if($ctx.result.items.size() > 0)
+  #set($profile = $ctx.result.items[0])
+  $util.qr($ctx.stash.put("staffProfile", $profile))
+#end
+
+$util.toJson($ctx.result)

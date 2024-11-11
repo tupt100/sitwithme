@@ -1,0 +1,80 @@
+## GetProfileByUser.req.vtl
+## FollowingGetReceipientProfile.req.vtl
+## FollowingGetRequestSitWithMe.req.vtl
+## GetCurrentUser.req.vtl
+## MutationrequestSitWithMeV2.01.getReceipientUser.req.vtl
+
+#set($requestSitWithMe = $ctx.stash.get("requestSitWithMe"))
+#set($profile = $ctx.stash.get("profile"))
+#set($profileID = $profile.id)
+#set($receipientProfile = $ctx.stash.get("receipientProfile"))
+#set($receipientProfileID = $receipientProfile.id)
+
+#if($requestSitWithMe.requestedBy == $profileID)
+  $util.error("You already send request to this profile", "BAD_REQUEST")
+#end
+
+#set($blockedProfileIDs = $util.defaultIfNull($profile.blockedProfileIDs, []))
+#if($blockedProfileIDs.contains($receipientProfileID))
+  $util.error("You cannot send request to blocked profile", "BAD_REQUEST")
+#end
+
+#set($blockedProfileIDs = $util.defaultIfNull($receipientProfile.blockedProfileIDs, []))
+#if($blockedProfileIDs.contains($profileID))
+  $util.error("Receipient profile has blocked you", "BAD_REQUEST")
+#end
+
+#if($profile.role == "STAFF")
+  #set($staffID = $profileID)
+  #set($staffProfile = $ctx.stash.get("profile"))
+  #set($staffUser = $ctx.stash.get("user"))
+  #set($patronID = $receipientProfileID)
+  #set($patronProfile = $ctx.stash.get("receipientProfile"))
+  #set($patronUser = $ctx.stash.get("receipientUser"))
+#else
+  #set($staffID = $receipientProfileID)
+  #set($staffProfile = $ctx.stash.get("receipientProfile"))
+  #set($staffUser = $ctx.stash.get("receipientUser"))
+  #set($patronID = $profileID)
+  #set($patronProfile = $ctx.stash.get("profile"))
+  #set($patronUser = $ctx.stash.get("user"))
+#end
+
+#set($createdAt = $util.time.nowISO8601())
+#set($requestedBy = $profileID)
+
+## Auto accept SitWithMe request if receipient send request to existed following
+#if($requestSitWithMe)
+  #set($confirmedAt = $createdAt)
+  #set($requestedBy = $requestSitWithMe.requestedBy)
+#end
+
+#set($attr = {
+  "patronID": $patronID,
+  "patronProfileConnection": {
+    "userName": "${patronUser.userName}",
+    "firstName": "${patronUser.firstName}",
+    "lastName": "${patronUser.lastName}"
+  },
+  "staffID": $staffID,
+  "staffProfileConnection": {
+    "userName": "${staffUser.userName}",
+    "firstName": "${staffUser.firstName}",
+    "lastName": "${staffUser.lastName}"
+  },
+  "requestedBy": $requestedBy,
+  "confirmedAt": $confirmedAt,
+  "__typename": "Following",
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

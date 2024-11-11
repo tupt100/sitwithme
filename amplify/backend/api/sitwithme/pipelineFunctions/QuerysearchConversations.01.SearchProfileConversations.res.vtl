@@ -1,0 +1,22 @@
+#set( $es_items = [] )
+#foreach( $entry in $context.result.hits.hits )
+  #if( !$foreach.hasNext )
+    #set( $nextToken = $entry.sort.get(0) )
+  #end
+  $util.qr($es_items.add($entry.get("_source")))
+#end
+
+#set($offset = $util.defaultIfNull($ctx.args.offset, 0))
+#set($limit = $util.defaultIfNull($ctx.args.limit, 100))
+#set($total = $ctx.result.hits.total)
+#set($hasNext = false)
+
+#if($offset + $limit < $total)
+  #set($hasNext = true)
+#end
+
+$util.toJson({
+  "items": $es_items,
+  "offset": $offset,
+  "hasNext": $hasNext
+})

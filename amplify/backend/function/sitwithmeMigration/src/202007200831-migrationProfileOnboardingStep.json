@@ -1,0 +1,6 @@
+{
+  "method": "migrateProfileOnboardingStep",
+  "arguments": {
+    "onboardingStep": "COMPLETED"
+  }
+}

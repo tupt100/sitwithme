@@ -1,0 +1,40 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "ExploreProfile:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Following:@model(appsync)": [
+        "read",
+        "delete"
+      ],
+      "ProfileConversation:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "SWMNotification:@model(appsync)": [
+        "create",
+        "read",
+        "delete"
+      ],
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Profile:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "ProfileRecentView:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

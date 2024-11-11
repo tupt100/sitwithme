@@ -1,0 +1,61 @@
+#set($profile = $ctx.stash.get("patronProfile"))
+#if(!$profile)
+  #return({
+    "items": [],
+    "hasNext": false,
+    "offset": $util.defaultIfNull($ctx.args.offset, 0)
+  })
+#end
+
+#set($term = $ctx.args.filter.term)
+
+#set( $indexPath = "/venuefavoritev2/doc/_search" )
+
+#set( $sortDirection = "asc" )
+#set( $sortField = $util.toJson("createdAt") )
+
+#if(!$util.isNullOrBlank($term))
+  #set($queryStr = "*" + $term + "*")
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GET",
+  "path": "$indexPath",
+  "params": {
+      "body":     {
+                #if( $context.args.nextToken )"search_after": [$util.toJson($context.args.nextToken)], #end
+                #if( $context.args.offset )"from": $context.args.offset, #end
+                "size": #if( $context.args.limit ) $context.args.limit #else 100 #end,
+                "sort": [{$sortField: { "order" : $util.toJson($sortDirection) }}],
+                "version": false,
+                "query": #if($queryStr)
+{
+  "bool": {
+    "must": [
+      {
+        "query_string": {
+          "query": "${profile.id}",
+          "fields": ["profileID.keyword"]
+        }
+      },
+      {
+        "query_string": {
+          "query": $util.toJson($queryStr),
+          "fields": ["venue.name"]
+        }
+      }
+    ]
+  }
+}
+#else
+{
+  "query_string": {
+    "query": "${profile.id}",
+    "fields": ["profileID.keyword"]
+  }
+}
+#end
+                }
+  }
+}

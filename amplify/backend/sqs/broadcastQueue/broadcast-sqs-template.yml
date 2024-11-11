@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  sqsPrefix:
+    Type: String
+
+Resources:
+  SendBroadcastMessageQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-send-broadcast-message.fifo
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      ReceiveMessageWaitTimeSeconds: 5
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt SendBroadcastMessageDLQ.Arn
+        maxReceiveCount: 3
+
+  SendBroadcastMessageDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-send-broadcast-message-dlq.fifo
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+
+Outputs:
+  SendBroadcastMessageQueueArn:
+    Value: !GetAtt SendBroadcastMessageQueue.Arn
+  SendBroadcastMessageQueueUrl:
+    Value: !Ref SendBroadcastMessageQueue

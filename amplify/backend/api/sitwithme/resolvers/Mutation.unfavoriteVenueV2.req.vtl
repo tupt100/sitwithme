@@ -1,0 +1,5 @@
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("userID", $ctx.identity.claims["custom:id"]))
+$util.qr($ctx.stash.put("yelpBusinessID", $ctx.args.input.yelpBusinessID))
+{}
+## [End] Stash resolver specific context.. **

@@ -1,0 +1,16 @@
+#set( $query = {
+  "expression": "#userID = :userID",
+  "expressionNames": {
+    "#userID": "userID"
+  },
+  "expressionValues": {
+    ":userID": $util.dynamodb.toDynamoDB($ctx.identity.claims["custom:id"])
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byUser"
+}

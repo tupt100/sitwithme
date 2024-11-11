@@ -1,0 +1,5 @@
+#if ($ctx.source.endHidden)
+  $util.toJson(null)
+#else
+  $util.toJson($ctx.source.end)
+#end

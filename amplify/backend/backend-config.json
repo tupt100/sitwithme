@@ -1,0 +1,1246 @@
+{
+  "function": {
+    "sitwithmePostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmePreSignup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmePreTokenGeneration": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeUser": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeOnboarding": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeProfile": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeShift": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeWorkplace": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "yelp",
+          "attributes": [
+            "YelpVenueSyncTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeImageResize": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "assets",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeMigration": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "docs",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeExplore": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeWorkplaceTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeFollowingTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeProfileTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "assets",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeDevelopmentUtil": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeShiftTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "stepfunction",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmStateMachineArn",
+            "AlarmStateMachineName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeAlarm": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSAlarmPatron": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "alarmQueue",
+          "attributes": [
+            "AlarmPatronQueueArn",
+            "AlarmPatronQueueUrl"
+          ]
+        },
+        {
+          "category": "stepfunction",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmStateMachineArn"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSAlarmStaff": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "alarmQueue",
+          "attributes": [
+            "AlarmStaffQueueArn",
+            "AlarmStaffQueueUrl"
+          ]
+        },
+        {
+          "category": "stepfunction",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmStateMachineArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeExploreProfileDailySyncUpDuty": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "broadcastQueue",
+          "attributes": [
+            "SendBroadcastMessageQueueArn",
+            "SendBroadcastMessageQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeMessageTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmePushNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeUserTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeJobTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSWMNotificationTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmePresence": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "connectionQueue",
+          "attributes": [
+            "DisconnectQueueArn",
+            "DisconnectQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSDisconnect": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "connectionQueue",
+          "attributes": [
+            "DisconnectQueueArn",
+            "DisconnectQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmePost": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSBroadcast": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "broadcastQueue",
+          "attributes": [
+            "SendBroadcastMessageQueueArn",
+            "SendBroadcastMessageQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeConversationTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeProfileConversationTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeBlockedProfileTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeReportedProfileTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeTransaction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "docs",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSWMNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSWebhookIAPSubscription": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "webhookIAPQueue",
+          "attributes": [
+            "WebhookIAPSubscriptionFifoQueueArn",
+            "WebhookIAPSubscriptionFifoQueueUrl"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "docs",
+          "attributes": [
+            "BucketName"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSWebhookIAPSubscriptionDLQ": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "webhookIAPQueue",
+          "attributes": [
+            "WebhookIAPSubscriptionFifoDLQArn",
+            "WebhookIAPSubscriptionFifoDLQUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeWebhookAppleIAP": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "webhookIAPQueue",
+          "attributes": [
+            "WebhookIAPSubscriptionFifoQueueArn",
+            "WebhookIAPSubscriptionFifoQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSQSAlarmIAP": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "sqs",
+          "resourceName": "alarmQueue",
+          "attributes": [
+            "AlarmIAPQueueArn",
+            "AlarmIAPQueueUrl"
+          ]
+        }
+      ]
+    },
+    "sitwithmeProfileSubscriptionTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "stepfunction",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmStateMachineArn",
+            "AlarmStateMachineName"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        }
+      ]
+    },
+    "sitwithmeLeaderboard": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSNSYelpVenueSync": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeSNSMailingDelivery": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeMessageReactionTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "NotificationTopicArn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeVenueFavoriteV2TableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeStaffLeaderboardTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmePostTableStream": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeBirthdayCronJob": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeShiftDSTAdjustmentCronJob": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeShiftSTDAdjustmentCronJob": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeReport": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "sitwithmeUserNote": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "sitwithme",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    }
+  },
+  "auth": {
+    "sitwithme": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "sitwithmePostConfirmation",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "sitwithmePreSignup",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "sitwithmePreTokenGeneration",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
+      "customAuth": false
+    }
+  },
+  "api": {
+    "sitwithme": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authsitwithme"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        }
+      }
+    },
+    "rest": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "sitwithmeWebhookAppleIAP",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "storage": {
+    "assets": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    },
+    "docs": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    },
+    "website": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "cloudfront": {
+    "assets": {
+      "service": "Cloudfront",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "assets",
+          "attributes": [
+            "BucketName",
+            "CloudFrontOriginAccessIdentity"
+          ]
+        }
+      ]
+    },
+    "website": {
+      "service": "Cloudfront",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "website",
+          "attributes": [
+            "BucketName",
+            "CloudFrontOriginAccessIdentity"
+          ]
+        }
+      ]
+    }
+  },
+  "stepfunction": {
+    "alarm": {
+      "service": "Step Function",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "sitwithmeAlarm",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "notifications": {
+    "sitwithme": {
+      "service": "Pinpoint",
+      "channels": [
+        "FCM",
+        "Email"
+      ]
+    }
+  },
+  "sns": {
+    "alarm": {
+      "service": "SNS",
+      "providerPlugin": "awscloudformation"
+    },
+    "yelp": {
+      "service": "SNS",
+      "providerPlugin": "awscloudformation"
+    },
+    "subscriptions": {
+      "service": "SNS Subscriptions",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "sqs",
+          "resourceName": "alarmQueue",
+          "attributes": [
+            "AlarmStaffQueueArn",
+            "AlarmPatronQueueArn",
+            "AlarmIAPQueueArn"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmTopicArn",
+            "NotificationTopicArn"
+          ]
+        },
+        {
+          "category": "sns",
+          "resourceName": "yelp",
+          "attributes": [
+            "YelpVenueSyncTopicArn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "sitwithmePushNotification",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "sitwithmeSNSYelpVenueSync",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "sqs": {
+    "alarmQueue": {
+      "service": "SQS",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "sns",
+          "resourceName": "alarm",
+          "attributes": [
+            "AlarmTopicArn"
+          ]
+        }
+      ]
+    },
+    "broadcastQueue": {
+      "service": "SQS",
+      "providerPlugin": "awscloudformation"
+    },
+    "connectionQueue": {
+      "service": "SQS",
+      "providerPlugin": "awscloudformation"
+    },
+    "webhookIAPQueue": {
+      "service": "SQS",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "iot": {
+    "sitwithme": {
+      "service": "IoT",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "sitwithmePresence",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "video": {
+    "sitwithmeVOD": {
+      "service": "video",
+      "serviceType": "video-on-demand",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}

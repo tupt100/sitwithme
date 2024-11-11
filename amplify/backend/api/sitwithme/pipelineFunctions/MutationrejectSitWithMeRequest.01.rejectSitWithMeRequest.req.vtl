@@ -1,0 +1,24 @@
+## Call getRequestSitWithMeByStaff.req.vtl and getRequestSitWithMeByStaff.res.vtl first
+
+#set($following = $ctx.stash.get("following"))
+#if($following)
+  #if($following.confirmedAt)
+    $util.error("You already accept the request", "BAD_REQUEST")
+  #end
+#else
+  $util.error("The connection is invalid", "BAD_REQUEST")
+#end
+
+#set($staffProfile = $ctx.stash.get("staffProfile"))
+
+#set($staffID = $staffProfile.id)
+#set($patronID = $ctx.stash.get("patronID"))
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  }
+}

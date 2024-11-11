@@ -1,0 +1,5 @@
+input S3ObjectInput {
+  bucket: String!
+  region: String!
+  key: String!
+}

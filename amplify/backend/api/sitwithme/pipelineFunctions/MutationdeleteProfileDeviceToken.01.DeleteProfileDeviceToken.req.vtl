@@ -1,0 +1,15 @@
+#set($profile = $ctx.stash.get("profile"))
+#if(!$profile)
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+
+#set($deviceToken = $ctx.stash.get("deviceToken"))
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profile.id),
+    "deviceToken": $util.dynamodb.toDynamoDBJson($deviceToken)
+  }
+}

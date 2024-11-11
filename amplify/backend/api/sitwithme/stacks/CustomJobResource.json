@@ -1,0 +1,179 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "An auto-generated nested stack.",
+  "Metadata": {},
+  "Parameters": {
+    "AppSyncApiId": {
+      "Type": "String",
+      "Description": "The id of the AppSync API associated with this project."
+    },
+    "AppSyncApiName": {
+      "Type": "String",
+      "Description": "The name of the AppSync API",
+      "Default": "AppSyncSimpleTransform"
+    },
+    "env": {
+      "Type": "String",
+      "Description": "The environment name. e.g. Dev, Test, or Production",
+      "Default": "NONE"
+    },
+    "S3DeploymentBucket": {
+      "Type": "String",
+      "Description": "The S3 bucket containing all deployment assets for the project."
+    },
+    "S3DeploymentRootKey": {
+      "Type": "String",
+      "Description": "An S3 key relative to the S3DeploymentBucket that points to the root\nof the deployment directory."
+    }
+  },
+  "Resources": {
+    "ListShiftByJobIDFunction": {
+        "Type": "AWS::AppSync::FunctionConfiguration",
+        "Properties": {
+          "ApiId": { "Ref": "AppSyncApiId" },
+          "Name": "ListShiftByJobIDFunction",
+          "DataSourceName": "ShiftTable",
+          "FunctionVersion": "2018-05-29",
+          "RequestMappingTemplateS3Location": {
+            "Fn::Sub": [
+              "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+              {
+                "S3DeploymentBucket": {
+                  "Ref": "S3DeploymentBucket"
+                },
+                "S3DeploymentRootKey": {
+                  "Ref": "S3DeploymentRootKey"
+                },
+                "ResolverFileName": {
+                  "Fn::Join": [".", ["ListShiftByJobID", "req", "vtl"]]
+                }
+              }
+            ]
+          },
+          "ResponseMappingTemplateS3Location": {
+            "Fn::Sub": [
+              "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+              {
+                "S3DeploymentBucket": {
+                  "Ref": "S3DeploymentBucket"
+                },
+                "S3DeploymentRootKey": {
+                  "Ref": "S3DeploymentRootKey"
+                },
+                "ResolverFileName": {
+                  "Fn::Join": [".", ["ListShiftByJobID", "res", "vtl"]]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "DeleteJobFunction": {
+        "Type": "AWS::AppSync::FunctionConfiguration",
+        "Properties": {
+          "ApiId": { "Ref": "AppSyncApiId" },
+          "Name": "DeleteJobFunction",
+          "DataSourceName": "JobTable",
+          "FunctionVersion": "2018-05-29",
+          "RequestMappingTemplateS3Location": {
+            "Fn::Sub": [
+              "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+              {
+                "S3DeploymentBucket": {
+                  "Ref": "S3DeploymentBucket"
+                },
+                "S3DeploymentRootKey": {
+                  "Ref": "S3DeploymentRootKey"
+                },
+                "ResolverFileName": {
+                  "Fn::Join": [".", ["MutationdeleteJob", "01", "DeleteJob", "req", "vtl"]]
+                }
+              }
+            ]
+          },
+          "ResponseMappingTemplateS3Location": {
+            "Fn::Sub": [
+              "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+              {
+                "S3DeploymentBucket": {
+                  "Ref": "S3DeploymentBucket"
+                },
+                "S3DeploymentRootKey": {
+                  "Ref": "S3DeploymentRootKey"
+                },
+                "ResolverFileName": {
+                  "Fn::Join": [".", ["MutationdeleteJob", "01", "DeleteJob", "res", "vtl"]]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "MutationdeleteJobResolver": {
+        "Type": "AWS::AppSync::Resolver",
+        "Properties": {
+            "ApiId": {
+                "Ref": "AppSyncApiId"
+            },
+            "TypeName": "Mutation",
+            "FieldName": "deleteJob",
+            "Kind": "PIPELINE",
+            "PipelineConfig": {
+              "Functions": [
+                { "Fn::GetAtt": ["ListShiftByJobIDFunction", "FunctionId"] },
+                { "Fn::GetAtt": ["DeleteJobFunction", "FunctionId"] }
+              ]
+            },
+            "RequestMappingTemplateS3Location": {
+                "Fn::Sub": [
+                    "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteJob.req.vtl",
+                    {
+                        "S3DeploymentBucket": {
+                            "Ref": "S3DeploymentBucket"
+                        },
+                        "S3DeploymentRootKey": {
+                            "Ref": "S3DeploymentRootKey"
+                        }
+                    }
+                ]
+            },
+            "ResponseMappingTemplateS3Location": {
+                "Fn::Sub": [
+                    "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.deleteJob.res.vtl",
+                    {
+                        "S3DeploymentBucket": {
+                            "Ref": "S3DeploymentBucket"
+                        },
+                        "S3DeploymentRootKey": {
+                            "Ref": "S3DeploymentRootKey"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+  },
+  "Conditions": {
+    "HasEnvironmentParameter": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "env"
+            },
+            "NONE"
+          ]
+        }
+      ]
+    },
+    "AlwaysFalse": {
+      "Fn::Equals": ["true", "false"]
+    }
+  },
+  "Outputs": {
+    "EmptyOutput": {
+      "Description": "An empty output. You may delete this if you have at least one resource above.",
+      "Value": ""
+    }
+  }
+}

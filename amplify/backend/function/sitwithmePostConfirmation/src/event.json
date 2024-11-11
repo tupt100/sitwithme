@@ -1,0 +1,14 @@
+{
+  "request": {
+    "userAttributes": {
+      "cognito:email_alias": "vuong.nguyen+6@asnet.com.vn",
+      "email_verified": "true",
+      "cognito:user_status": "CONFIRMED",
+      "name": "vuong",
+      "preferred_username": "vuongnguyen11",
+      "given_name": "nguyen",
+      "email": "vuong.nguyen+6@asnet.com.vn"
+    }
+  },
+  "userPoolId": "userPoolId"
+}

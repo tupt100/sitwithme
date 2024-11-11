@@ -1,0 +1,39 @@
+#set($userID = $ctx.identity.claims["custom:id"])
+#set($input = $ctx.args.input)
+#set($showedNumber = $input.showedNumber)
+#set($dontShow = $input.dontShow)
+
+#if($util.isNull($showedNumber) && $util.isNull($dontShow))
+  $util.error("Please provide at least one input", "BAD_REQUEST")
+#end
+
+#if($showedNumber < 0)
+  $util.error("Please provide the positive number or zero", "BAD_REQUEST")
+#end
+
+#set($expression = "SET")
+#set($expressionNames = {})
+#set($expressionValues = {})
+
+#foreach($entry in $input.entrySet())
+  #set($expression = "$expression #$entry.key = :$entry.key")
+  $util.qr($expressionNames.put("#$entry.key", "${entry.key}Popup"))
+  $util.qr($expressionValues.put(":$entry.key", $util.dynamodb.toDynamoDB($entry.value)))
+
+  #if ($foreach.hasNext)
+    #set($expression = "$expression ,")
+  #end
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($userID)
+  },
+  "update": {
+    "expression": $util.toJson($expression),
+    "expressionNames": $util.toJson($expressionNames),
+    "expressionValues": $util.toJson($expressionValues)
+  }
+}

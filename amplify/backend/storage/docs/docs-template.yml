@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  env:
+    Type: String
+  s3Prefix:
+    Type: String
+
+Resources:
+  DocumentBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${s3Prefix}-${env}-docs
+
+Outputs:
+  BucketName:
+    Value: !Ref DocumentBucket

@@ -1,0 +1,32 @@
+## Call GetStaffProfile.req.vtl and GetStaffProfile.res.vtl
+## Call GetPatronProfileByUser.req.vtl and GetPatronProfileByUser.res.vtl
+
+#set($staffProfile = $ctx.stash.get("staffProfile"))
+#if(!$staffProfile)
+  $util.error("Staff not found", "BAD_REQUEST")
+#end
+
+#set($patronProfile = $ctx.stash.get("patronProfile"))
+#if(!$patronProfile)
+  $util.error("Patron not found", "BAD_REQUEST")
+#end
+
+#set($patronID = $patronProfile.id)
+
+#set( $query = {
+  "expression": "#patronID = :patronID AND #staffID = :staffID",
+  "expressionNames": {
+      "#patronID": "patronID",
+      "#staffID": "staffID"
+  },
+  "expressionValues": {
+      ":patronID": $util.dynamodb.toDynamoDB($patronID),
+      ":staffID": $util.dynamodb.toDynamoDB($ctx.stash.get("staffID"))
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query)
+}

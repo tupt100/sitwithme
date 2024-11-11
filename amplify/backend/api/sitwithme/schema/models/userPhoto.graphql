@@ -1,0 +1,46 @@
+"""
+UserPhoto contain Staff's photo and Patron's photo
+"""
+type UserPhoto @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+) @key(name: "byUser", fields: ["userID"], queryField: "listPhotosByUser")
+@searchable
+{
+  "UserPhoto's id"
+  id: ID!
+
+  "Owner's id of photo"
+  userID: ID!
+
+  "Owner of photo"
+  user: User! @connection(fields: ["userID"])
+
+  "ProfileOwner's id of photo"
+  createdByProfileID: ID!
+
+  "ProfileOwner of photo. Indicate that photo has been created by Staff or Patron"
+  createdByProfile: Profile @connection(fields: ["createdByProfileID"])
+
+  photoID: ID!
+  photo: Photo @connection(fields: ["photoID"])
+
+  "Photo's Caption"
+  caption: String
+}
+
+input UpdateUserPhotoInput {
+  "Photo's Caption"
+  caption: String
+}
+
+input CreateUserPhotoInput {
+  role: UserRole!
+  caption: String
+  photo: S3ObjectInput!
+}
+
+input DeleteUserPhotoInput {
+  id: ID!
+}

@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "storage": {
+      "VenueLeaderboard:@model(appsync)": [
+        "read"
+      ],
+      "Profile:@model(appsync)": [
+        "read"
+      ],
+      "Workplace:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "VenueFavorite:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "VenueFavoriteV2:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "yelpApiKey",
+      "environmentVariableName": "YELP_API_KEY"
+    }
+  ],
+  "secretNames": [
+    "YELP_API_KEY"
+  ]
+}

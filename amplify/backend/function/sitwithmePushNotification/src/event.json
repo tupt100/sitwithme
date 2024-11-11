@@ -1,0 +1,22 @@
+{
+  "Records": [
+    {
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "EXAMPLE",
+      "EventSource": "aws:sns",
+      "Sns": {
+        "SignatureVersion": "1",
+        "Timestamp": "2020-07-02T07:39:32.564Z",
+        "Signature": "EXAMPLE",
+        "SigningCertUrl": "EXAMPLE",
+        "MessageId": "4fea4c01-2d40-402d-beea-a7757df5430b",
+        "Message": "{ \"notificationType\": \"profileConversationHidden\", \"body\": {\"profileID\": \"62967513-9535-4cb9-9adc-0e81c15b4fd6\", \"conversationID\": \"0d6b0044-4709-4826-a007-bcb821e52cb3\", \"hide\": true} }",
+        "MessageAttributes": {},
+        "Type": "Notification",
+        "UnsubscribeUrl": "EXAMPLE",
+        "TopicArn": "arn:aws:sns:us-east-1:123456789012:WelcomeNewUser",
+        "Subject": ""
+      }
+    }
+  ]
+}

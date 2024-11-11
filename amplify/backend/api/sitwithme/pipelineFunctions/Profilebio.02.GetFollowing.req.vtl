@@ -1,0 +1,22 @@
+#set($bio = $ctx.stash.get('bio'))
+#if($bio)
+  #return
+#else
+
+  #set($staffID = $ctx.stash.get("staffID"))
+  #set($patronID = $ctx.stash.get("patronID"))
+
+  #if(!$staffID || !$patronID)
+    #return
+  #end
+
+  {
+    "version": "2018-05-29",
+    "operation": "GetItem",
+    "key": {
+      "staffID": $util.dynamodb.toDynamoDBJson($ctx.stash.get("staffID")),
+      "patronID": $util.dynamodb.toDynamoDBJson($ctx.stash.get("patronID"))
+    }
+  }
+
+#end

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "storage": {
+      "Mailing:@model(appsync)": [
+        "read"
+      ],
+      "Profile:@model(appsync)": [
+        "read"
+      ],
+      "BlockedProfile:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

@@ -1,0 +1,7 @@
+{
+  "Records": [
+    {
+      "body": "{\"eventType\":0,\"broadcastConversation\":{\"conversationType\":\"BROADCAST\",\"createdAt\":\"2021-09-04T05:04:54.506Z\",\"totalMessage\":0,\"__typename\":\"Conversation\",\"id\":\"4038f5e7-5db0-49af-979e-62ab634c39ed\",\"creatorProfileID\":\"36f501ad-bbf7-4bab-a851-dd6291b3e0dc\",\"updatedAt\":\"2021-09-04T05:04:54.507Z\"},\"message\":{\"createdAt\":\"2021-09-04T05:04:54.530Z\",\"conversationID\":\"4038f5e7-5db0-49af-979e-62ab634c39ed\",\"__typename\":\"Message\",\"senderProfileID\":\"36f501ad-bbf7-4bab-a851-dd6291b3e0dc\",\"id\":\"dc857caf-50ba-4e76-8375-eb7a1fdadd2e\",\"messageDetail\":{\"messageType\":\"TEXT\",\"text\":\"Hello\"},\"updatedAt\":\"2021-09-04T05:04:54.530Z\"}}"
+    }
+  ]
+}

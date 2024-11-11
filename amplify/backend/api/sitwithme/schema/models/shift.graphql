@@ -1,0 +1,148 @@
+type Repeat {
+  frequency: RepeatFrequency!
+  every: Int!
+  weekDay: [WeekDay!]
+  each: [Int!]
+  onThe: RepeatOn
+  month: [Int!]
+}
+
+type RepeatOn {
+  weekDay: WeekDay!
+  sequence: Int!
+}
+
+input RepeatOnInput {
+  weekDay: WeekDay!
+  sequence: Int!
+}
+
+input RepeatInput {
+  frequency: RepeatFrequency!
+  every: Int!
+  weekDay: [WeekDay!]
+  each: [Int!]
+  onThe: RepeatOnInput
+  month: [Int!]
+}
+
+type Shift @model(
+  queries: {
+    get: "getShift"
+  },
+  mutations: null,
+  subscriptions: null,
+)
+@key(name: "byProfile", fields: ["profileID"])
+@key(name: "byProfileSortByCreatedAt", fields: ["profileID", "createdAt"])
+@key(name: "byParentID", fields: ["parentID", "start"])
+@key(name: "byJobID", fields: ["jobID"])
+@key(name: "byWorkplaceID", fields: ["workplaceID"])
+@key(name: "bySavingTime", fields: ["savingTime"])
+{
+  id: ID!
+  jobID: ID!
+  job: Job @connection(fields: ["jobID"])
+  start: AWSDateTime!
+  end: AWSDateTime!
+  repeat: Repeat
+  workplaceID: ID!
+  workplace: Workplace @connection(fields: ["workplaceID"])
+  profileID: ID!
+  profile: Profile @connection(fields: ["profileID"])
+  duty(date: AWSDateTime!): Boolean! @function(name: "sitwithmeShift-${env}")
+  createdAt: AWSDateTime!
+  parentID: ID
+  alert: Int
+  endHidden: Boolean
+  ianaTz: String
+  savingTime: SavingTime
+}
+
+enum SavingTime {
+  DST,
+  STD,
+  NONE
+}
+
+input ShiftInput {
+  jobID: ID!
+  start: AWSDateTime!
+  end: AWSDateTime!
+  repeat: RepeatInput
+  workplaceID: ID!
+  tz: Int
+  alert: Int
+  endHidden: Boolean
+  ianaTz: String
+}
+
+input ListShiftsByDateRangeInput {
+  start: AWSDate!
+  end: AWSDate!
+  tz: Int
+}
+
+input ListStaffShiftEventsInput {
+  staffID: ID!
+  tz: Int
+}
+
+type ShiftEvent {
+  startDate: AWSDate!
+  endDate: AWSDate!
+  shifts: [Shift!]!
+}
+
+input ShiftEventDetailInput {
+  id: ID!
+  start: AWSDateTime!
+}
+
+input ShiftUpdateInput {
+  jobID: ID
+  start: AWSDateTime
+  end: AWSDateTime
+  repeat: RepeatInput
+  workplaceID: ID
+  alert: Int
+  endHidden: Boolean
+  ianaTz: String
+}
+
+input OneShiftEventInput {
+  jobID: ID
+  start: AWSDateTime
+  end: AWSDateTime
+  workplaceID: ID
+  repeat: RepeatInput
+  alert: Int
+  endHidden: Boolean
+  ianaTz: String
+}
+
+input UpdateShiftEventInput {
+  shiftEvent: ShiftEventDetailInput!
+  shift: ShiftUpdateInput!
+  tz: Int
+}
+
+input UpdateOneShiftEventInput {
+  shiftEvent: ShiftEventDetailInput!
+  shift: OneShiftEventInput!
+  tz: Int
+}
+
+input NotifyProfileDutyInput {
+  profileID: ID!
+  workplaceID: ID!
+  jobID: ID!
+  duty: Boolean!
+}
+
+type ProfileDutyNotification @aws_iam @aws_cognito_user_pools {
+  profileID: ID!
+  workplaceID: ID!
+  jobID: ID!
+  duty: Boolean!
+}

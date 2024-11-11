@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "storage": {
+      "ExploreProfile:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "FollowingReport:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "StaffLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Photo:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Profile:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "User:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

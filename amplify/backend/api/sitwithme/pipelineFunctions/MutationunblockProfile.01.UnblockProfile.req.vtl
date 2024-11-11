@@ -1,0 +1,18 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($blockedProfileID = $ctx.stash.get("profileID"))
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "blockedProfileID": $util.dynamodb.toDynamoDBJson($blockedProfileID)
+  }
+}

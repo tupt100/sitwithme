@@ -1,0 +1,42 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set( $indexPath = "/profileconversation/doc/_search" )
+
+#set( $sortDirection = "desc" )
+#set( $sortField = $util.toJson("totalMessage") )
+
+{
+  "version": "2018-05-29",
+  "operation": "GET",
+  "path": "$indexPath",
+  "params": {
+    "body": {
+      "size": 10,
+      "sort": [{$sortField: { "order" : $util.toJson($sortDirection) }}],
+      "version": false,
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "term": {
+                "profileID.keyword": $util.toJson($profile.id)
+              }
+            }
+          ],
+          "must_not": [
+            {
+              "term": {
+                "hide": $util.toJson(true)
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

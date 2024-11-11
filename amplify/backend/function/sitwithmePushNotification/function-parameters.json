@@ -1,0 +1,39 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "api": {
+      "sitwithme": [
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "Following:@model(appsync)": [
+        "read"
+      ],
+      "Photo:@model(appsync)": [
+        "read"
+      ],
+      "Conversation:@model(appsync)": [
+        "read"
+      ],
+      "Message:@model(appsync)": [
+        "read"
+      ],
+      "ProfileConversation:@model(appsync)": [
+        "read"
+      ],
+      "Profile:@model(appsync)": [
+        "read"
+      ],
+      "Shift:@model(appsync)": [
+        "read"
+      ],
+      "SubscriptionMsg:@model(appsync)": [
+        "create"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ]
+    }
+  }
+}

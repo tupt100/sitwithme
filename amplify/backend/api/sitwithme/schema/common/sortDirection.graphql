@@ -1,0 +1,4 @@
+enum ModelSortDirection {
+  ASC
+  DESC
+}

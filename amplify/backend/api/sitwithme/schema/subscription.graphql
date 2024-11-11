@@ -1,0 +1,64 @@
+type Subscription {
+  onUpdateVideoAfterProcessing(id: ID!): Video
+    @aws_subscribe(mutations: ["updateVideoAfterProcessing"])
+
+  onPushMessageNotification(profileID: ID!): MessageNotification
+    @aws_subscribe(mutations: ["pushMessageNotification"])
+
+  onConversationCreated(profileID: ID!): MessageNotification
+    @aws_subscribe(mutations: ["conversationCreated"])
+
+  onNotifyMessageReaction(profileID: ID!): MessageReactionNotification
+    @aws_subscribe(mutations: ["notifyMessageReaction"])
+
+  onProfilePresenceStatus(recipientProfileID: ID!): ProfilePresenceNotification
+    @aws_subscribe(mutations: ["profilePresenceStatus"])
+
+  onNotifyStaffShiftAlarmBeforeStart(recipientProfileID: ID!): StaffShiftAlarmBeforeStart
+    @aws_subscribe(mutations: ["notifyStaffShiftAlarmBeforeStart"])
+
+  onNotifyPatronShiftAlarmBeforeStart(recipientProfileID: ID!): PatronShiftAlarmBeforeStart
+    @aws_subscribe(mutations: ["notifyPatronShiftAlarmBeforeStart"])
+
+  onNotifyRequestSWM(recipientProfileID: ID!): RequestSWMNotification
+    @aws_subscribe(mutations: ["notifyRequestSWM"])
+
+  onNotifyAcceptRequestSWM(recipientProfileID: ID!): AcceptRequestSWMNotification
+    @aws_subscribe(mutations: ["notifyAcceptRequestSWM"])
+
+  onNotifyDirectMessage(recipientProfileID: ID!): DirectMessageNotification
+    @aws_subscribe(mutations: ["notifyDirectMessage"])
+
+  onProfileConversationUpdated(recipientProfileID: ID!): ProfileConversationUpdated
+    @aws_subscribe(mutations: ["notifyProfileConversationUpdated"])
+
+  onNotifyLeaveTable(recipientProfileID: ID!): LeaveTableNotification
+    @aws_subscribe(mutations: ["notifyLeaveTable"])
+
+  onBlockProfile(recipientProfileID: ID!): BlockProfileNotification
+    @aws_subscribe(mutations: ["notifyBlockProfile"])
+
+  onReportProfile(recipientUserID: ID!): ReportProfileNotification
+    @aws_subscribe(mutations: ["notifyReportProfile"])
+
+  onNotifyDisableUser(userID: ID!): DisableUserNotification
+    @aws_subscribe(mutations: ["notifyDisableUser"])
+
+  onNotifyProfileDuty: ProfileDutyNotification
+    @aws_subscribe(mutations: ["notifyProfileDuty"])
+
+  onNotifyProfileMemberShipUpdated(profileID: ID!): ProfileMemberShipUpdatedNotification
+    @aws_subscribe(mutations: ["notifyProfileMemberShipUpdated"])
+
+  onNotifyUserDeleted: UserDeletedNotification
+    @aws_subscribe(mutations: ["notifyUserDeleted"])
+
+  onNotifyChangePrivacy(profileID: ID!): ChangePrivacyNotification
+    @aws_subscribe(mutations: ["notifyChangePrivacy"])
+
+  onNotifyChangePrivacyV2: ChangePrivacyNotification
+    @aws_subscribe(mutations: ["notifyChangePrivacy"])
+
+  onTestSubAuth(profileID: ID!): TestSubAuthNotification
+    @aws_subscribe(mutations: ["testSubAuth"])
+}

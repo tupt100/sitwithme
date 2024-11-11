@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  env:
+    Type: String
+  s3Prefix:
+    Type: String
+
+Resources:
+  WebsiteBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${s3Prefix}-${env}-website
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: "CloudFront OAI for Website S3 Bucket"
+
+  WebsiteBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref WebsiteBucket
+      PolicyDocument:
+        Statement:
+          - Sid: AllowSSLRequestsOnly
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !Join ['', ["arn:aws:s3:::", !Ref WebsiteBucket]]
+              - !Join ['', ["arn:aws:s3:::", !Ref WebsiteBucket, '/*']]
+            Condition:
+              Bool:
+                "aws:SecureTransport": "false"
+          - Sid: AllowCloudFrontAccessIdentity
+            Effect: Allow
+            Principal:
+              AWS: !Join [' ', ['arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity', !Ref CloudFrontOriginAccessIdentity]]
+            Action: 's3:GetObject'
+            Resource:
+              - !Join ['', ['arn:aws:s3:::', !Ref WebsiteBucket]]
+              - !Join ['', ['arn:aws:s3:::', !Ref WebsiteBucket, '/*']]
+
+Outputs:
+  BucketName:
+    Value: !Ref WebsiteBucket
+
+  CloudFrontOriginAccessIdentity:
+    Value: !Ref CloudFrontOriginAccessIdentity

@@ -1,0 +1,57 @@
+## Call GetCurrentUser.req.vtl and GetCurrentUser.res.vtl
+## Call ListProfilesByUserID.req.vtl and ListProfilesByUserID.res.vtl
+
+#set($currentUser = $ctx.stash.get("user"))
+#set($currentSeat = $currentUser.lastSeat)
+#set($profiles = $ctx.stash.get("profiles"))
+
+#if ( $profiles && $profiles.size() == 0 )
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+
+#if ($currentSeat == "STAFF")
+  ## profileID is patronID if currentSeat is STAFF
+  #set ($patronID = $ctx.stash.get("profileID"))
+
+  ## Get StaffID from profiles by UserID
+  #if($profiles[0].role == "STAFF")
+    #set ($staffID = $profiles[0].id)
+  #end
+
+  #if ($profiles.size() == 2 )
+    #if($profiles[1].role == "STAFF")
+      #set ($staffID = $profiles[1].id)
+    #end
+  #end
+
+  #if(!$staffID)
+    $util.error("Staff not found", "BAD_REQUEST")
+  #end
+#else
+  ## profileID is staffID if currentSeat is PATRON
+  #set ($staffID = $ctx.stash.get("profileID"))
+
+  ## Get patronID from profiles by UserID
+  #if($profiles[0].role == "PATRON")
+    #set ($patronID = $profiles[0].id)
+  #end
+
+  #if ($profiles.size() == 2 )
+    #if($profiles[1].role == "PATRON")
+      #set ($patronID = $profiles[1].id)
+    #end
+  #end
+
+  #if(!$patronID)
+    $util.error("Patron not found", "BAD_REQUEST")
+  #end
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  }
+}

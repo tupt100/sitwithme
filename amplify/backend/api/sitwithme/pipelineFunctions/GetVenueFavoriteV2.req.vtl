@@ -1,0 +1,15 @@
+#set($patronProfile = $ctx.stash.get("patronProfile"))
+#if($patronProfile)
+  #set($profileID = $patronProfile.id)
+#else
+  #return
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "yelpBusinessID": $util.dynamodb.toDynamoDBJson($ctx.stash.get("yelpBusinessID"))
+  }
+}

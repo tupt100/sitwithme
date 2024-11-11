@@ -1,0 +1,8 @@
+{
+  "method": "generateStaffProfiles",
+  "arguments": {
+    "number": "10",
+    "lat": 37.7670169511878,
+    "lon": -122.42184275
+  }
+}

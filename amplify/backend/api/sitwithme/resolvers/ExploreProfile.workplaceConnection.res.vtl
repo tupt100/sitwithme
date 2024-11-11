@@ -1,0 +1,11 @@
+
+#if ($ctx.source.distance.size())
+  #set ($meterToMile = 0.000621371)
+  #set ($roundDistance = $ctx.source.distance[0] * $meterToMile * 1000)
+  #set ($distance = $util.math.roundNum($roundDistance)/1000.0)
+  $util.qr($ctx.source.workplaceConnection.put("distance", $distance))
+#else
+  $util.qr($ctx.source.workplaceConnection.put("distance", null))
+#end
+
+$util.toJson($ctx.source.workplaceConnection)

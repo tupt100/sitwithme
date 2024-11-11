@@ -1,0 +1,17 @@
+## call GetRemainProfileByUserIDFunction.req.vtl first
+
+#set($profile = $ctx.stash.get("remainProfile"))
+#if(!$profile)
+  #return($ctx.stash.get('profileDeviceToken'))
+#end
+
+#set($deviceToken = $ctx.stash.get("deviceToken"))
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profile.id),
+    "deviceToken": $util.dynamodb.toDynamoDBJson($deviceToken)
+  }
+}

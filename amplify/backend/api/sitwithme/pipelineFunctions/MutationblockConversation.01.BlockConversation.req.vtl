@@ -1,0 +1,30 @@
+## call ConversationAuth.req.vtl and ConversationAuth.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($conversationID = $ctx.stash.get("conversationID"))
+#set($conversation = $ctx.stash.get("conversation"))
+#set($blockedByProfileIDs = $util.defaultIfNull($conversation.blockedByProfileIDs, []))
+
+#if(!$blockedByProfileIDs.contains($profileID))
+  $util.qr($blockedByProfileIDs.add($profileID))
+#end
+
+#set($update = {
+  "expression": "SET #blockedByProfileIDs = :blockedByProfileIDs",
+  "expressionNames": { "#blockedByProfileIDs": "blockedByProfileIDs" },
+  "expressionValues": { ":blockedByProfileIDs": $util.dynamodb.toDynamoDB($blockedByProfileIDs) }
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($conversationID)
+  },
+  "update": $util.toJson($update)
+}

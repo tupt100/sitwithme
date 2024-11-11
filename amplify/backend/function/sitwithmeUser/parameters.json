@@ -1,0 +1,5 @@
+{
+  "iotPrefix": "sitwithme",
+  "awsIotPolicyName": "connection-policy",
+  "magicPhoneNumbers": "+84968368982,+84368439569,+13172895577,+84374714275,+84934799291"
+}

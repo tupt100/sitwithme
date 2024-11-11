@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  env:
+    Type: String
+  storageassetsBucketName:
+    Type: String
+  storageassetsCloudFrontOriginAccessIdentity:
+    Type: String
+  # functionsitwithmeImageResizeLambdaImageResizeVer1625815442216:
+  #   Type: String
+
+Resources:
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: PriceClass_100 # US, CA, EU
+        Enabled: true
+        HttpVersion: http2
+        # Aliases:
+        #   - !FindInMap ["DomainName", !Ref env, "value"]
+        # ViewerCertificate:
+        #   AcmCertificateArn: !Ref AssetsACMCert
+        #   SslSupportMethod: sni-only
+        #   MinimumProtocolVersion: TLSv1.2_2019
+        CacheBehaviors:
+          # - PathPattern: document/*
+          #   ViewerProtocolPolicy: https-only
+          #   ForwardedValues:
+          #     QueryString: true
+          #     QueryStringCacheKeys:
+          #       - 'AWSAccessKeyId'
+          #       - 'Expires'
+          #       - 'Signature'
+          #       - 'x-amz-security-token'
+          #   TargetOriginId: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com', '/document']]
+          #   DefaultTTL: 1800
+          #   MaxTTL: 1800
+          # - PathPattern: /*
+          #   ViewerProtocolPolicy: https-only
+          #   ForwardedValues:
+          #     QueryString: false
+          #   TargetOriginId: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com']]
+          - PathPattern: protected/*
+            ViewerProtocolPolicy: https-only
+            ForwardedValues:
+              QueryString: true
+              QueryStringCacheKeys:
+                - 'size'
+            TargetOriginId: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com']]
+          #   LambdaFunctionAssociations:
+          #   - EventType: origin-response
+          #     LambdaFunctionARN: !Ref functionsitwithmeImageResizeLambdaImageResizeVer1625815442216
+          # - PathPattern: /
+          #   ViewerProtocolPolicy: https-only
+          #   ForwardedValues:
+          #     QueryString: false
+          #   TargetOriginId: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com']]
+          #   AllowedMethods:
+          #     - DELETE
+          #     - GET
+          #     - HEAD
+          #     - OPTIONS
+          #     - PATCH
+          #     - POST
+          #     - PUT
+        DefaultCacheBehavior:
+          ViewerProtocolPolicy: https-only
+          TargetOriginId: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com']]
+          ForwardedValues:
+            QueryString: false
+        Origins:
+          - DomainName: !Join ['', [!Ref storageassetsBucketName, '.s3.amazonaws.com']]
+            Id: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com']]
+            S3OriginConfig:
+              OriginAccessIdentity: !Join ['', ['origin-access-identity/cloudfront/', !Ref storageassetsCloudFrontOriginAccessIdentity]]
+          # - DomainName: !Join ['', [!Ref storageassetsBucketName, '.s3.amazonaws.com']]
+          #   Id: !Join ['', ['s3/', !Ref storageassetsBucketName, '.s3.amazonaws.com', '/document']]
+          #   S3OriginConfig:
+          #     OriginAccessIdentity: ''

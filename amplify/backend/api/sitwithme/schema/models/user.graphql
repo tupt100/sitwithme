@@ -1,0 +1,156 @@
+"""
+User contains credential field: email
+And contains shared fields between Staff and Patron
+"""
+type User @model(
+  mutations: null,
+  subscriptions: null,
+)
+@key(name: "byEmail", fields: ["email"])
+@key(name: "byUserName", fields: ["userName"])
+@key(name: "byRole", fields: ["role"])
+@key(name: "byBirthdayIndex", fields: ["birthdayIndex"])
+@searchable
+{
+  "User's id"
+  id: ID!
+
+  "Username are unique and not case sensitive"
+  userName: String
+
+  "First Name is shared between Staff anf Patron"
+  firstName: String
+
+  "Last Name is shared between Staff anf Patron"
+  lastName: String
+
+  "Email is credential field"
+  email: AWSEmail
+
+  "Role indicate user is admin role or standard role(Staff/Patron)"
+  role: Role!
+
+  "User's birthday"
+  birthday: AWSDate
+
+  birthdayIndex: String
+
+  "User's gender"
+  gender: Gender
+
+  phone: String
+  rawPhone: String
+
+  userLocation: UserLocation
+
+  lastSeat: UserRole
+
+  "User has many Profile (2 profiles). Because one user can have Staff's profile or Patron's profile"
+  profiles: [Profile!]! @connection(keyName: "byUser", fields: ["id"])
+
+  "User can have many Photo in UserPhoto"
+  photos: [UserPhoto!]! @connection(fields: ["id"])
+    @deprecated(reason: "Remove soon")
+
+  disabled: Boolean
+  principalID: String
+    @deprecated(reason: "Remove soon")
+
+  premiumSuggestion: PremiumSuggestion
+}
+
+type UserConfirmation @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["cognitoUsername", "event"])
+{
+  cognitoUsername: String!
+  code: String!
+  event: UserConfirmationEvent!
+  retryAttempts: Int!
+}
+
+enum UserConfirmationEvent {
+  SIGN_UP
+}
+
+type PremiumSuggestion {
+  showedNumber: Int!
+  dontShow: Boolean!
+}
+
+input UpdatePremiumSuggestionInput {
+  showedNumber: Int
+  dontShow: Boolean
+}
+
+input ConfirmUserInput {
+  cognitoUsername: String!
+  code: String!
+}
+
+input SendCodeToPhoneInput {
+  cognitoUsername: String!
+  phoneNumber: String!
+}
+
+input SendCodeToEmailInput {
+  cognitoUsername: String!
+  email: String!
+}
+
+type UserLocation {
+  name: String!
+  location: Location!
+}
+
+input UserLocationInput {
+  name: String!
+  location: LocationInput!
+}
+
+input InitUserInput {
+  userName: String!
+  email: AWSEmail!
+  firstName: String!
+  lastName: String!
+  phone: String
+}
+
+input AdminSearchUsersFilter {
+  term: String
+}
+
+type SearchableUserConnection {
+  items: [User]
+  nextToken: String
+  total: Int
+}
+
+input UserIdentifyInput {
+  id: ID!
+}
+
+input AttachConnectPolicyInput {
+  idToken: String!
+}
+
+input NotifyDisableUserInput {
+  userID: ID!
+}
+
+type DisableUserNotification @aws_iam @aws_cognito_user_pools {
+  userID: ID!
+}
+
+input NotifyUserDeletedInput {
+  userID: ID!
+  profileID: ID!
+}
+
+type UserDeletedNotification @aws_iam @aws_cognito_user_pools {
+  userID: ID!
+  profileID: ID!
+}

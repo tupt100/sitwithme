@@ -1,0 +1,45 @@
+#set( $indexPath = "/user/doc/_search" )
+
+#set( $sortDirection = "desc" )
+#set( $sortField = $util.toJson("id.keyword") )
+
+#if($context.args.filter)
+  #set($term = $context.args.filter.term)
+  #if($term)
+    #set($query = "*" + $term + "*")
+  #end
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GET",
+  "path": "$indexPath",
+  "params": {
+      "body":     {
+                #if( $context.args.nextToken )"search_after": [$util.toJson($context.args.nextToken)], #end
+                "size": #if( $context.args.limit ) $context.args.limit #else 100 #end,
+                "sort": [{$sortField: { "order" : $util.toJson($sortDirection) }}],
+                "version": false,
+                "query": #if( $query )
+{
+  "query_string": {
+    "query": $util.toJson($query),
+    "fields": ["email.keyword", "lastName", "firstName", "userName.keyword"]
+  }
+}
+#else
+{
+  "bool": {
+    "must_not": [
+      {
+        "term": {
+          "deleted": $util.toJson(true)
+        }
+      }
+    ]
+  }
+}
+#end
+                }
+  }
+}

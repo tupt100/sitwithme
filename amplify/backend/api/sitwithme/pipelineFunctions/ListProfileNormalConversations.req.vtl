@@ -1,0 +1,26 @@
+#set( $query = {
+  "expression": "#profileID = :profileID",
+  "expressionNames": {
+      "#profileID": "profileID"
+  },
+  "expressionValues": {
+      ":profileID": $util.dynamodb.toDynamoDB($ctx.stash.get("profileID"))
+  }
+} )
+
+#set( $filter = {
+  "expression" : "#conversationType = :conversationType",
+  "expressionNames": {
+      "#conversationType": "conversationType"
+  },
+  "expressionValues": {
+      ":conversationType": $util.dynamodb.toDynamoDB('NORMAL')
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "filter": $util.toJson($filter)
+}

@@ -1,0 +1,24 @@
+#if( $ctx.error )
+$util.error($ctx.error.message, $ctx.error.type)
+#else
+  #if( !$result )
+    #set( $result = $ctx.result )
+  #end
+
+  #set($rs = {
+  	"nextToken": "$result.nextToken"
+  })
+
+  #set( $items = [] )
+
+  ## Avoid break old app didn't handle NO_SHIFTS_UPCOMING type.
+  #foreach($item in $result.items)
+    #if($item.kind && $item.kind != "NO_SHIFTS_UPCOMING")
+      $util.qr($items.add($item))
+    #end
+  #end
+
+  $util.qr($rs.put("items", $items))
+
+  $util.toJson($rs)
+#end

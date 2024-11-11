@@ -1,0 +1,40 @@
+"""
+Photo contains all photo on system
+"""
+type Photo @model(
+  mutations: null,
+  subscriptions: null,
+) {
+  "Photo's id"
+  id: ID!
+
+  "Photo's url."
+  url: AWSURL!
+}
+
+type Video @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@aws_iam
+@aws_cognito_user_pools
+{
+  id: ID!
+  thumbnailUrl: AWSURL
+  url: AWSURL
+  status: VideoStatus!
+}
+
+enum VideoStatus {
+  PENDING,
+  COMPLETED,
+  FAILED
+}
+
+input UpdateVideoAfterProcessingInput {
+  status: VideoStatus
+  key: String
+  thumbnailKey: String
+  video: S3ObjectInput!
+}

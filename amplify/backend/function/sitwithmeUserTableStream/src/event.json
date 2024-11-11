@@ -1,0 +1,69 @@
+{
+    "Records": [
+        {
+            "eventID": "80d7d8fade6c63dde69c4af4e3b7f9c1",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1628240009,
+                "Keys": {
+                    "id": {
+                        "S": "308e3f0f-afae-48d2-9f89-a20920726691"
+                    }
+                },
+                "NewImage": {
+                    "email": {
+                        "S": "vuongnguyen@gmail.com"
+                    },
+                    "firstName": {
+                        "S": "Vuong 1"
+                    },
+                    "id": {
+                        "S": "d43775b0-a138-432d-89bd-4c5c18bcd886"
+                    },
+                    "lastName": {
+                        "S": "Nguyen"
+                    },
+                    "lastSeat": {
+                        "S": "STAFF"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-12T06:47:00.645Z"
+                    },
+                    "userName": {
+                        "S": "VuongNguyen"
+                    }
+                },
+                "OldImage": {
+                    "email": {
+                        "S": "vuongnguyen@gmail.com"
+                    },
+                    "firstName": {
+                        "S": "Vuong"
+                    },
+                    "id": {
+                        "S": "d43775b0-a138-432d-89bd-4c5c18bcd886"
+                    },
+                    "lastName": {
+                        "S": "Nguyen"
+                    },
+                    "lastSeat": {
+                        "S": "STAFF"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-12T06:47:00.645Z"
+                    },
+                    "userName": {
+                        "S": "VuongNguyen"
+                    }
+                },
+                "SequenceNumber": "146451300000000009409180201",
+                "SizeBytes": 520,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:937833379153:table/Shift-k6mw73tsx5cjppsd7cx3oi2yx4-dev/stream/2021-07-06T10:23:20.865"
+        }
+    ]
+}

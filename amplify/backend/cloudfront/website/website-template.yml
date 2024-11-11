@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  env:
+    Type: String
+  storagewebsiteBucketName:
+    Type: String
+  storagewebsiteCloudFrontOriginAccessIdentity:
+    Type: String
+
+Resources:
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        PriceClass: PriceClass_100 # US, CA, EU
+        Enabled: true
+        HttpVersion: http2
+        DefaultCacheBehavior:
+          ViewerProtocolPolicy: https-only
+          TargetOriginId: !Join ['', ['s3/', !Ref storagewebsiteBucketName, '.s3.amazonaws.com']]
+          ForwardedValues:
+            QueryString: false
+        Origins:
+          - DomainName: !Join ['', [!Ref storagewebsiteBucketName, '.s3.amazonaws.com']]
+            Id: !Join ['', ['s3/', !Ref storagewebsiteBucketName, '.s3.amazonaws.com']]
+            S3OriginConfig:
+              OriginAccessIdentity: !Join ['', ['origin-access-identity/cloudfront/', !Ref storagewebsiteCloudFrontOriginAccessIdentity]]

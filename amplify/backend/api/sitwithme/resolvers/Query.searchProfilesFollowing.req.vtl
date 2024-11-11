@@ -1,0 +1,14 @@
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("userID", $ctx.identity.claims["custom:id"]))
+$util.qr($ctx.stash.put("term", $ctx.args.filter.term))
+
+#set($role = $ctx.args.filter.role)
+$util.qr($ctx.stash.put("role", $role))
+#if($role == 'STAFF')
+  $util.qr($ctx.stash.put("searchrole", 'PATRON'))
+#else
+  $util.qr($ctx.stash.put("searchrole", 'STAFF'))
+#end
+
+{}
+## [End] Stash resolver specific context.. **

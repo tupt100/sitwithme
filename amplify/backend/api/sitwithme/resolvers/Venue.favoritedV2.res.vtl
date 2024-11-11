@@ -1,0 +1,8 @@
+#set($favorited = false)
+
+#set($venueFavorite = $ctx.stash.get("venueFavorite"))
+#if($venueFavorite)
+  #set($favorited = true)
+#end
+
+$util.toJson($favorited)

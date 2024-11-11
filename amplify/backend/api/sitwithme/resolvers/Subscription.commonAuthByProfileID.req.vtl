@@ -1,0 +1,22 @@
+#set($userID = $ctx.identity.claims["custom:id"])
+
+#if(!$userID)
+  $utils.unauthorized()
+#end
+
+#set( $query = {
+  "expression": "#userID = :userID",
+  "expressionNames": {
+      "#userID": "userID"
+  },
+  "expressionValues": {
+      ":userID": $util.dynamodb.toDynamoDB($userID)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byUser"
+}

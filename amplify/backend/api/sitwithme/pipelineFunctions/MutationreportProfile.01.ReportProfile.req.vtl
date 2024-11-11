@@ -1,0 +1,46 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl
+## call GetReportedProfile.req.vtl and GetReportedProfile.res.vtl
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+#set($reportedProfile = $ctx.stash.get('reportedProfile'))
+#if(!$reportedProfile)
+  $util.error('Reported profile not found', 'BAD_REQUEST')
+#end
+
+#set($id = $util.autoId())
+#set($profileID = $profile.id)
+#set($reportedProfileID = $ctx.stash.get("reportedProfileID"))
+#set($type = $ctx.stash.get("type"))
+#set($content = $ctx.stash.get("content"))
+#set($createdAt = $util.time.nowISO8601())
+
+#if($type == "INAPPROPRIATE" && !$content)
+  $util.error('Reporting an in-appropriate profile require report content', 'BAD_REQUEST')
+#end
+
+#set($attr = {
+  "__typename": "ReportedProfile",
+  "profileID": $profileID,
+  "reportedProfileID": $reportedProfileID,
+  "type": $type,
+  "group": "ReportedProfile",
+  "status": "UNRESOLVED",
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+#if ($type == "INAPPROPRIATE")
+  $util.qr($attr.put("content", $content))
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($id)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

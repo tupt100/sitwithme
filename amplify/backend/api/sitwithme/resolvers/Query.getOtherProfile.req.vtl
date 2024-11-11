@@ -1,0 +1,15 @@
+#set( $query = {
+  "expression": "#id = :id",
+  "expressionNames": {
+    "#id": "id"
+  },
+  "expressionValues": {
+    ":id": $util.dynamodb.toDynamoDB($ctx.args.input.id)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query)
+}

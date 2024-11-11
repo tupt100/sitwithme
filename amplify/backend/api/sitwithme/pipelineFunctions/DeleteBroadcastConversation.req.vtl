@@ -1,0 +1,22 @@
+#set($conversation = $ctx.stash.get("conversation"))
+#set($profile = $ctx.stash.get("profile"))
+
+#if(!$conversation)
+  $util.error('Conversation not found', 'BAD_REQUEST')
+#end
+
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#if($profile.id != $conversation.creatorProfileID || $conversation.conversationType != 'BROADCAST')
+  $util.error('Conversation is invalid', 'BAD_REQUEST')
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($conversation.id)
+  }
+}

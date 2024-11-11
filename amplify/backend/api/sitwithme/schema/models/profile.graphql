@@ -1,0 +1,337 @@
+"""
+Profile contains Staff/Patron personal information
+One user can have a profile for Staff and another for Patron
+Listing profiles for explore will be handled by ElasticSearch
+"""
+type Profile @model(
+  queries: {
+    list: "listProfiles",
+  },
+  mutations: null,
+  subscriptions: null,
+)
+@key(name: "byUser", fields: ["userID"], queryField: "listProfilesByUser")
+@key(name: "byPresenceStatus", fields: ["presenceStatus", "lastOnlineAt"])
+@searchable
+{
+  "Profile's id"
+  id: ID!
+
+  "Profile's bio"
+  bio: String
+
+  dutyStatus(date: AWSDateTime!): Boolean! @function(name: "sitwithmeShift-${env}")
+
+  "UserRole indicate user is Staff or Patron role"
+  role: UserRole!
+
+  userID: ID!
+  "Profile is belong to User. Because one user can have Staff's profile or Patron's profile"
+  user: User @connection(fields: ["userID"])
+  userConnection: ProfileUserConnection!
+
+  # Provide custom avatarID to avoid generated profile input from default
+  avatarID: ID
+  "Profile can have one Photo"
+  avatar: Photo @connection(fields: ["avatarID"])
+
+  onboardingStep: OnboardingStep!
+  "Indicate whether profile is completed or not. If null, will return missing step"
+  completedAt: AWSDateTime
+
+  workplaces: [Workplace!] @connection(keyName: "byProfileSortByCreatedAt", fields: ["id"])
+  shifts: [Shift!] @connection(keyName: "byProfileSortByCreatedAt", fields: ["id"])
+
+  notifications: [SWMNotification!] @connection(keyName: "byRecipientProfileIDSortByEventUpdatedAt", fields: ["id"])
+
+  posts: [Post!] @connection(keyName: "byProfileSortByCreatedAt", fields: ["id"])
+  working: ModelWorkingShiftConnection
+  currentShift(input: CurrentShiftInput!): CurrentShift @function(name: "sitwithmeShift-${env}")
+
+  followingDetail: FollowingDetail
+
+  notificationSettings: NotificationSettings!
+
+  blockedProfileIDs: [ID!]
+  privacy: Boolean
+  showInExplore: Boolean
+
+  memberShip: MemberShip
+  profileSubscriptions: [ProfileSubscription!] @connection(keyName: "byProfileID", fields: ["id"])
+
+  # Don't use it. It created to activate Amplify `@key` directive
+  presenceStatus: PresenceStatus
+
+  # Don't use it. It created to activate Amplify `@key` directive
+  lastOnlineAt: AWSDateTime
+
+  paypalLink: String
+  venmoLink: String
+}
+
+type ModelWorkingShiftConnection {
+  items: [Shift!]!
+  nextToken: String
+}
+
+type CurrentShift {
+  item: Shift
+}
+
+type FollowingDetail {
+  followingStatus: FollowingStatus
+  requestedBy: ID
+  presenceStatus: PresenceStatus
+  lastOnlineAt: AWSDateTime
+}
+
+type ProfileUserConnection {
+  fullName: String!
+  userLocation: UserLocation
+  userName: String
+}
+
+enum MemberShip {
+  NONE
+  PREMIUM
+}
+
+enum FollowingStatus {
+  PENDING,
+  ACCEPTED
+}
+
+enum PresenceStatus {
+  ON,
+  OFF
+}
+
+input UpdateProfileInput {
+  id: ID!
+  userName: String
+  firstName: String
+  lastName: String
+  email: AWSEmail
+  bio: String
+  birthday: AWSDate
+  gender: Gender
+  avatar: S3ObjectInput
+  phone: String
+  userLocation: UserLocationInput
+  privacy: Boolean
+  showInExplore: Boolean
+  paypalLink: String
+  venmoLink: String
+}
+
+input OnboardingPatronInput {
+  avatar: S3ObjectInput
+  userLocation: UserLocationInput
+}
+
+type StaffProfileOverviewStat {
+  totalPosts: Int!
+  totalSittingWith: Int!
+  totalWorkplace: Int!
+}
+
+type PatronProfileOverviewStat {
+  totalPosts: Int!
+  totalSavedLocation: Int!
+    @deprecated(reason: "Use totalSavedLocationV2 instead. Removed when no users using app v1.0.7")
+  totalSavedLocationV2: Int!
+  totalSittingWith: Int!
+}
+
+input OnboardingStaffInput {
+  avatar: S3ObjectInput
+  shift: ShiftInput
+  userLocation: UserLocationInput
+  paymentLinks: PaymentLinks
+}
+
+input PaymentLinks {
+  venmo: String
+  paypal: String
+}
+
+input GetProfileInput {
+  role: UserRole!
+}
+
+input GetOtherProfileInput {
+  id: ID!
+}
+
+input CreateStaffRecentViewInput {
+  staffID: ID!
+}
+
+input CreateProfileRecentViewInput {
+  role: UserRole!
+  recentProfileID: ID!
+}
+
+input ListProfileRecentViewsInput {
+  role: UserRole!
+}
+
+input ClearProfileRecentViewInput {
+  role: UserRole!
+}
+
+input ExploreRecentSearchInput {
+  keyword: String!
+}
+
+input ExploreRecentSearchInputV2 {
+  keyword: String!
+  role: UserRole!
+}
+
+input ListExploreRecentSearchInputV2 {
+  role: UserRole!
+}
+
+input ClearExploreRecentSearchInput {
+  role: UserRole!
+}
+
+type ProfilePresenceNotification @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  presenceStatus: PresenceStatus!
+  lastOnlineAt: AWSDateTime
+  recipientProfileID: ID!
+}
+
+input ProfilePresenceNotificationInput {
+  id: ID!
+  presenceStatus: PresenceStatus!
+  lastOnlineAt: AWSDateTime
+  recipientProfileID: ID!
+}
+
+type Presence @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+)
+@key(name: "byProfileID", fields: ["profileID"])
+{
+  id: ID!
+  profileID: ID!
+}
+
+type NotificationSettings {
+  muteMessage: Boolean
+  muteSWMRequest: Boolean
+  muteAll: Boolean
+}
+
+input NotificationSettingsInput {
+  role: UserRole!
+  muteMessage: Boolean
+  muteSWMRequest: Boolean
+  muteAll: Boolean
+}
+
+type BlockedProfile @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+)
+@key(fields: ["profileID", "blockedProfileID"])
+@key(name: "byProfileIDSortByCreatedAt", fields: ["profileID", "createdAt"])
+@key(name: "byBlockedProfileIDSortByCreatedAt", fields: ["blockedProfileID", "createdAt"])
+{
+  profileID: ID!
+  blockedProfileID: ID!
+  blockedProfile: Profile @connection(fields: ["blockedProfileID"])
+    @deprecated(reason: "Use blockedProfileDetail instead.")
+  blockedProfileDetail: Profile @connection(fields: ["blockedProfileID"])
+  createdAt: AWSDateTime!
+}
+
+input BlockProfileInput {
+  role: UserRole!
+  profileID: String!
+}
+
+input UnblockProfileInput {
+  role: UserRole!
+  profileID: String!
+}
+
+input NotifyBlockProfileInput {
+  recipientProfileID: ID!
+  profileID: ID!
+}
+
+type BlockProfileNotification @aws_iam @aws_cognito_user_pools {
+  recipientProfileID: ID!
+  profileID: ID!
+}
+
+type ModelListBlockedProfilesConnection {
+  items: [BlockedProfile!]!
+  nextToken: String
+}
+
+input ListBlockedProfilesFilter {
+  role: UserRole!
+}
+
+input NotifyProfileMemberShipUpdated {
+  profileID: ID!
+  memberShip: MemberShip!
+  expiredAt: AWSDateTime
+  appleProductID: String!
+}
+
+type ProfileMemberShipUpdatedNotification @aws_iam @aws_cognito_user_pools {
+  profileID: ID!
+  memberShip: MemberShip!
+  expiredAt: AWSDateTime
+  appleProductID: String!
+}
+
+input explorePatronProfileInput {
+  keyword: String
+  geoLocation: ExploreGeoLocation
+}
+
+type ModelExplorePatronProfileConnection {
+  items: [Profile!]!
+  offset: Int
+  hasNext: Boolean!
+}
+
+type ProfileRecentView @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+)
+@key(fields: ["profileID", "profileRecentViewID"])
+@key(name: "byProfileRecentViewIDSortByCreatedAt", fields: ["profileRecentViewID", "createdAt"])
+{
+  profileID: ID!
+  profileRecentViewID: ID!
+  profileRecentView: Profile @connection(fields: ["profileRecentViewID"])
+  createdAt: AWSDateTime!
+}
+
+input CurrentShiftInput {
+  yelpBusinessID: String!
+}
+
+input NotifyChangePrivacyInput {
+  profileID: ID!
+  privacy: Boolean
+  showInExplore: Boolean
+}
+
+type ChangePrivacyNotification @aws_iam @aws_cognito_user_pools {
+  profileID: ID!
+  privacy: Boolean
+  showInExplore: Boolean
+}

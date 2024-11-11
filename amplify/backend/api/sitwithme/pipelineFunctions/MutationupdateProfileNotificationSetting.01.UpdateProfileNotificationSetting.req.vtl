@@ -1,0 +1,66 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($muteMessage = $ctx.stash.get('muteMessage'))
+#set($muteSWMRequest = $ctx.stash.get('muteSWMRequest'))
+#set($muteAll = $ctx.stash.get('muteAll'))
+
+#set( $expNames  = {} )
+#set( $expSet = {} )
+#set( $expValues = {} )
+
+$util.qr($expNames.put("#notificationSettings", "notificationSettings"))
+
+#if(!$util.isNull($muteMessage))
+  $util.qr($expNames.put("#muteMessage", "muteMessage"))
+  $util.qr($expSet.put("#notificationSettings.#muteMessage", ":muteMessage"))
+  $util.qr($expValues.put(":muteMessage", $util.dynamodb.toDynamoDB($muteMessage)))
+#end
+#if(!$util.isNull($muteSWMRequest))
+  $util.qr($expNames.put("#muteSWMRequest", "muteSWMRequest"))
+  $util.qr($expSet.put("#notificationSettings.#muteSWMRequest", ":muteSWMRequest"))
+  $util.qr($expValues.put(":muteSWMRequest", $util.dynamodb.toDynamoDB($muteSWMRequest)))
+#end
+#if(!$util.isNull($muteAll))
+  $util.qr($expNames.put("#muteAll", "muteAll"))
+  $util.qr($expSet.put("#notificationSettings.#muteAll", ":muteAll"))
+  $util.qr($expValues.put(":muteAll", $util.dynamodb.toDynamoDB($muteAll)))
+#end
+
+## Throw error if missing notification setting input
+#if( ${expSet.isEmpty()} )
+  $util.error('Notification setting input is required.', 'BAD_REQUEST')
+#end
+
+#set( $expression = "" )
+#if( !${expSet.isEmpty()} )
+  #set( $expression = "SET" )
+  #foreach( $entry in $expSet.entrySet() )
+    #set( $expression = "${expression} ${entry.key} = ${entry.value}" )
+    #if ( $foreach.hasNext )
+      #set( $expression = "${expression}," )
+    #end
+  #end
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($profileID)
+  },
+  "update": {
+    "expression" : "${expression}"
+    #if( !${expNames.isEmpty()} )
+      ,"expressionNames" : $utils.toJson($expNames)
+    #end
+    #if( !${expValues.isEmpty()} )
+      ,"expressionValues" : $utils.toJson($expValues)
+    #end
+  }
+}

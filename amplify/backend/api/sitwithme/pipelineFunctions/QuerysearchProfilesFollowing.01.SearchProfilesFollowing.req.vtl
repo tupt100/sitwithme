@@ -1,0 +1,115 @@
+#set($profile = $ctx.stash.get("profile"))
+#if(!$profile)
+  #return({
+    "items": [],
+    "hasNext": false,
+    "offset": $util.defaultIfNull($ctx.args.offset, 0)
+  })
+#end
+
+#set($role = $profile.role)
+#set($searchrole = $ctx.stash.get("searchrole"))
+#set($term = $ctx.args.filter.term)
+
+#set( $indexPath = "/following/doc/_search" )
+
+#set( $sortDirection = "desc" )
+#set( $sortField = $util.toJson("confirmedAt") )
+
+#if(!$util.isNullOrBlank($term))
+  #set($queryStr = "*" + $term + "*")
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GET",
+  "path": "$indexPath",
+  "params": {
+      "body":     {
+                #if( $context.args.nextToken )"search_after": [$util.toJson($context.args.nextToken)], #end
+                #if( $context.args.offset )"from": $context.args.offset, #end
+                "size": #if( $context.args.limit ) $context.args.limit #else 100 #end,
+                "sort": [{$sortField: { "order" : $util.toJson($sortDirection) }}],
+                "version": false,
+                "query": #if($queryStr)
+{
+  "bool": {
+    "must": [
+      {
+        "exists": {
+          "field": "confirmedAt"
+        }
+      },
+      {
+        "query_string": {
+          "query": "${profile.id}",
+          #if($role == 'STAFF')
+            "fields": ["staffID.keyword"]
+          #else
+            "fields": ["patronID.keyword"]
+          #end
+        }
+      },
+      {
+        "query_string": {
+          "query": $util.toJson($queryStr),
+          #if($searchrole == 'STAFF')
+            "fields": ["staffProfileConnection.firstName", "staffProfileConnection.lastName"]
+          #else
+            "fields": ["patronProfileConnection.firstName", "patronProfileConnection.lastName"]
+          #end
+        }
+      }
+    ],
+    "must_not": [
+      {
+        "term": {
+          "deleted": $util.toJson(true)
+        }
+      }
+    ]
+  }
+}
+#else
+{
+  "bool": {
+    "must": [
+      {
+        "exists": {
+          "field": "confirmedAt"
+        }
+      },
+      {
+        "query_string": {
+          "query": "${profile.id}",
+          #if($role == 'STAFF')
+            "fields": ["staffID.keyword"]
+          #else
+            "fields": ["patronID.keyword"]
+          #end
+        }
+      },
+      {
+        "query_string": {
+          "query": "*",
+          #if($searchrole == 'STAFF')
+            "fields": ["staffProfileConnection.firstName", "staffProfileConnection.lastName"]
+          #else
+            "fields": ["patronProfileConnection.firstName", "patronProfileConnection.lastName"]
+          #end
+        }
+      }
+    ],
+    "must_not": [
+      {
+        "term": {
+          "deleted": $util.toJson(true)
+        }
+      }
+    ]
+  }
+}
+#end
+                }
+  }
+}

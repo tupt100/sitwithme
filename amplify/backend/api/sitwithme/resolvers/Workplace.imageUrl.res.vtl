@@ -1,0 +1,5 @@
+#if ($ctx.source.imageUrl.isEmpty())
+$util.toJson(null)
+#else
+$util.toJson($ctx.source.imageUrl)
+#end

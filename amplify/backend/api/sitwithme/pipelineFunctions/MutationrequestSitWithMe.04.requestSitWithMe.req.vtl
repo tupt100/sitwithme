@@ -1,0 +1,46 @@
+#set($requestSitWithMe = $ctx.stash.get("requestSitWithMe"))
+#if($requestSitWithMe)
+  $util.error("You already send request to this staff", "BAD_REQUEST")
+#end
+
+#set($patronProfile = $ctx.stash.get("patronProfile"))
+#set($patronUser = $ctx.stash.get("patronUser"))
+
+#set($patronID = $patronProfile.id)
+#set($staffID = $ctx.stash.get("staffID"))
+#set($staffUser = $ctx.stash.get("staffUser"))
+#set($createdAt = $util.time.nowISO8601())
+#set($blockedProfileIDs = $util.defaultIfNull($patronProfile.blockedProfileIDs, []))
+
+#if($blockedProfileIDs.contains($staffID))
+  $util.error("You cannot send request to blocked staff", "BAD_REQUEST")
+#end
+
+#set($attr = {
+  "patronID": $patronID,
+  "patronProfileConnection": {
+    "userName": "${patronUser.userName}",
+    "firstName": "${patronUser.firstName}",
+    "lastName": "${patronUser.lastName}"
+  },
+  "staffID": $staffID,
+  "staffProfileConnection": {
+    "userName": "${staffUser.userName}",
+    "firstName": "${staffUser.firstName}",
+    "lastName": "${staffUser.lastName}"
+  },
+  "requestedBy": $patronID,
+  "__typename": "Following",
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

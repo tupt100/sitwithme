@@ -1,0 +1,5 @@
+#if ($util.isNull($ctx.source.read))
+$util.toJson(false)
+#else
+$util.toJson($ctx.source.read)
+#end

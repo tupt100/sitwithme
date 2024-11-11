@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "esnext"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "outDir": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "@swm-core/*": ["./core/*"],
+      "aws-sdk/*": ["./sitwithmeProfile/node_modules/aws-sdk/*"]
+    },
+  },
+}

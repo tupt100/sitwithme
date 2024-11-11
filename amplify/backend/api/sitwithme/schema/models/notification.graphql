@@ -1,0 +1,207 @@
+## deprecated
+type SWMNotification @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byRecipientProfileID", fields: ["recipientProfileID", "createdAt"])
+@key(name: "bySenderProfileIDSortByRecipientProfileID", fields: ["senderProfileID", "recipientProfileID"])
+@key(name: "byRecipientProfileIDSortByEventUpdatedAt", fields: ["recipientProfileID", "eventUpdatedAt"])
+@key(name: "byRecipientProfileIDSortByReadAndKind", fields: ["recipientProfileID", "readKind"])
+{
+  id: ID!
+  kind: NotificationKind
+  kindV2: NotificationKindV2
+  recipientProfileID: ID!
+  recipientProfile: Profile @connection(fields: ["recipientProfileID"])
+
+  senderProfileID: ID
+  senderProfile: Profile @connection(fields: ["senderProfileID"])
+
+  conversationID: ID
+  conversation: Conversation @connection(fields: ["conversationID"])
+
+  shiftID: ID
+  shift: Shift @connection(fields: ["shiftID"])
+  shiftAlert: Int
+  shiftWorkplaceName: String
+
+  read: Boolean!
+  readKind: String!
+
+  createdAt: AWSDateTime!
+  eventUpdatedAt: AWSDateTime
+}
+
+enum NotificationKind {
+  REQUEST_SITWITHME,
+  ACCEPT_REQUEST_SITWITHME,
+  PATRON_SHIFT_ALARM_BEFORE_START,
+  STAFF_SHIFT_ALARM_BEFORE_START,
+  DIRECT_MESSAGE
+}
+
+enum NotificationKindV2 {
+  REQUEST_SITWITHME,
+  ACCEPT_REQUEST_SITWITHME,
+  PATRON_SHIFT_ALARM_BEFORE_START,
+  STAFF_SHIFT_ALARM_BEFORE_START,
+  DIRECT_MESSAGE,
+  NO_SHIFTS_UPCOMING,
+  BIRTHDAY,
+}
+
+input ShiftAlarmWorkplaceInput {
+  name: String!
+}
+
+type ShiftAlarmWorkplace {
+  name: String!
+}
+
+input ShiftAlarmDetailInput {
+  alert: Int
+  workplace: ShiftAlarmWorkplaceInput
+}
+
+type ShiftAlarmDetail {
+  alert: Int
+  workplace: ShiftAlarmWorkplace
+}
+
+input StaffShiftAlarmBeforeStartInput {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  shiftID: ID!
+  shift: ShiftAlarmDetailInput
+}
+
+type StaffShiftAlarmBeforeStart {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  shiftID: ID!
+  shift: ShiftAlarmDetail
+}
+
+input SenderProfileUserInput {
+  userName: String
+}
+
+input SenderProfileAvatarInput {
+  url: AWSURL
+}
+
+input SenderProfileInput {
+  avatar: SenderProfileAvatarInput
+  user: SenderProfileUserInput
+}
+
+type SenderProfileUser {
+  userName: String
+}
+
+type SenderProfileAvatar {
+  url: AWSURL
+}
+
+type SenderProfile {
+  avatar: SenderProfileAvatar
+  user: SenderProfileUser
+}
+
+input PatronShiftAlarmBeforeStartInput {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfileInput!
+  shiftID: ID!
+  shift: ShiftAlarmDetailInput
+}
+
+type PatronShiftAlarmBeforeStart {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfile!
+  shiftID: ID!
+  shift: ShiftAlarmDetail
+}
+
+input DeleteNotificationInput {
+  id: ID!
+}
+
+input NotifyRequestSWMInput {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfileInput!
+}
+
+type RequestSWMNotification {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfile!
+}
+
+input NotifyAcceptRequestSWMInput {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfileInput!
+}
+
+type AcceptRequestSWMNotification {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfile!
+}
+
+input NotifyDirectMessageInput {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfileInput!
+}
+
+type DirectMessageNotification {
+  id: ID!
+  kind: NotificationKind!
+  recipientProfileID: ID!
+  senderProfileID: ID!
+  senderProfile: SenderProfile!
+}
+
+input UnreadNotificationsNumberInput {
+  role: UserRole!
+}
+
+type UnreadNotificationsNumber {
+  total: Int!
+  messages: Int!
+  otherNotifications: Int!
+}
+
+input MarkReadNotificationsInput {
+  role: UserRole!
+}
+
+input ListNotificationsFilter {
+  role: UserRole!
+}
+
+type ModelListNotificationsConnection {
+  items: [SWMNotification!]!
+  nextToken: String
+}

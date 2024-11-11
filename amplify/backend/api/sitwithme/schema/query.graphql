@@ -1,0 +1,92 @@
+type Query {
+  # profile
+  me: User
+  getPatronProfileOverviewStat: PatronProfileOverviewStat
+  getStaffProfileOverviewStat: StaffProfileOverviewStat
+  getProfile(input: GetProfileInput!): Profile
+  getOtherProfile(input: GetOtherProfileInput!): Profile
+
+  # following
+  searchProfilesFollowing(filter: SearchProfilesFollowingFilter!, limit: Int, offset: Int): SearchProfilesFollowingConnection
+
+  # explore
+  exploreStaffProfile(filter: exploreStaffProfileInput!, limit: Int, offset: Int, sortBy: ExploreProfileSortBy, sortDirection: ModelSortDirection): ModelExploreStaffProfileConnection @function(name: "sitwithmeExplore-${env}")
+  exploreVenues(filter: exploreVenuesInput!, limit: Int, offset: Int, nextToken: String): ModelExploreVenuesConnection @function(name: "sitwithmeExplore-${env}")
+  explorePhotos(filter: explorePhotosInput!, limit: Int, offset: Int): ModelExplorePhotosConnection @function(name: "sitwithmeExplore-${env}")
+    @deprecated(reason: "use explorePosts instead")
+  listCategories: [Category!] @function(name: "sitwithmeWorkplace-${env}")
+  explorePosts(filter: explorePostsInput!, limit: Int, offset: Int): ModelExplorePostsConnection @function(name: "sitwithmeExplore-${env}")
+  explorePatronProfiles(filter: explorePatronProfileInput!, limit: Int, offset: Int): ModelExplorePatronProfileConnection @function(name: "sitwithmeExplore-${env}")
+
+  # schedule
+  listShiftEventsByDateRange(input: ListShiftsByDateRangeInput!): [ShiftEvent!] @function(name: "sitwithmeShift-${env}")
+  listStaffShiftEvents(input: ListStaffShiftEventsInput!): [ShiftEvent!] @function(name: "sitwithmeShift-${env}")
+  getShiftEventDetail(input: ShiftEventDetailInput!): Shift @function(name: "sitwithmeShift-${env}")
+  getCurrentShiftEvent: Shift @function(name: "sitwithmeShift-${env}")
+
+  # venues
+  searchYelpBusinesses(filter: SearchYelpBusinessesInput!, limit: Int, offset: Int): YelpBusinessConnection
+    @function(name: "sitwithmeWorkplace-${env}")
+  getVenue(input: VenueDetailInput!): Venue @function(name: "sitwithmeWorkplace-${env}")
+  searchVenuesFavorited(filter: SearchVenueFavoritesFilter!, limit: Int, offset: Int): SearchVenueFavoritesConnection
+    @deprecated(reason: "Use searchVenuesFavoritedV2 instead. Removed when no users using app v1.0.7")
+  searchVenuesFavoritedV2(filter: SearchVenueFavoritesFilter!, limit: Int, offset: Int): SearchVenueFavoritesV2Connection
+
+  # search
+  listStaffRecentViews: [Profile!]! @function(name: "sitwithmeProfile-${env}")
+    @deprecated(reason: "use listProfileRecentViews instead")
+  listProfileRecentViews(input: ListProfileRecentViewsInput!): [Profile!]! @function(name: "sitwithmeProfile-${env}")
+  listPopularVenues(input: LocationInput): [Venue!] @function(name: "sitwithmeWorkplace-${env}")
+  listExploreRecentSearch: [String!]
+    @deprecated(reason: "use listExploreRecentSearchV2 instead")
+  listExploreRecentSearchV2(input: ListExploreRecentSearchInputV2!): [String!]
+  listStaffsSortByConnectionCount(gsiHash: String, limit: Int, sortDirection: ModelSortDirection): ModelStaffLeaderboardConnection @function(name: "sitwithmeLeaderboard-${env}")
+    @deprecated(reason: "use explorePosts instead")
+  listProfilesSortByConnectionCount(gsiHash: String, limit: Int, sortDirection: ModelSortDirection): ModelProfileLeaderboardConnection @function(name: "sitwithmeLeaderboard-${env}")
+  searchStaffProfile(filter: SearchStaffProfileInput!, limit: Int, offset: Int): ModelSearchStaffProfileConnection @function(name: "sitwithmeExplore-${env}")
+
+  # message
+  getConversation(input: GetConversationInput!): Conversation
+  getConversationBySender(input: GetConversationBySenderInput!): Conversation
+  searchConversations(filter: SearchConversationsFilter!, limit: Int, offset: Int): SearchConversationsConnection
+  listRecipientSuggestions(filter: ListRecipientSuggestionFilter!): [ProfileConversation!]
+
+  # broadcast
+  listPatronsByBroadcastConversationID(input: ListPatronsByBroadcastConversationIDInput!): [Profile!] @function(name: "sitwithmeMessage-${env}")
+
+  # blocked profiles
+  listBlockedProfiles(filter: ListBlockedProfilesFilter!, limit: Int, nextToken: String): ModelListBlockedProfilesConnection
+
+  # notifications
+  listNotifications(filter: ListNotificationsFilter!, limit: Int, nextToken: String): ModelListNotificationsConnection
+  unreadNotificationsNumber(input: UnreadNotificationsNumberInput!): UnreadNotificationsNumber @function(name: "sitwithmeSWMNotification-${env}")
+  unreadNotificationsNumberV2(input: UnreadNotificationsNumberInput!): UnreadNotificationsNumber @function(name: "sitwithmeSWMNotification-${env}")
+  unreadNotificationsNumberV3(input: UnreadNotificationsNumberInput!): UnreadNotificationsNumber @function(name: "sitwithmeSWMNotification-${env}")
+
+  # admin
+  adminSearchUsers(filter: AdminSearchUsersFilter, limit: Int, nextToken: String): SearchableUserConnection
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+  listFollowingReports(filter: ListFollowingReportFilter!, limit: Int, nextToken: String): ListFollowingReportOutput @function(name: "sitwithmeReport-${env}")
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+
+  # validation
+  validateEmailSignup(input: AWSEmail!): Boolean
+    @auth(rules: [{ allow: public, provider: iam }])
+    @function(name: "sitwithmeUser-${env}")
+  validateUsernameSignup(input: String!): Boolean
+    @auth(rules: [{ allow: public, provider: iam }])
+    @function(name: "sitwithmeUser-${env}")
+  findCognitoUsernameByEmail(input: AWSEmail!): String
+    @auth(rules: [{ allow: public, provider: iam }])
+    @function(name: "sitwithmeUser-${env}")
+
+  validateUniqueEmail(input: AWSEmail!): Boolean
+    @function(name: "sitwithmeUser-${env}")
+  validateUniqueUsername(input: String!): Boolean
+    @function(name: "sitwithmeUser-${env}")
+
+  listUserNotes(filter: ListUserNotesFilter!, limit: Int, nextToken: String): ModelListUserNotesConnection
+  createNote(input: CreateUserNoteInput!): UserNote @function(name: "sitwithmeUserNote-${env}")
+  updateNote(input: UpdateUserNoteInput!): UserNote @function(name: "sitwithmeUserNote-${env}")
+  deleteNote(id: ID!): Boolean @function(name: "sitwithmeUserNote-${env}")
+}

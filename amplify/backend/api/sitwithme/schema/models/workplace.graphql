@@ -1,0 +1,149 @@
+type Workplace @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+) @key(name: "byProfile", fields: ["profileID"])
+@key(name: "byProfileSortByCreatedAt", fields: ["profileID", "createdAt"])
+@key(name: "byYelpBusinessID", fields: ["yelpBusinessID"]) {
+  id: ID!
+  name: String!
+  yelpBusinessID: String!
+  location: Location!
+  fullAddress: String!
+  profileID: ID!
+  profile: Profile @connection(fields: ["profileID"])
+  yelpCategories: [YelpCategory!]!
+  price: Int!
+  reviewCount: Int!
+  imageUrl: AWSURL
+  rating: Float
+  createdAt: AWSDateTime!
+  shifts: [Shift!] @connection(keyName: "byWorkplaceID", fields: ["id"])
+}
+
+type YelpCategory {
+  title: String!
+  alias: String!
+}
+
+type WorkplaceLocation {
+  latitude: Float
+  longitude: Float
+}
+
+input CreateWorkplaceInput {
+  name: String!
+  yelpBusinessID: String!
+  location: LocationInput!
+  fullAddress: String!
+}
+
+input SearchYelpBusinessesInput {
+  location: LocationInput!
+  keyword: String!
+}
+
+type YelpBusiness {
+  name: String!
+  id: String!
+  fullAddress: String!
+  location: WorkplaceLocation!
+}
+
+type YelpBusinessConnection {
+  items: [YelpBusiness!]!
+  hasNext: Boolean!
+}
+
+# @deprecated(reason: "Use VenueFavoriteV2 instead. Removed when no users using app v1.0.7")
+type VenueFavorite @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byProfileSortByYelpBusinessID", fields: ["profileID", "yelpBusinessID"])
+@searchable
+{
+  id: ID!
+  yelpBusinessID: ID!
+  venue: Venue!
+  profileID: ID!
+}
+
+type VenueFavoriteV2 @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["profileID", "yelpBusinessID"])
+@key(name: "byYelpBusinessID", fields: ["yelpBusinessID"])
+@searchable
+{
+  yelpBusinessID: ID!
+  venue: Venue!
+  profileID: ID!
+}
+
+type Venue {
+  yelpBusinessID: ID!
+  name: String!
+  location: WorkplaceLocation!
+  fullAddress: String!
+  yelpCategories: [YelpCategory!]!
+  price: Int!
+  reviewCount: Int!
+  imageUrl: AWSURL
+  rating: Float
+  profiles: [Profile!] @function(name: "sitwithmeShift-${env}")
+  favorited: Boolean!
+    @deprecated(reason: "Use favoritedV2 instead. Removed when no users using app v1.0.7")
+  favoritedV2: Boolean!
+}
+
+input VenueDetailInput {
+  yelpBusinessID: ID!
+}
+
+type ModelExploreVenuesConnection {
+  items: [Venue!]!
+  offset: Int
+  hasNext: Boolean!
+  nextToken: String
+}
+
+input exploreVenuesInput {
+  keyword: String
+  jobType: [String!]
+  duty: [Boolean!]
+  geoLocation: ExploreGeoLocation!
+  price: [Int!]
+  cuisine: [String!]
+}
+
+type Category {
+  title: String!
+  alias: String!
+  subCategories: [SubCategory!]
+}
+
+type SubCategory {
+  title: String!
+  alias: String!
+  subCategories: [SubCategory!]
+}
+
+type SearchVenueFavoritesConnection {
+  items: [VenueFavorite!]!
+  hasNext: Boolean!
+  offset: Int
+}
+
+input SearchVenueFavoritesFilter {
+  term: String
+}
+
+type SearchVenueFavoritesV2Connection {
+  items: [VenueFavoriteV2!]!
+  hasNext: Boolean!
+  offset: Int
+}

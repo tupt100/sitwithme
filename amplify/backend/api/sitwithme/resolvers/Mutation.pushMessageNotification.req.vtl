@@ -1,0 +1,10 @@
+#set ($notification = $ctx.args.input)
+
+## Default value for notification
+## $util.qr($notification.put("read", false))
+## $util.qr($notification.put("updatedAt", $notification.createdAt))
+
+{
+  "version": "2018-05-29",
+  "payload": $utils.toJson($notification)
+}

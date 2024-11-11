@@ -1,0 +1,27 @@
+#set($patronProfile = $ctx.stash.get("patronProfile"))
+#if($patronProfile)
+  #set($profileID = $patronProfile.id)
+#else
+  #return({
+    "items": []
+  })
+#end
+
+#set( $query = {
+  "expression": "#profileID = :profileID AND #yelpBusinessID = :yelpBusinessID",
+  "expressionNames": {
+      "#profileID": "profileID",
+      "#yelpBusinessID": "yelpBusinessID"
+  },
+  "expressionValues": {
+      ":profileID": $util.dynamodb.toDynamoDB($profileID),
+      ":yelpBusinessID": $util.dynamodb.toDynamoDB($ctx.stash.get("yelpBusinessID"))
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byProfileSortByYelpBusinessID"
+}

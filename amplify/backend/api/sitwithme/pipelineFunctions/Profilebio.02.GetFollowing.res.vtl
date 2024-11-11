@@ -1,0 +1,10 @@
+#if( $ctx.error )
+$util.error($ctx.error.message, $ctx.error.type)
+#else
+
+#if($ctx.result && $ctx.result.confirmedAt)
+  $util.qr($ctx.stash.put("bio", $ctx.source.bio))
+#end
+
+$util.toJson($ctx.result)
+#end

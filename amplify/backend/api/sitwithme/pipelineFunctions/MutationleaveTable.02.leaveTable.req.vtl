@@ -1,0 +1,15 @@
+## Call MutationleaveTable.01.getFollowing.req.vtl and MutationleaveTable.01.getFollowing.res.vtl
+
+#set($following = $ctx.stash.get("following"))
+#if(!$following)
+  $util.error("The connection is invalid", "BAD_REQUEST")
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($following.staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($following.patronID)
+  }
+}

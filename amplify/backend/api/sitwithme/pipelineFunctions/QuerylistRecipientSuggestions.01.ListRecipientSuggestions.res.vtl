@@ -1,0 +1,6 @@
+#set( $es_items = [] )
+#foreach( $entry in $context.result.hits.hits )
+  $util.qr($es_items.add($entry.get("_source")))
+#end
+
+$util.toJson($es_items)

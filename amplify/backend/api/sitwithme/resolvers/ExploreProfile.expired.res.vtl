@@ -1,0 +1,13 @@
+#set($endDate = 0)
+#set($now = $util.time.nowEpochMilliSeconds())
+#set($exploreProfile = $ctx.source)
+
+#if($exploreProfile.endDate)
+  #set($endDate = $util.time.parseISO8601ToEpochMilliSeconds($exploreProfile.endDate))
+#end
+
+#if($endDate != 0 && $endDate < $now)
+  $util.toJson(true)
+#else
+  $util.toJson(false)
+#end

@@ -1,0 +1,39 @@
+{
+  "Records": [
+    {
+      "eventName": "INSERT",
+      "dynamodb": {
+        "NewImage":{
+          "__typename": {
+              "S": "ReportedProfile"
+          },
+          "content": {
+              "M": {
+                  "type": {
+                      "S": "HATEFUL_OR_ABUSIVE"
+                  }
+              }
+          },
+          "createdAt": {
+              "S": "2021-09-16T14:48:12.831Z"
+          },
+          "id": {
+              "S": "b7d17554-6159-47c0-b5da-e8686c925c57"
+          },
+          "profileID": {
+              "S": "64824dbb-f417-4b34-af7f-9ae59356f8d5"
+          },
+          "reportedProfileID": {
+              "S": "568a6bb3-52d2-4fd7-8cd6-96adb7c74a8d"
+          },
+          "type": {
+              "S": "INAPPROPRIATE"
+          },
+          "updatedAt": {
+              "S": "2021-09-16T14:48:12.831Z"
+          }
+        }
+      }
+    }
+  ]
+}

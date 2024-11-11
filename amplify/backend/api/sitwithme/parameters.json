@@ -1,0 +1,11 @@
+{
+  "AppSyncApiName": "sitwithme",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authsitwithme",
+      "Outputs.UserPoolId"
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+    "Records": [
+        {
+            "eventID": "80d7d8fade6c63dde69c4af4e3b7f9c1",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1628240009,
+                "Keys": {
+                    "id": {
+                        "S": "308e3f0f-afae-48d2-9f89-a20920726691"
+                    }
+                },
+                "NewImage": {
+                  "__typename": {
+                      "S": "ProfileConversation"
+                  },
+                  "conversationID": {
+                      "S": "0d6b0044-4709-4826-a007-bcb821e52cb3"
+                  },
+                  "conversationType": {
+                      "S": "NORMAL"
+                  },
+                  "createdAt": {
+                      "S": "2021-09-03T09:15:29.812Z"
+                  },
+                  "hide": {
+                      "BOOL": true
+                  },
+                  "ignore": {
+                      "BOOL": false
+                  },
+                  "muteUntil": {
+                      "S": "2021-09-03T09:15:29.812Z"
+                  },
+                  "profileID": {
+                      "S": "62967513-9535-4cb9-9adc-0e81c15b4fd6"
+                  },
+                  "read": {
+                      "BOOL": true
+                  },
+                  "recipientConnection": {
+                      "M": {
+                          "firstName": {
+                              "S": "vuong1"
+                          },
+                          "lastName": {
+                              "S": "vuong1"
+                          },
+                          "userName": {
+                              "S": "vuongnguyenduy"
+                          }
+                      }
+                  },
+                  "recipientUserID": {
+                      "S": "d43775b0-a138-432d-89bd-4c5c18bcd887"
+                  },
+                  "totalMessage": {
+                      "N": "14"
+                  },
+                  "updatedAt": {
+                      "S": "2021-09-06T16:50:44.353Z"
+                  }
+              },
+                "OldImage": {
+                  "__typename": {
+                      "S": "ProfileConversation"
+                  },
+                  "conversationID": {
+                      "S": "0d6b0044-4709-4826-a007-bcb821e52cb3"
+                  },
+                  "conversationType": {
+                      "S": "NORMAL"
+                  },
+                  "createdAt": {
+                      "S": "2021-09-03T09:15:29.812Z"
+                  },
+                  "hide": {
+                      "BOOL": false
+                  },
+                  "ignore": {
+                      "BOOL": false
+                  },
+                  "muteUntil": {
+                      "S": "2021-09-03T09:15:29.812Z"
+                  },
+                  "profileID": {
+                      "S": "62967513-9535-4cb9-9adc-0e81c15b4fd6"
+                  },
+                  "read": {
+                      "BOOL": true
+                  },
+                  "recipientConnection": {
+                      "M": {
+                          "firstName": {
+                              "S": "vuong1"
+                          },
+                          "lastName": {
+                              "S": "vuong1"
+                          },
+                          "userName": {
+                              "S": "vuongnguyenduy"
+                          }
+                      }
+                  },
+                  "recipientUserID": {
+                      "S": "d43775b0-a138-432d-89bd-4c5c18bcd887"
+                  },
+                  "totalMessage": {
+                      "N": "14"
+                  },
+                  "updatedAt": {
+                      "S": "2021-09-06T16:50:44.353Z"
+                  }
+              },
+                "SequenceNumber": "146451300000000009409180201",
+                "SizeBytes": 520,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:937833379153:table/Shift-k6mw73tsx5cjppsd7cx3oi2yx4-dev/stream/2021-07-06T10:23:20.865"
+        }
+    ]
+}

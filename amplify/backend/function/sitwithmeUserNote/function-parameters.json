@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "storage": {
+      "Profile:@model(appsync)": [
+        "read"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ],
+      "UserNote:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

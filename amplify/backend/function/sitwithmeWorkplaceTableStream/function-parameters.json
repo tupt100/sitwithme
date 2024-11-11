@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "storage": {
+      "ExploreProfile:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Shift:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Workplace:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

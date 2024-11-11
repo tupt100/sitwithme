@@ -1,0 +1,6 @@
+{
+  "iotPrefix": "sitwithme",
+  "authRoleName": {
+    "Ref": "AuthRoleName"
+  }
+}

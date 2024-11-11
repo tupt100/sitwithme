@@ -1,0 +1,30 @@
+## Call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl
+## Call GetMessage.req.vtl and GetMessage.res.vtl
+## Call GetConversationByMessage.req.vtl and GetConversationByMessage.res.vtl
+
+#set($profile = $ctx.stash.get("profile"))
+#if(!$profile)
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+#set($profileID = $profile.id)
+
+#set($conversation = $ctx.stash.get("conversation"))
+#if(!$conversation)
+  $util.error("Conversation not found", "BAD_REQUEST")
+#end
+
+#set($blockedByProfileIDs = $util.defaultIfNull($conversation.blockedByProfileIDs, []))
+#if($blockedByProfileIDs.size() > 0)
+  $util.error("Conversation is blocked", "BAD_REQUEST")
+#end
+#set($message = $ctx.stash.get("message"))
+#set($messageReactionType = $ctx.stash.get("messageReactionType"))
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "messageID": $util.dynamodb.toDynamoDBJson($message.id),
+    "profileID#messageReactionType": $util.dynamodb.toDynamoDBJson("$profileID#$messageReactionType")
+  }
+}

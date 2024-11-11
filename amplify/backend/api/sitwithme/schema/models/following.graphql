@@ -1,0 +1,79 @@
+type Following @model(
+  mutations: null,
+  queries: null,
+  subscriptions: null
+)
+@key(fields: ["staffID", "patronID"])
+@key(name: "byPatronID", fields: ["patronID"])
+@searchable
+{
+  staffID: ID!
+  staffProfile: Profile @connection(fields: ["staffID"])
+  staffProfileConnection: FollowingProfileConnection
+
+  patronID: ID!
+  patronProfile: Profile @connection(fields: ["patronID"])
+  patronProfileConnection: FollowingProfileConnection
+
+  confirmedAt: AWSDateTime
+}
+
+input RequestSitWithMeInput {
+  staffID: ID!
+}
+
+input RequestSitWithMeInputV2 {
+  role: UserRole!
+  profileID: ID!
+}
+
+input AcceptSitWithMeRequestInput {
+  patronID: ID!
+}
+
+input AcceptSitWithMeRequestInputV2 {
+  role: UserRole!
+  profileID: ID!
+}
+
+input RejectSitWithMeRequestInput {
+  patronID: ID!
+}
+
+input RejectSitWithMeRequestInputV2 {
+  role: UserRole!
+  profileID: ID!
+}
+
+input LeaveTableInput {
+  profileID: ID!
+}
+
+input SearchProfilesFollowingFilter {
+  term: String
+  role: UserRole!
+}
+
+type SearchProfilesFollowingConnection {
+  items: [Following!]!
+  hasNext: Boolean!
+  offset: Int
+}
+
+type FollowingProfileConnection {
+  userName: String!
+  firstName: String!
+  lastName: String!
+}
+
+input NotifyLeaveTableInput {
+  recipientProfileID: ID!
+  leaveTableProfileID: ID!
+  totalSittingWith: Int!
+}
+
+type LeaveTableNotification @aws_iam @aws_cognito_user_pools {
+  recipientProfileID: ID!
+  leaveTableProfileID: ID!
+  totalSittingWith: Int!
+}

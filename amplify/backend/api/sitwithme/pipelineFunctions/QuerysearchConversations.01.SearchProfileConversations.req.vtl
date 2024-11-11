@@ -1,0 +1,106 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set( $indexPath = "/profileconversation/doc/_search" )
+
+#set( $sortDirection = "desc" )
+#set( $sortField = $util.toJson("lastMessageAt") )
+
+#set($term = $ctx.stash.get('term'))
+#if(!$util.isNullOrBlank($term))
+  #set($queryStr = "*" + $term + "*")
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "GET",
+  "path": "$indexPath",
+  "params": {
+      "body":     {
+                #if( $context.args.nextToken )"search_after": [$util.toJson($context.args.nextToken)], #end
+                #if( $context.args.offset )"from": $context.args.offset, #end
+                "size": #if( $context.args.limit ) $context.args.limit #else 100 #end,
+                "sort": [{$sortField: { "order" : $util.toJson($sortDirection) }}],
+                "version": false,
+                "query":
+{
+  "bool": {
+    "must": [
+      {
+        "script": {
+          "script": {
+            "inline": "doc['lastMessageAt'].value.getMillis() >= (doc.containsKey('deletedAt') ? doc['deletedAt'].value.getMillis() : 0)"
+          }
+        }
+      },
+      {
+        "term": {
+          "profileID.keyword": $util.toJson($profile.id)
+        }
+      }
+      #if($queryStr)
+      ,
+      {
+        "query_string": {
+          "query": $util.toJson($queryStr),
+          "fields": ["recipientConnection.firstName", "recipientConnection.lastName", "broadcastName"]
+        }
+      }
+      #end
+    ],
+    "must_not": [
+      {
+        "term": {
+          "hide": $util.toJson(true)
+        }
+      },
+      {
+        "term": {
+          "recipientConnection.deleted": $util.toJson(true)
+        }
+      }
+      #if(!$queryStr)
+      ,
+      {
+        "term": {
+          "ignore": $util.toJson(true)
+        }
+      }
+      #end
+    ],
+    "minimum_should_match": 1,
+    "should": [
+      {
+        "bool": {
+          "must": [
+            {
+              "term": {
+                "conversationType.keyword": "NORMAL"
+              }
+            },
+            {
+              "range": {
+                "totalMessage": { "gt": 0 }
+              }
+            }
+          ]
+        }
+      }
+      #if($profile.role == "STAFF")
+      ,
+      {
+        "term": {
+          "conversationType.keyword": "BROADCAST"
+        }
+      }
+      #end
+    ]
+  }
+}
+                }
+  }
+}

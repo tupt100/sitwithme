@@ -1,0 +1,27 @@
+## call ListProfileNormalConversations.req.vtl and ListProfileNormalConversations.res.vtl
+
+#set($profileConversations = $ctx.stash.get('profileConversations'))
+#if(!$profileConversations || $profileConversations.isEmpty())
+  #return
+#end
+
+#set($recipientProfile = $ctx.stash.get('profile'))
+#if(!$recipientProfile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set( $query = {
+  "expression": "#profileID = :profileID",
+  "expressionNames": {
+      "#profileID": "profileID"
+  },
+  "expressionValues": {
+      ":profileID": $util.dynamodb.toDynamoDB($recipientProfile.id)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query)
+}

@@ -1,0 +1,52 @@
+## Call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl
+## Call GetMessage.req.vtl and GetMessage.res.vtl
+## Call GetConversationByMessage.req.vtl and GetConversationByMessage.res.vtl
+## Call MutationsendMessageReaction.01.GetProfileConversation.req.vtl and MutationsendMessageReaction.01.GetProfileConversation.res.vtl
+
+#set($profile = $ctx.stash.get("profile"))
+#if(!$profile)
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+#set($profileID = $profile.id)
+
+#set($profileConversation = $ctx.stash.get("profileConversation"))
+#if(!$profileConversation)
+  $util.unauthorized()
+#end
+
+#set($conversation = $ctx.stash.get("conversation"))
+#if(!$conversation)
+  $util.error("Conversation not found", "BAD_REQUEST")
+#end
+
+#set($blockedByProfileIDs = $util.defaultIfNull($conversation.blockedByProfileIDs, []))
+#if($blockedByProfileIDs.size() > 0)
+  $util.error("Conversation is blocked", "BAD_REQUEST")
+#end
+
+#set($message = $ctx.stash.get("message"))
+#if($message.senderProfileID == $profileID)
+  $util.error("You cannot react to your message", "BAD_REQUEST")
+#end
+
+#set($messageReactionType = $ctx.stash.get("messageReactionType"))
+#set($createdAt = $util.time.nowISO8601())
+
+#set($attr = {
+  "__typename": "MessageReaction",
+  "messageID": $message.id,
+  "profileID": $profileID,
+  "messageReactionType": $messageReactionType,
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "messageID": $util.dynamodb.toDynamoDBJson($message.id),
+    "profileID#messageReactionType": $util.dynamodb.toDynamoDBJson("$profileID#$messageReactionType")
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

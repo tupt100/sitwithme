@@ -1,0 +1,32 @@
+## GetProfileByUser.req.vtl
+## FollowingGetReceipientProfile.req.vtl
+
+#set($profile = $ctx.stash.get("profile"))
+#set($profileID = $profile.id)
+#set($receipientProfile = $ctx.stash.get("receipientProfile"))
+#set($receipientProfileID = $receipientProfile.id)
+
+#if(!$profile)
+  $util.error("Your profile not found", "BAD_REQUEST")
+#end
+
+#if(!$receipientProfile)
+  $util.error("Receipient's profile not found", "BAD_REQUEST")
+#end
+
+#if($profile.role == "STAFF")
+  #set($staffID = $profileID)
+  #set($patronID = $receipientProfileID)
+#else
+  #set($staffID = $receipientProfileID)
+  #set($patronID = $profileID)
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  }
+}

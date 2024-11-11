@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  env:
+    Type: String
+  iotPrefix:
+    Type: String
+  functionsitwithmePresenceArn:
+    Type: String
+  authRoleName:
+    Type: String
+
+Resources:
+  IoTPolicy:
+    Type: AWS::IoT::Policy
+    Properties:
+      PolicyName: !Sub ${iotPrefix}-${env}-connection-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iot:Connect
+              - iot:Subscribe
+            Resource:
+              - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:*'
+
+  CognitoIdentityPoolAuthPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub ${iotPrefix}-${env}-iot-cognito-authrole-policy
+      Roles:
+        - !Ref authRoleName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iot:Connect
+              - iot:Subscribe
+            Resource:
+              - !Sub 'arn:aws:iot:${AWS::Region}:${AWS::AccountId}:*'
+
+  ConnectTopicRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+      RuleName: !Sub ${iotPrefix}_connect_${env}
+      TopicRulePayload:
+        RuleDisabled: false
+        AwsIotSqlVersion: '2016-03-23'
+        Sql: !Sub SELECT * FROM '$aws/events/presence/connected/#' WHERE startswith(clientId, "${env}") = true
+        Actions:
+          - Lambda:
+              FunctionArn: !Ref functionsitwithmePresenceArn
+        ErrorAction:
+          Lambda:
+            FunctionArn: !Ref functionsitwithmePresenceArn
+
+  DisconnectTopicRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+      RuleName: !Sub ${iotPrefix}_disconnect_${env}
+      TopicRulePayload:
+        RuleDisabled: false
+        AwsIotSqlVersion: '2016-03-23'
+        Sql: !Sub SELECT * FROM '$aws/events/presence/disconnected/#' WHERE startswith(clientId, "${env}") = true
+        Actions:
+          - Lambda:
+              FunctionArn: !Ref functionsitwithmePresenceArn
+        ErrorAction:
+          Lambda:
+            FunctionArn: !Ref functionsitwithmePresenceArn
+
+  IoTLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Principal: iot.amazonaws.com
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref functionsitwithmePresenceArn

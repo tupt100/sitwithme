@@ -1,0 +1,16 @@
+#set($userID = $ctx.identity.claims["custom:id"])
+
+#if(!$userID)
+  $utils.unauthorized()
+#end
+
+#set($auth = false)
+#if($userID == $ctx.args.userID || $userID == $ctx.args.recipientUserID)
+  #set($auth = true)
+#end
+
+#if(!$auth)
+  $utils.unauthorized()
+#else
+  null
+#end

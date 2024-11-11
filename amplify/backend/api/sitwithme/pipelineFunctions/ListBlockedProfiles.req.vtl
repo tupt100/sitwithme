@@ -1,0 +1,33 @@
+## GetProfileByUser.req.vtl vs GetProfileByUser.res.vtl
+
+#set( $modelQueryExpression = {} )
+#set( $profile = $ctx.stash.get("profile") )
+#if( !$util.isNull($profile) )
+  #set( $modelQueryExpression.expression = "#profileID = :profileID" )
+  #set( $modelQueryExpression.expressionNames = { "#profileID": "profileID" } )
+  #set( $modelQueryExpression.expressionValues = {
+  ":profileID": {
+      "S": $profile.id
+  }
+} )
+#else
+  #return({
+    "items": []
+  })
+#end
+
+#set( $limit = $util.defaultIfNull($context.args.limit, 10) )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "limit": $limit,
+  "query": $util.toJson($modelQueryExpression),
+  "index": "byProfileIDSortByCreatedAt",
+  "scanIndexForward": false,
+  "nextToken": #if( $context.args.nextToken )
+    $util.toJson($context.args.nextToken)
+  #else
+    null
+  #end
+}

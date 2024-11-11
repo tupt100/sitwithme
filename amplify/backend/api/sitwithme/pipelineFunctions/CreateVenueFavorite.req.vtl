@@ -1,0 +1,28 @@
+#set($venueFavorite = $ctx.stash.get("venueFavorite"))
+#if($venueFavorite)
+  $util.error("You already favorited this Venue", "BAD_REQUEST")
+#end
+
+#set($patronProfile = $ctx.stash.get("patronProfile"))
+
+#set($id = $util.autoId())
+#set($profileID = $patronProfile.id)
+#set($yelpBusinessID = $ctx.stash.get("yelpBusinessID"))
+#set( $createdAt = $util.time.nowISO8601() )
+
+#set($attr = {
+  "profileID": $profileID,
+  "yelpBusinessID": $yelpBusinessID,
+  "__typename": "VenueFavorite",
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($id)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

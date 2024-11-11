@@ -1,0 +1,34 @@
+#set($userID = $ctx.stash.get("userID"))
+#set($role = $ctx.stash.get("role"))
+
+#if(!$userID || !$role)
+  #return
+#end
+
+#set( $query = {
+  "expression": "#userID = :userID",
+  "expressionNames": {
+      "#userID": "userID"
+  },
+  "expressionValues": {
+      ":userID": $util.dynamodb.toDynamoDB($ctx.stash.get("userID"))
+  }
+} )
+
+#set( $filter = {
+  "expression" : "#role = :role",
+  "expressionNames": {
+      "#role": "role"
+  },
+  "expressionValues": {
+      ":role": $util.dynamodb.toDynamoDB($ctx.stash.get('role'))
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "filter": $util.toJson($filter),
+  "index": "byUser"
+}

@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/webhooks/apple-iap",
+      "lambdaFunction": "sitwithmeWebhookAppleIAP",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/webhooks/apple-iap"
+    }
+  ],
+  "resourceName": "rest",
+  "apiName": "rest",
+  "functionArns": [
+    {
+      "lambdaFunction": "sitwithmeWebhookAppleIAP"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-sitwithme-dev-141257-authRole",
+    "unAuthRoleName": "amplify-sitwithme-dev-141257-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "sitwithmeWebhookAppleIAP",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

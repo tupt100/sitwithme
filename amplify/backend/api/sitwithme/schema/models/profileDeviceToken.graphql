@@ -1,0 +1,20 @@
+type ProfileDeviceToken @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["profileID", "deviceToken"])
+{
+  profileID: ID!
+  deviceToken: String!
+}
+
+input CreateProfileDeviceTokenInput {
+  role: UserRole!
+  deviceToken: String!
+}
+
+input DeleteProfileDeviceTokenInput {
+  role: UserRole!
+  deviceToken: String!
+}

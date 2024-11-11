@@ -1,0 +1,25 @@
+## call ConversationAuth.req.vtl and ConversationAuth.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($conversationID = $ctx.stash.get("conversationID"))
+
+#set($update = {
+  "expression": "SET #read = :read",
+  "expressionNames": { "#read": "read" },
+  "expressionValues": { ":read": $util.dynamodb.toDynamoDB(false) }
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "conversationID": $util.dynamodb.toDynamoDBJson($conversationID)
+  },
+  "update": $util.toJson($update)
+}

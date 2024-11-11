@@ -1,0 +1,21 @@
+type UserDeviceToken @model(
+  queries: null,
+  mutations: {
+    create: "createUserDeviceToken"
+  },
+  subscriptions: null
+)
+@key(fields: ["userID", "deviceToken"])
+@key(name: "byDeviceToken", fields: ["deviceToken", "userID"])
+{
+  userID: ID!
+  deviceToken: String!
+}
+
+input CreateUserDeviceTokenInput {
+  deviceToken: String!
+}
+
+input DeleteUserDeviceTokenInput {
+  deviceToken: String!
+}

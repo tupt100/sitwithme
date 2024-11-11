@@ -1,0 +1,31 @@
+{
+  "features": {
+    "graphQLTransformer": {
+      "addMissingOwnerFields": true,
+      "validateTypeNameReservedWords": true,
+      "useExperimentalPipelinedTransformer": false,
+      "enableIterativeGsiUpdates": true,
+      "secondaryKeyAsGSI": true
+    },
+    "frontend-ios": {
+      "enableXcodeIntegration": true
+    },
+    "auth": {
+      "enableCaseInsensitivity": true,
+      "useInclusiveTerminology": true,
+      "breakCircularDependency": true
+    },
+    "codegen": {
+      "useAppsyncModelgenPlugin": true,
+      "useDocsGeneratorPlugin": true,
+      "useTypesGeneratorPlugin": true,
+      "cleanGeneratedModelsDirectory": true,
+      "retainCaseStyle": true,
+      "addTimestampFields": true,
+      "handleListNullabilityTransparently": true
+    },
+    "appsync": {
+      "generateGraphQLPermissions": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get("profile"))
+#set($profileID = $profile.id)
+#set($blockedProfileID = $ctx.stash.get("profileID"))
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "blockedProfileID": $util.dynamodb.toDynamoDBJson($blockedProfileID)
+  }
+}

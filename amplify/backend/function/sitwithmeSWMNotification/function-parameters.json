@@ -1,0 +1,18 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "ProfileConversation:@model(appsync)": [
+        "read"
+      ],
+      "SWMNotification:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Profile:@model(appsync)": [
+        "read"
+      ]
+    }
+  }
+}

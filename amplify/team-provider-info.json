@@ -1,0 +1,370 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sitwithme-dev-141257-authRole",
+      "UnauthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithme-dev-141257-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithme-dev-141257-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+      "UnauthRoleName": "amplify-sitwithme-dev-141257-unauthRole",
+      "StackName": "amplify-sitwithme-dev-141257",
+      "StackId": "arn:aws:cloudformation:us-east-2:937833379153:stack/amplify-sitwithme-dev-141257/48735550-d329-11eb-915b-065dd0e1ec7c",
+      "AmplifyAppId": "d10z8aa9yi32g8"
+    },
+    "categories": {
+      "function": {
+        "sitwithmePostAuthentication": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePostAuthentication-5957424654687a493950-build.zip"
+        },
+        "sitwithmePostConfirmation": {
+          "GROUP": "user",
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePostConfirmation-31415a6d57504a6f6e76-build.zip"
+        },
+        "sitwithmePreSignup": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePreSignup-7343512f51506b42344a-build.zip",
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeCustomMessage": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeCustomMessage-484f70666b77496b4357-build.zip"
+        },
+        "sitwithmePreTokenGeneration": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePreTokenGeneration-38596a58594c5a37476a-build.zip"
+        },
+        "sitwithmeUser": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeUser-39324968616a4b706b79-build.zip",
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8",
+          "pinpointAppId": "9971b9f23c4b4165ab43fccbaf2557b1"
+        },
+        "sitwithmeOnboarding": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeOnboarding-343267767a625970536b-build.zip"
+        },
+        "sitwithmeProfile": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeProfile-4d454451674766773751-build.zip"
+        },
+        "sitwithmeImageResize": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeImageResize-36493734595a6d756c54-build.zip"
+        },
+        "sitwithmeShift": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeShift-624b574e4356424f5348-build.zip"
+        },
+        "sitwithmeWorkplace": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeWorkplace-357a4d542f6864456c30-build.zip"
+        },
+        "sitwithmeMigration": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeMigration-46682b4f4c6464324745-build.zip"
+        },
+        "sitwithmeExplore": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeExplore-4a6a6c4e634e4f62372f-build.zip"
+        },
+        "sitwithmeWorkplaceTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeWorkplaceTableStream-5632796b472f4d696d36-build.zip"
+        },
+        "sitwithmeFollowingTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeFollowingTableStream-324e6c5a6e6551735665-build.zip"
+        },
+        "sitwithmeProfileTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeProfileTableStream-49635263576263446345-build.zip"
+        },
+        "sitwithmeAlarm": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeAlarm-4d4d7470674e5a556936-build.zip"
+        },
+        "sitwithmeDevelopmentUtil": {},
+        "sitwithmeShiftTableStream": {},
+        "sitwithmeSQSAlarmPatron": {},
+        "sitwithmeSQSAlarmStaff": {},
+        "sitwithmeExploreProfileDailySyncUpDuty": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeExploreProfileDailySyncUpDuty-7749596e38584f517456-build.zip"
+        },
+        "sitwithmeMessage": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeMessage-77664c4c6a692f377150-build.zip"
+        },
+        "sitwithmeMessageTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeMessageTableStream-7732344c50504837784b-build.zip"
+        },
+        "sitwithmeUserTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeUserTableStream-583257666954307a7253-build.zip"
+        },
+        "sitwithmeJobTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeJobTableStream-7861666f464841477162-build.zip"
+        },
+        "sitwithmePushNotification": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePushNotification-565375325857514f342b-build.zip"
+        },
+        "sitwithmeSWMNotificationTableStream": {
+          "pinpointAppId": "9971b9f23c4b4165ab43fccbaf2557b1",
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeSWMNotificationTableStream-4c486344352b305a3959-build.zip"
+        },
+        "sitwithmePresence": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePresence-32756b41585452535757-build.zip"
+        },
+        "sitwithmeSQSBroadcast": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeSQSBroadcast-7a6a7937576844645166-build.zip"
+        },
+        "sitwithmeSQSDisconnect": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeSQSDisconnect-3234624f6530547a5133-build.zip"
+        },
+        "sitwithmePost": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmePost-4e4e732f706d2b336641-build.zip"
+        },
+        "sitwithmeConversationTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeConversationTableStream-434b454f566c354a7079-build.zip"
+        },
+        "sitwithmeProfileConversationTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeProfileConversationTableStream-5a5261306a456a446b6d-build.zip"
+        },
+        "sitwithmeBlockedProfileTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeBlockedProfileTableStream-5a45457433793162437a-build.zip"
+        },
+        "sitwithmeReportedProfileTableStream": {
+          "pinpointAppId": "9971b9f23c4b4165ab43fccbaf2557b1",
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeReportedProfileTableStream-6168704f4665465a4353-build.zip"
+        },
+        "sitwithmeTransaction": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8",
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeTransaction-63556b61726e54783633-build.zip"
+        },
+        "sitwithmeWebhookAppleIAP": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8",
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeWebhookAppleIAP-654f4e725766716a3177-build.zip"
+        },
+        "sitwithmeSWMNotification": {},
+        "sitwithmeSQSWebhookIAPSubscription": {},
+        "sitwithmeSQSWebhookIAPSubscriptionDLQ": {
+          "pinpointAppId": "9971b9f23c4b4165ab43fccbaf2557b1"
+        },
+        "sitwithmeSQSAlarmIAP": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeSQSAlarmIAP-473644444b4c74764144-build.zip"
+        },
+        "sitwithmeProfileSubscriptionTableStream": {
+          "deploymentBucketName": "amplify-sitwithme-dev-141257-deployment",
+          "s3Key": "amplify-builds/sitwithmeProfileSubscriptionTableStream-784867582b564f376459-build.zip"
+        },
+        "sitwithmeLeaderboard": {},
+        "sitwithmeSNSYelpVenueSync": {},
+        "sitwithmeStaffLeaderboardTableStream": {}
+      },
+      "auth": {
+        "sitwithme": {}
+      },
+      "api": {
+        "sitwithme": {
+          "ElasticSearchInstanceCount": 2
+        }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "sitwithme-dev",
+          "Id": "9971b9f23c4b4165ab43fccbaf2557b1",
+          "Region": "us-east-1"
+        }
+      },
+      "video": {
+        "sitwithmeVOD": {
+          "s3UUID": "06cs4ya0"
+        }
+      }
+    }
+  },
+  "stag": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sitwithme-stag-141423-authRole",
+      "UnauthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithme-stag-141423-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithme-stag-141423-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-sitwithme-stag-141423-deployment",
+      "UnauthRoleName": "amplify-sitwithme-stag-141423-unauthRole",
+      "StackName": "amplify-sitwithme-stag-141423",
+      "StackId": "arn:aws:cloudformation:us-east-2:937833379153:stack/amplify-sitwithme-stag-141423/d81a1c70-d7e3-11eb-9545-0aed204647fe",
+      "AmplifyAppId": "d10z8aa9yi32g8"
+    },
+    "categories": {
+      "auth": {
+        "sitwithme": {}
+      },
+      "api": {
+        "sitwithme": {
+          "ElasticSearchInstanceCount": 2
+        }
+      },
+      "function": {
+        "sitwithmePostConfirmation": {
+          "GROUP": "user"
+        },
+        "sitwithmePostAuthentication": {
+          "deploymentBucketName": "amplify-sitwithme-stag-141423-deployment",
+          "s3Key": "amplify-builds/sitwithmePostAuthentication-5957424654687a493950-build.zip"
+        },
+        "sitwithmePreSignup": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeShiftTableStream": {},
+        "sitwithmeAlarm": {},
+        "sitwithmeSQSAlarmPatron": {},
+        "sitwithmeSQSAlarmStaff": {},
+        "sitwithmeCustomMessage": {},
+        "sitwithmePreTokenGeneration": {},
+        "sitwithmeUser": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8",
+          "pinpointAppId": "a1b8c803a3d44263b3d80290c4eeaa2a"
+        },
+        "sitwithmeOnboarding": {},
+        "sitwithmeProfile": {},
+        "sitwithmeShift": {},
+        "sitwithmeWorkplace": {},
+        "sitwithmeImageResize": {},
+        "sitwithmeMigration": {},
+        "sitwithmeExplore": {},
+        "sitwithmeWorkplaceTableStream": {},
+        "sitwithmeFollowingTableStream": {},
+        "sitwithmeProfileTableStream": {},
+        "sitwithmeVenueFavoriteTableStream": {},
+        "sitwithmeDevelopmentUtil": {},
+        "sitwithmeSWMNotificationTableStream": {
+          "pinpointAppId": "a1b8c803a3d44263b3d80290c4eeaa2a"
+        },
+        "sitwithmeExploreProfileDailySyncUpDuty": {},
+        "sitwithmeMessage": {},
+        "sitwithmeMessageTableStream": {},
+        "sitwithmePushNotification": {},
+        "sitwithmeUserTableStream": {},
+        "sitwithmeJobTableStream": {},
+        "sitwithmeSchedulePresenceTimeout": {},
+        "sitwithmeReportedProfileTableStream": {
+          "pinpointAppId": "a1b8c803a3d44263b3d80290c4eeaa2a"
+        },
+        "sitwithmePresence": {},
+        "sitwithmeSQSDisconnect": {},
+        "sitwithmePost": {},
+        "sitwithmeSQSBroadcast": {},
+        "sitwithmeConversationTableStream": {},
+        "sitwithmeProfileConversationTableStream": {},
+        "sitwithmeBlockedProfileTableStream": {},
+        "sitwithmeTransaction": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeWebhookAppleIAP": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeSWMNotification": {},
+        "sitwithmeSQSWebhookIAPSubscriptionDLQ": {
+          "pinpointAppId": "a1b8c803a3d44263b3d80290c4eeaa2a"
+        },
+        "sitwithmeSNSYelpVenueSync": {},
+        "sitwithmeSQSWebhookIAPSubscription": {},
+        "sitwithmeSQSAlarmIAP": {},
+        "sitwithmeProfileSubscriptionTableStream": {},
+        "sitwithmeLeaderboard": {}
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "sitwithme-stag",
+          "Id": "a1b8c803a3d44263b3d80290c4eeaa2a",
+          "Region": "us-east-1"
+        }
+      },
+      "video": {
+        "sitwithmeVOD": {
+          "s3UUID": "qwm594q44g4v"
+        }
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sitwithmebackend-prod-31416-authRole",
+      "UnauthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithmebackend-prod-31416-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::937833379153:role/amplify-sitwithmebackend-prod-31416-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-sitwithmebackend-prod-31416-deployment",
+      "UnauthRoleName": "amplify-sitwithmebackend-prod-31416-unauthRole",
+      "StackName": "amplify-sitwithmebackend-prod-31416",
+      "StackId": "arn:aws:cloudformation:us-east-2:937833379153:stack/amplify-sitwithmebackend-prod-31416/cdb8b590-360a-11ec-99e9-06e75a0db692",
+      "AmplifyAppId": "d10z8aa9yi32g8"
+    },
+    "categories": {
+      "auth": {
+        "sitwithme": {}
+      },
+      "api": {
+        "sitwithme": {
+          "ElasticSearchInstanceType": "m5.large.elasticsearch",
+          "ElasticSearchInstanceCount": 2
+        }
+      },
+      "function": {
+        "sitwithmePostConfirmation": {
+          "GROUP": "user"
+        },
+        "sitwithmePreSignup": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeUser": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8",
+          "pinpointAppId": "3a96300ba1824756b391d3252f4a6188"
+        },
+        "sitwithmeSWMNotificationTableStream": {
+          "pinpointAppId": "3a96300ba1824756b391d3252f4a6188"
+        },
+        "sitwithmeReportedProfileTableStream": {
+          "pinpointAppId": "3a96300ba1824756b391d3252f4a6188"
+        },
+        "sitwithmeSQSWebhookIAPSubscriptionDLQ": {
+          "pinpointAppId": "3a96300ba1824756b391d3252f4a6188"
+        },
+        "sitwithmeTransaction": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        },
+        "sitwithmeWebhookAppleIAP": {
+          "secretsPathAmplifyAppId": "d10z8aa9yi32g8"
+        }
+      },
+      "notifications": {
+        "Pinpoint": {
+          "Name": "sitwithme-prod",
+          "Id": "3a96300ba1824756b391d3252f4a6188",
+          "Region": "us-east-1"
+        }
+      },
+      "video": {
+        "sitwithmeVOD": {
+          "s3UUID": "oha5wo14k8uf"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+    "Records": [
+        {
+            "eventID": "80d7d8fade6c63dde69c4af4e3b7f9c1",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1628240009,
+                "Keys": {
+                    "id": {
+                        "S": "308e3f0f-afae-48d2-9f89-a20920726691"
+                    }
+                },
+                "NewImage": {
+                    "__typename": {
+                        "S": "Profile"
+                    },
+                    "completedAt": {
+                        "S": "2021-08-12T06:47:00.592Z"
+                    },
+                    "createdAt": {
+                        "S": "2021-08-12T05:22:21.298Z"
+                    },
+                    "id": {
+                        "S": "3695d755-95ed-4add-b73b-141f46f21e65"
+                    },
+                    "onboardingStep": {
+                        "S": "COMPLETED"
+                    },
+                    "role": {
+                        "S": "STAFF"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-12T06:47:00.634Z"
+                    },
+                    "userID": {
+                        "S": "d43775b0-a138-432d-89bd-4c5c18bcd886"
+                    },
+                    "avatarID": {
+                        "NULL": "true"
+                    }
+                },
+                "OldImage": {
+                    "__typename": {
+                        "S": "Profile"
+                    },
+                    "completedAt": {
+                        "S": "2021-08-12T06:47:00.592Z"
+                    },
+                    "createdAt": {
+                        "S": "2021-08-12T05:22:21.298Z"
+                    },
+                    "id": {
+                        "S": "3695d755-95ed-4add-b73b-141f46f21e65"
+                    },
+                    "onboardingStep": {
+                        "S": "COMPLETED"
+                    },
+                    "role": {
+                        "S": "STAFF"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-12T06:47:00.634Z"
+                    },
+                    "userID": {
+                        "S": "d43775b0-a138-432d-89bd-4c5c18bcd886"
+                    }
+                },
+                "SequenceNumber": "146451300000000009409180201",
+                "SizeBytes": 520,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:937833379153:table/Shift-k6mw73tsx5cjppsd7cx3oi2yx4-dev/stream/2021-07-06T10:23:20.865"
+        }
+    ]
+}

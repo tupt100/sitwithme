@@ -1,0 +1,34 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl
+## call MutationblockProfile.01.GetBlockedProfile.req.vtl and MutationblockProfile.01.GetBlockedProfile.res.vtl
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($blockedProfile = $ctx.stash.get('blockedProfile'))
+#if($blockedProfile)
+  $util.error('You already blocked this profile', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($blockedProfileID = $ctx.stash.get("profileID"))
+#set($createdAt = $util.time.nowISO8601())
+
+#set($attr = {
+  "__typename": "BlockedProfile",
+  "profileID": $profileID,
+  "blockedProfileID": $blockedProfileID,
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "blockedProfileID": $util.dynamodb.toDynamoDBJson($blockedProfileID)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

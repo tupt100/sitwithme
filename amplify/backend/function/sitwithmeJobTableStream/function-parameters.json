@@ -1,0 +1,11 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "ExploreProfile:@model(appsync)": [
+        "create",
+        "read"
+      ]
+    }
+  }
+}

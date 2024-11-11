@@ -1,0 +1,51 @@
+## GetProfileByUser.req.vtl
+## FollowingGetReceipientProfile.req.vtl
+## FollowingGetRequestSitWithMe.req.vtl
+
+#set($requestSitWithMe = $ctx.stash.get("requestSitWithMe"))
+#if($requestSitWithMe)
+  #if($requestSitWithMe.confirmedAt)
+    $util.error("You already accept the request", "BAD_REQUEST")
+  #end
+#else
+  $util.error("The connection is invalid", "BAD_REQUEST")
+#end
+
+#set($profile = $ctx.stash.get("profile"))
+#set($profileID = $profile.id)
+#set($receipientProfile = $ctx.stash.get("receipientProfile"))
+#set($receipientProfileID = $receipientProfile.id)
+
+#if($requestSitWithMe.requestedBy == $profileID)
+  $util.error("You cannot accept your sent request", "BAD_REQUEST")
+#end
+
+#if($profile.role == "STAFF")
+  #set($staffID = $profileID)
+  #set($patronID = $receipientProfileID)
+#else
+  #set($staffID = $receipientProfileID)
+  #set($patronID = $profileID)
+#end
+
+#set($now = $util.time.nowISO8601())
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($patronID)
+  },
+  "update": {
+    "expression": "SET #confirmedAt = :confirmedAt, #updatedAt = :updatedAt",
+    "expressionNames": {
+      "#confirmedAt": "confirmedAt",
+      "#updatedAt": "updatedAt"
+    },
+    "expressionValues": {
+      ":confirmedAt": $util.dynamodb.toDynamoDBJson($now),
+      ":updatedAt": $util.dynamodb.toDynamoDBJson($now)
+    }
+  }
+}

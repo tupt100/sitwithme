@@ -1,0 +1,9 @@
+#set($staffProfile = $ctx.stash.get("staffProfile"))
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($staffProfile.userID)
+  }
+}

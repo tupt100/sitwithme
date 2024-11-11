@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  sqsPrefix:
+    Type: String
+  snsalarmAlarmTopicArn:
+    Type: String
+
+Resources:
+  AlarmStaffQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-staff
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AlarmStaffDLQ.Arn
+        maxReceiveCount: 3
+
+  AlarmPatronQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-patron
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AlarmPatronDLQ.Arn
+        maxReceiveCount: 3
+
+  AlarmIAPQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-iap
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt AlarmIAPDLQ.Arn
+        maxReceiveCount: 3
+
+  AlarmStaffDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-staff-dlq
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+
+  AlarmPatronDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-patron-dlq
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+
+  AlarmIAPDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-alarm-iap-dlq
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+
+  AlarmStaffQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref AlarmStaffQueue
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: ["SQS:SendMessage"]
+            Principal:
+              AWS: '*'
+            Resource: !GetAtt AlarmStaffQueue.Arn
+            Condition:
+              ArnLike:
+                'aws:SourceArn': !Ref snsalarmAlarmTopicArn
+
+  AlarmPatronQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref AlarmPatronQueue
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: ["SQS:SendMessage"]
+            Principal:
+              AWS: '*'
+            Resource: !GetAtt AlarmPatronQueue.Arn
+            Condition:
+              ArnLike:
+                'aws:SourceArn': !Ref snsalarmAlarmTopicArn
+
+  AlarmIAPQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref AlarmIAPQueue
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: ["SQS:SendMessage"]
+            Principal:
+              AWS: '*'
+            Resource: !GetAtt AlarmIAPQueue.Arn
+            Condition:
+              ArnLike:
+                'aws:SourceArn': !Ref snsalarmAlarmTopicArn
+
+Outputs:
+  AlarmStaffQueueArn:
+    Value: !GetAtt AlarmStaffQueue.Arn
+  AlarmStaffQueueUrl:
+    Value: !Ref AlarmStaffQueue
+  AlarmPatronQueueArn:
+    Value: !GetAtt AlarmPatronQueue.Arn
+  AlarmPatronQueueUrl:
+    Value: !Ref AlarmPatronQueue
+  AlarmIAPQueueArn:
+    Value: !GetAtt AlarmIAPQueue.Arn
+  AlarmIAPQueueUrl:
+    Value: !Ref AlarmIAPQueue

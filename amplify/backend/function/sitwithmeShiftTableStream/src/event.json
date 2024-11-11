@@ -1,0 +1,104 @@
+{
+    "Records": [
+        {
+            "eventID": "80d7d8fade6c63dde69c4af4e3b7f9c1",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1628240009,
+                "Keys": {
+                    "id": {
+                        "S": "308e3f0f-afae-48d2-9f89-a20920726691"
+                    }
+                },
+                "NewImage": {
+                    "__typename": {
+                        "S": "Shift"
+                    },
+                    "createdAt": {
+                        "S": "2021-08-10T09:37:44.024Z"
+                    },
+                    "end": {
+                        "S": "2021-08-10T10:36:30.904Z"
+                    },
+                    "id": {
+                        "S": "e36eae27-b8d8-41ed-816a-c2fafd200fa6"
+                    },
+                    "jobID": {
+                        "S": "b8671b44-ae26-4871-ab3c-e2117451e84b"
+                    },
+                    "profileID": {
+                        "S": "86397106-b8cd-43bd-9af9-f5d82151760a"
+                    },
+                    "repeat": {
+                        "M": {
+                            "every": {
+                                "N": "2"
+                            },
+                            "frequency": {
+                                "S": "DAILY"
+                            }
+                        }
+                    },
+                    "endRepeat": {
+                        "S": "2021-08-12T02:51:40.823Z"
+                    },
+                    "start": {
+                        "S": "2021-08-10T09:36:30.904Z"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-10T09:37:44.024Z"
+                    },
+                    "workplaceID": {
+                        "S": "bcfba9d8-7b01-43c0-ae7e-8f174826a79a"
+                    }
+                },
+                "OldImage": {
+                    "__typename": {
+                        "S": "Shift"
+                    },
+                    "createdAt": {
+                        "S": "2021-08-10T09:37:44.024Z"
+                    },
+                    "end": {
+                        "S": "2021-08-10T10:36:30.904Z"
+                    },
+                    "id": {
+                        "S": "e36eae27-b8d8-41ed-816a-c2fafd200fa6"
+                    },
+                    "jobID": {
+                        "S": "b8671b44-ae26-4871-ab3c-e2117451e84b"
+                    },
+                    "profileID": {
+                        "S": "86397106-b8cd-43bd-9af9-f5d82151760a"
+                    },
+                    "repeat": {
+                        "M": {
+                            "every": {
+                                "N": "2"
+                            },
+                            "frequency": {
+                                "S": "DAILY"
+                            }
+                        }
+                    },
+                    "start": {
+                        "S": "2021-08-10T09:36:30.904Z"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-10T09:37:44.024Z"
+                    },
+                    "workplaceID": {
+                        "S": "bcfba9d8-7b01-43c0-ae7e-8f174826a79a"
+                    }
+                },
+                "SequenceNumber": "146451300000000009409180201",
+                "SizeBytes": 520,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:937833379153:table/Shift-k6mw73tsx5cjppsd7cx3oi2yx4-dev/stream/2021-07-06T10:23:20.865"
+        }
+    ]
+}

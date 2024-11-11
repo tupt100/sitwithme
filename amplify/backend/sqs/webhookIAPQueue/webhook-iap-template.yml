@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  sqsPrefix:
+    Type: String
+
+Resources:
+  WebhookIAPSubscriptionFifoQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-webhook-iap-subscription.fifo
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt WebhookIAPSubscriptionFifoDLQ.Arn
+        maxReceiveCount: 3
+
+  WebhookIAPSubscriptionFifoDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-webhook-iap-subscription-dlq.fifo
+      FifoQueue: true
+      ContentBasedDeduplication: true
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: 180
+
+Outputs:
+  WebhookIAPSubscriptionFifoQueueArn:
+    Value: !GetAtt WebhookIAPSubscriptionFifoQueue.Arn
+  WebhookIAPSubscriptionFifoQueueUrl:
+    Value: !Ref WebhookIAPSubscriptionFifoQueue
+  WebhookIAPSubscriptionFifoDLQArn:
+    Value: !GetAtt WebhookIAPSubscriptionFifoDLQ.Arn
+  WebhookIAPSubscriptionFifoDLQUrl:
+    Value: !Ref WebhookIAPSubscriptionFifoDLQ

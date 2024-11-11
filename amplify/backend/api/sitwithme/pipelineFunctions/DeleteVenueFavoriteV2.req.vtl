@@ -1,0 +1,16 @@
+#set($venueFavorite = $ctx.stash.get("venueFavorite"))
+#if(!$venueFavorite)
+  $util.error("You haven't favorited this Venue", "BAD_REQUEST")
+#end
+
+#set($profileID = $venueFavorite.profileID)
+#set($yelpBusinessID = $venueFavorite.yelpBusinessID)
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($venueFavorite.profileID),
+    "yelpBusinessID": $util.dynamodb.toDynamoDBJson($venueFavorite.yelpBusinessID)
+  }
+}

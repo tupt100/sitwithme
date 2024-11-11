@@ -1,0 +1,502 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Lambda Function resource stack creation using Amplify CLI",
+  "Parameters": {
+    "CloudWatchRule": {
+      "Type": "String",
+      "Default": "NONE",
+      "Description": " Schedule Expression"
+    },
+    "deploymentBucketName": {
+      "Type": "String"
+    },
+    "env": {
+      "Type": "String"
+    },
+    "s3Key": {
+      "Type": "String"
+    },
+    "apisitwithmeGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apisitwithmeGraphQLAPIIdOutput"
+    },
+    "apisitwithmeGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apisitwithmeGraphQLAPIEndpointOutput"
+    },
+    "snsalarmNotificationTopicArn": {
+      "Type": "String"
+    }
+  },
+  "Conditions": {
+    "ShouldNotCreateEnvResources": {
+      "Fn::Equals": [
+        {
+          "Ref": "env"
+        },
+        "NONE"
+      ]
+    }
+  },
+  "Resources": {
+    "LambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Metadata": {
+        "aws:asset:path": "./src",
+        "aws:asset:property": "Code"
+      },
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
+        },
+        "Handler": "index.handler",
+        "FunctionName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "sitwithmeUserTableStream",
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "sitwithmeUserTableStream",
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        "Environment": {
+          "Variables": {
+            "ENV": {
+              "Ref": "env"
+            },
+            "REGION": {
+              "Ref": "AWS::Region"
+            },
+            "PUSH_NOTIFICATION_TOPIC_ARN": {
+              "Ref": "snsalarmNotificationTopicArn"
+            },
+            "API_SITWITHME_EXPLOREPROFILETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ExploreProfileTable:Name"
+              }
+            },
+            "API_SITWITHME_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apisitwithmeGraphQLAPIIdOutput"
+            },
+            "API_SITWITHME_PROFILECONVERSATIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileConversationTable:Name"
+              }
+            },
+            "API_SITWITHME_PROFILETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileTable:Name"
+              }
+            },
+            "API_SITWITHME_FOLLOWINGTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:FollowingTable:Name"
+              }
+            },
+            "API_SITWITHME_USERTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+              }
+            },
+            "API_SITWITHME_PROFILELEADERBOARDTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileLeaderboardTable:Name"
+              }
+            },
+            "API_SITWITHME_VENUELEADERBOARDTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:VenueLeaderboardTable:Name"
+              }
+            },
+            "API_SITWITHME_CONVERSATIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ConversationTable:Name"
+              }
+            },
+            "API_SITWITHME_MESSAGETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:MessageTable:Name"
+              }
+            },
+            "API_SITWITHME_MESSAGEREACTIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:MessageReactionTable:Name"
+              }
+            },
+            "API_SITWITHME_SWMNOTIFICATIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:SWMNotificationTable:Name"
+              }
+            },
+            "API_SITWITHME_POSTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:PostTable:Name"
+              }
+            },
+            "API_SITWITHME_BLOCKEDPROFILETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:BlockedProfileTable:Name"
+              }
+            },
+            "API_SITWITHME_PROFILEDEVICETOKENTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileDeviceTokenTable:Name"
+              }
+            },
+            "API_SITWITHME_VENUEFAVORITETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:VenueFavoriteTable:Name"
+              }
+            },
+            "API_SITWITHME_VENUEFAVORITEV2TABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:VenueFavoriteV2Table:Name"
+              }
+            },
+            "API_SITWITHME_PHOTOTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:PhotoTable:Name"
+              }
+            },
+            "API_SITWITHME_VIDEOTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:VideoTable:Name"
+              }
+            },
+            "API_SITWITHME_PRESENCETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:PresenceTable:Name"
+              }
+            },
+            "API_SITWITHME_REPORTEDPROFILETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ReportedProfileTable:Name"
+              }
+            },
+            "API_SITWITHME_TRANSACTIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:TransactionTable:Name"
+              }
+            },
+            "API_SITWITHME_TRANSACTIONHISTORYTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:TransactionHistoryTable:Name"
+              }
+            },
+            "API_SITWITHME_PROFILESUBSCRIPTIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileSubscriptionTable:Name"
+              }
+            },
+            "API_SITWITHME_USERCONFIRMATIONTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:UserConfirmationTable:Name"
+              }
+            },
+            "API_SITWITHME_WORKPLACETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:WorkplaceTable:Name"
+              }
+            },
+            "API_SITWITHME_PROFILERECENTVIEWTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:ProfileRecentViewTable:Name"
+              }
+            },
+            "API_SITWITHME_FOLLOWINGREPORTTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:FollowingReportTable:Name"
+              }
+            }
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs14.x",
+        "Layers": [],
+        "Timeout": 25
+      }
+    },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": {
+          "Fn::If": [
+            "ShouldNotCreateEnvResources",
+            "sitwithmeLambdaRoleb427bc2a",
+            {
+              "Fn::Join": [
+                "",
+                [
+                  "sitwithmeLambdaRoleb427bc2a",
+                  "-",
+                  {
+                    "Ref": "env"
+                  }
+                ]
+              ]
+            }
+          ]
+        },
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "lambdaexecutionpolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": {
+                "Fn::Sub": [
+                  "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+                  {
+                    "region": {
+                      "Ref": "AWS::Region"
+                    },
+                    "account": {
+                      "Ref": "AWS::AccountId"
+                    },
+                    "lambda": {
+                      "Ref": "LambdaFunction"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "LambdaTriggerPolicyUser": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy-User",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeStream",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:ListStreams"
+              ],
+              "Resource": {
+                "Fn::ImportValue": {
+                  "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "LambdaEventSourceMappingUser": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "LambdaTriggerPolicyUser",
+        "LambdaExecutionRole"
+      ],
+      "Properties": {
+        "BatchSize": 100,
+        "Enabled": true,
+        "EventSourceArn": {
+          "Fn::ImportValue": {
+            "Fn::Sub": "${apisitwithmeGraphQLAPIIdOutput}:GetAtt:UserTable:StreamArn"
+          }
+        },
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "LambdaFunction",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "LATEST"
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/*/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "NotificationLambdaPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "notification-lambda-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "sns:Publish"
+              ],
+              "Resource": [
+                {
+                  "Ref": "snsalarmNotificationTopicArn"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "Name": {
+      "Value": {
+        "Ref": "LambdaFunction"
+      }
+    },
+    "Arn": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaFunction",
+          "Arn"
+        ]
+      }
+    },
+    "Region": {
+      "Value": {
+        "Ref": "AWS::Region"
+      }
+    },
+    "LambdaExecutionRole": {
+      "Value": {
+        "Ref": "LambdaExecutionRole"
+      }
+    }
+  }
+}

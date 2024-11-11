@@ -1,0 +1,83 @@
+type Post @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+) @key(name: "byProfileSortByCreatedAt", fields: ["profileID", "createdAt"])
+@searchable
+{
+  id: ID!
+
+  profileID: ID!
+
+  profile: Profile @connection(fields: ["profileID"])
+  profileConnection: PostProfileConnection
+
+  postType: PostType!
+
+  photoID: ID
+  photo: Photo @connection(fields: ["photoID"])
+
+  videoID: ID
+  video: Video @connection(fields: ["videoID"])
+
+  caption: String
+  createdAt: AWSDateTime!
+}
+
+type PostProfileConnection {
+  privacy: Boolean
+  blockedProfileIDs: [ID!]
+}
+
+input UpdatePostInput {
+  id: ID!
+  role: UserRole!
+  caption: String
+  photo: S3ObjectInput
+}
+
+input CreatePostInput {
+  role: UserRole!
+  caption: String
+  photo: S3ObjectInput!
+}
+
+input CreatePostInputV2 {
+  role: UserRole!
+  caption: String
+  photo: S3ObjectInput
+  postType: PostType!
+  video: S3ObjectInput
+}
+
+enum PostType {
+  PHOTO,
+  VIDEO
+}
+
+input DeletePostInput {
+  id: ID!
+}
+
+input explorePhotosInput {
+  keyword: String
+}
+
+input explorePostsInput {
+  keyword: String,
+  role: UserRole!
+}
+
+type ModelExplorePhotosConnection {
+  items: [Post!]!
+  hasNext: Boolean!
+}
+
+type ModelExplorePostsConnection {
+  items: [Post!]!
+  hasNext: Boolean!
+}
+
+input ListPostInput {
+  role: UserRole!
+}

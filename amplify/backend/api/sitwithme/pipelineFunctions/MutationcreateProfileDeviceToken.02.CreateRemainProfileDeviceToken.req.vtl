@@ -1,0 +1,26 @@
+## call GetRemainProfileByUserIDFunction.req.vtl first
+
+#set($profile = $ctx.stash.get("remainProfile"))
+#if(!$profile)
+  #return($ctx.stash.get('profileDeviceToken'))
+#end
+
+#set($profileID = $profile.id)
+#set($deviceToken = $ctx.stash.get("deviceToken"))
+#set($createdAt = $util.time.nowISO8601())
+
+#set($attr = {
+  "__typename": "ProfileDeviceToken",
+  "createdAt": $createdAt,
+  "updatedAt": $createdAt
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "deviceToken": $util.dynamodb.toDynamoDBJson($deviceToken)
+  },
+  "attributeValues": $util.dynamodb.toMapValuesJson($attr)
+}

@@ -1,0 +1,4 @@
+{
+  "method": "migrateProfileDeviceTokenToUser",
+  "arguments": {}
+}

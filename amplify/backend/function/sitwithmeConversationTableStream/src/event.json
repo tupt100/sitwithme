@@ -1,0 +1,10 @@
+{
+  "Records": [
+    {
+      "eventName": "REMOVE",
+      "dynamodb": {
+        "OldImage":{"conversationType":{"S":"BROADCAST"},"createdAt":{"S":"2021-09-04T07:26:35.111Z"},"totalMessage":{"N":"0"},"__typename":{"S":"Conversation"},"name":{"NULL":true},"id":{"S":"4038f5e7-5db0-49af-979e-62ab634c39ed"},"creatorProfileID":{"S":"36f501ad-bbf7-4bab-a851-dd6291b3e0dc"},"broadcastName":{"S":"hihi"},"updatedAt":{"S":"2021-09-04T08:01:36.583Z"}}
+      }
+    }
+  ]
+}

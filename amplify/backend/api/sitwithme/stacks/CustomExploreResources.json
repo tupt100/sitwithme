@@ -1,0 +1,456 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "An auto-generated nested stack.",
+  "Metadata": {},
+  "Parameters": {
+    "AppSyncApiId": {
+      "Type": "String",
+      "Description": "The id of the AppSync API associated with this project."
+    },
+    "AppSyncApiName": {
+      "Type": "String",
+      "Description": "The name of the AppSync API",
+      "Default": "AppSyncSimpleTransform"
+    },
+    "env": {
+      "Type": "String",
+      "Description": "The environment name. e.g. Dev, Test, or Production",
+      "Default": "NONE"
+    },
+    "S3DeploymentBucket": {
+      "Type": "String",
+      "Description": "The S3 bucket containing all deployment assets for the project."
+    },
+    "S3DeploymentRootKey": {
+      "Type": "String",
+      "Description": "An S3 key relative to the S3DeploymentBucket that points to the root\nof the deployment directory."
+    }
+  },
+  "Resources": {
+    "ExploreProfileNoneDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "ExploreProfileNone",
+        "Type": "NONE"
+      }
+    },
+    "ExploreProfileExpiredResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "DataSourceName": {
+          "Fn::GetAtt": [
+            "ExploreProfileNoneDataSource",
+            "Name"
+          ]
+        },
+        "TypeName": "ExploreProfile",
+        "FieldName": "expired",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/ExploreProfile.expired.req.vtl",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/ExploreProfile.expired.res.vtl",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "GetPatronProfileByUserIDFunction": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "Name": "ExploreGetPatronProfileByUserIDFunction",
+        "DataSourceName": "ProfileTable",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["GetPatronProfileByUser", "req", "vtl"]]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["GetPatronProfileByUser", "res", "vtl"]]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "GetProfileByUserFunction": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Name": "ExploreGetProfileByUserFunction",
+        "DataSourceName": "ProfileTable",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "GetProfileByUser",
+                    "req",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [
+                  ".",
+                  [
+                    "GetProfileByUser",
+                    "res",
+                    "vtl"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ClearExploreRecentSearchFunction": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "Name": "ClearExploreRecentSearchFunction",
+        "DataSourceName": "ProfileTable",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["MutationclearExploreRecentSearch", "01", "ClearExploreRecentSearch", "req", "vtl"]]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["MutationclearExploreRecentSearch", "01", "ClearExploreRecentSearch", "res", "vtl"]]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "MutationclearExploreRecentSearchResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+          "ApiId": {
+              "Ref": "AppSyncApiId"
+          },
+          "TypeName": "Mutation",
+          "FieldName": "clearExploreRecentSearch",
+          "Kind": "PIPELINE",
+          "PipelineConfig": {
+            "Functions": [
+              { "Fn::GetAtt": ["GetPatronProfileByUserIDFunction", "FunctionId"] },
+              { "Fn::GetAtt": ["ClearExploreRecentSearchFunction", "FunctionId"] }
+            ]
+          },
+          "RequestMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.clearExploreRecentSearch.req.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          },
+          "ResponseMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.clearExploreRecentSearch.res.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          }
+      }
+    },
+    "ClearExploreRecentSearchV2Function": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": { "Ref": "AppSyncApiId" },
+        "Name": "ClearExploreRecentSearchV2Function",
+        "DataSourceName": "ProfileTable",
+        "FunctionVersion": "2018-05-29",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["MutationclearExploreRecentSearchV2", "01", "ClearExploreRecentSearchV2", "req", "vtl"]]
+              }
+            }
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Sub": [
+            "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+            {
+              "S3DeploymentBucket": {
+                "Ref": "S3DeploymentBucket"
+              },
+              "S3DeploymentRootKey": {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "ResolverFileName": {
+                "Fn::Join": [".", ["MutationclearExploreRecentSearchV2", "01", "ClearExploreRecentSearchV2", "res", "vtl"]]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "MutationclearExploreRecentSearchV2Resolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+          "ApiId": {
+              "Ref": "AppSyncApiId"
+          },
+          "TypeName": "Mutation",
+          "FieldName": "clearExploreRecentSearchV2",
+          "Kind": "PIPELINE",
+          "PipelineConfig": {
+            "Functions": [
+              { "Fn::GetAtt": ["GetProfileByUserFunction", "FunctionId"] },
+              { "Fn::GetAtt": ["ClearExploreRecentSearchV2Function", "FunctionId"] }
+            ]
+          },
+          "RequestMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.clearExploreRecentSearchV2.req.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          },
+          "ResponseMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Mutation.clearExploreRecentSearchV2.res.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          }
+      }
+    },
+    "QuerylistExploreRecentSearchResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+          "ApiId": {
+              "Ref": "AppSyncApiId"
+          },
+          "TypeName": "Query",
+          "FieldName": "listExploreRecentSearch",
+          "Kind": "PIPELINE",
+          "PipelineConfig": {
+            "Functions": [
+              { "Fn::GetAtt": ["GetPatronProfileByUserIDFunction", "FunctionId"] }
+            ]
+          },
+          "RequestMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.listExploreRecentSearch.req.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          },
+          "ResponseMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.listExploreRecentSearch.res.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          }
+      }
+    },
+    "QuerylistExploreRecentSearchV2Resolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+          "ApiId": {
+              "Ref": "AppSyncApiId"
+          },
+          "TypeName": "Query",
+          "FieldName": "listExploreRecentSearchV2",
+          "Kind": "PIPELINE",
+          "PipelineConfig": {
+            "Functions": [
+              { "Fn::GetAtt": ["GetProfileByUserFunction", "FunctionId"] }
+            ]
+          },
+          "RequestMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.listExploreRecentSearchV2.req.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          },
+          "ResponseMappingTemplateS3Location": {
+              "Fn::Sub": [
+                  "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/Query.listExploreRecentSearchV2.res.vtl",
+                  {
+                      "S3DeploymentBucket": {
+                          "Ref": "S3DeploymentBucket"
+                      },
+                      "S3DeploymentRootKey": {
+                          "Ref": "S3DeploymentRootKey"
+                      }
+                  }
+              ]
+          }
+      }
+    }
+  },
+  "Conditions": {
+    "HasEnvironmentParameter": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "env"
+            },
+            "NONE"
+          ]
+        }
+      ]
+    },
+    "AlwaysFalse": {
+      "Fn::Equals": ["true", "false"]
+    }
+  },
+  "Outputs": {
+    "EmptyOutput": {
+      "Description": "An empty output. You may delete this if you have at least one resource above.",
+      "Value": ""
+    }
+  }
+}

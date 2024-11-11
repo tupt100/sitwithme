@@ -1,0 +1,16 @@
+#set( $query = {
+  "expression": "#profileID = :profileID",
+  "expressionNames": {
+      "#profileID": "profileID"
+  },
+  "expressionValues": {
+      ":profileID": $util.dynamodb.toDynamoDB($ctx.source.id)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byProfileSortByYelpBusinessID"
+}

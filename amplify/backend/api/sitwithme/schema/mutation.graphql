@@ -1,0 +1,185 @@
+input TestSubAuthInput {
+  profileID: ID!
+  msg: String!
+}
+
+type TestSubAuthNotification {
+  profileID: ID!
+  msg: String!
+}
+
+type Mutation {
+  # users and profiles
+  initUser(input: InitUserInput!): User @function(name: "sitwithmeUser-${env}")
+  switchSeat: UserRole
+  blockProfile(input: BlockProfileInput!): BlockedProfile
+  unblockProfile(input: UnblockProfileInput!): BlockedProfile
+  reportProfile(input: ReportProfileInput!): ReportedProfile
+
+  # device token for pushing notification
+  createProfileDeviceToken(input: CreateProfileDeviceTokenInput!): ProfileDeviceToken
+  deleteProfileDeviceToken(input: DeleteProfileDeviceTokenInput!): ProfileDeviceToken
+  deleteUserDeviceToken(input: DeleteUserDeviceTokenInput!): Boolean
+    @deprecated(reason: "Use deleteProfileDeviceToken instead.")
+
+  # onboarding
+  onboardingPatron(input: OnboardingPatronInput): Profile @function(name: "sitwithmeOnboarding-${env}")
+  onboardingStaff(input: OnboardingStaffInput): Profile @function(name: "sitwithmeOnboarding-${env}")
+  onboardingStaffV2(input: OnboardingStaffInput): Profile @function(name: "sitwithmeOnboarding-${env}")
+
+  # avatar and profile
+  updateProfile(input: UpdateProfileInput!): User @function(name: "sitwithmeProfile-${env}")
+  updatePremiumSuggestion(input: UpdatePremiumSuggestionInput!): PremiumSuggestion
+
+  # post
+  createPost(input: CreatePostInput!): Post @function(name: "sitwithmePost-${env}")
+    @deprecated(reason: "Use createPostV2 instead.")
+  updatePost(input: UpdatePostInput!): Post @function(name: "sitwithmePost-${env}")
+  deletePost(input: DeletePostInput!): Boolean! @function(name: "sitwithmePost-${env}")
+
+  createPostV2(input: CreatePostInputV2!): Post @function(name: "sitwithmePost-${env}")
+  updateVideoAfterProcessing(input: UpdateVideoAfterProcessingInput!): Video @function(name: "sitwithmePost-${env}")
+    @aws_iam
+  # workplaces
+  createWorkplace(input: CreateWorkplaceInput!): Workplace @function(name: "sitwithmeWorkplace-${env}")
+  deleteWorkplace(id: ID!): Boolean @function(name: "sitwithmeWorkplace-${env}")
+
+  # shifts
+  createShift(input: ShiftInput!): Shift @function(name: "sitwithmeShift-${env}")
+  switchDuty: Boolean @function(name: "sitwithmeShift-${env}")
+  deleteShiftEventsInFuture(input: ShiftEventDetailInput!): Boolean @function(name: "sitwithmeShift-${env}")
+  deleteShiftEvent(input: ShiftEventDetailInput!): Boolean @function(name: "sitwithmeShift-${env}")
+  updateShiftEventsInFuture(input: UpdateShiftEventInput!): Shift @function(name: "sitwithmeShift-${env}")
+  updateShiftEvent(input: UpdateOneShiftEventInput!): Shift @function(name: "sitwithmeShift-${env}")
+
+  # venues
+  favoriteVenue(input: VenueDetailInput!): Boolean @function(name: "sitwithmeWorkplace-${env}")
+    @deprecated(reason: "Use favoriteVenueV2 instead. Removed when no users using app v1.0.7")
+  unfavoriteVenue(input: VenueDetailInput!): Boolean
+    @deprecated(reason: "Use unfavoriteVenueV2 instead. Removed when no users using app v1.0.7")
+  favoriteVenueV2(input: VenueDetailInput!): Boolean @function(name: "sitwithmeWorkplace-${env}")
+  unfavoriteVenueV2(input: VenueDetailInput!): Boolean
+
+  # search
+  createStaffRecentView(input: CreateStaffRecentViewInput!): Boolean @function(name: "sitwithmeProfile-${env}")
+    @deprecated(reason: "use createProfileRecentView instead")
+  createProfileRecentView(input: CreateProfileRecentViewInput!): Boolean @function(name: "sitwithmeProfile-${env}")
+  clearStaffRecentView: Boolean
+    @deprecated(reason: "use clearProfileRecentView instead")
+  clearProfileRecentView(input: ClearProfileRecentViewInput!): Boolean @function(name: "sitwithmeProfile-${env}")
+  createExploreRecentSearch(input: ExploreRecentSearchInput!): Boolean @function(name: "sitwithmeProfile-${env}")
+    @deprecated(reason: "use createExploreRecentSearchV2 instead")
+  createExploreRecentSearchV2(input: ExploreRecentSearchInputV2!): Boolean @function(name: "sitwithmeProfile-${env}")
+  clearExploreRecentSearch: Boolean
+    @deprecated(reason: "use clearExploreRecentSearchV2 instead")
+  clearExploreRecentSearchV2(input: ClearExploreRecentSearchInput!): Boolean
+
+  # following
+  requestSitWithMe(input: RequestSitWithMeInput!): Following
+  acceptSitWithMeRequest(input: AcceptSitWithMeRequestInput!): Following
+  rejectSitWithMeRequest(input: RejectSitWithMeRequestInput!): Following
+  requestSitWithMeV2(input: RequestSitWithMeInputV2!): Following
+  acceptSitWithMeRequestV2(input: AcceptSitWithMeRequestInputV2!): Following
+  rejectSitWithMeRequestV2(input: RejectSitWithMeRequestInputV2!): Following
+  leaveTable(input: LeaveTableInput!): Following
+
+  # messages
+  sendMessage(input: SendMessageInput!): Message @function(name: "sitwithmeMessage-${env}")
+  createMessage(input: CreateMessageInput!): Message @function(name: "sitwithmeMessage-${env}")
+  deleteConversation(input: DeleteConversationInput!): Boolean
+  markAsReadConversation(input: MarkAsReadConversationInput!): Boolean
+  markAsUnreadConversation(input: MarkAsUnreadConversationInput!): Boolean
+  muteConversation(input: MuteConversationInput!): Boolean
+  ignoreConversation(input: IgnoreConversationInput!): Boolean
+  unignoreConversation(input: UnignoreConversationInput!): Boolean
+  blockConversation(input: BlockConversationInput!): Boolean
+  unblockConversation(input: UnblockConversationInput!): Boolean
+
+  # message reaction
+  sendMessageReaction(input: SendMessageReactionInput!): Boolean
+  deleteMessageReaction(input: DeleteMessageReactionInput!): Boolean
+
+  # broadcast
+  createBroadcastConversation(input: CreateBroadcastConversationInput!): Conversation @function(name: "sitwithmeMessage-${env}")
+  createBroadcastMessage(input: CreateBroadcastMessageInput!): Message @function(name: "sitwithmeMessage-${env}")
+  updateBroadcastConversation(input: UpdateBroadcastConversationInput!): Conversation @function(name: "sitwithmeMessage-${env}")
+  deleteBroadcastConversation(input: DeleteBroadcastConversationInput!): Conversation
+  createPatronsInBroadcastConversation(input: CreatePatronsInBroadcastConversationInput!): Boolean @function(name: "sitwithmeMessage-${env}")
+  updatePatronsInBroadcastConversation(input: UpdatePatronsInBroadcastConversationInput!): Boolean @function(name: "sitwithmeMessage-${env}")
+  deletePatronInBroadcastConversation(input: DeletePatronInBroadcastConversationInput!): Boolean
+
+  # notifs
+  deleteNotification(input: DeleteNotificationInput!): SWMNotification
+  updateProfileNotificationSetting(input: NotificationSettingsInput!): NotificationSettings
+  markReadNotifications(input: MarkReadNotificationsInput!): Boolean @function(name: "sitwithmeSWMNotification-${env}")
+
+  # manage connection
+  attachConnectPolicy(input: AttachConnectPolicyInput!): Boolean @function(name: "sitwithmeUser-${env}")
+    @auth(rules: [{ allow: private, provider: iam }])
+
+  # transaction
+  validateReceipt(input: ReceiptInput!): Boolean @function(name: "sitwithmeTransaction-${env}")
+
+  # delete User
+  deleteMe: Boolean @function(name: "sitwithmeUser-${env}")
+
+  # for subscription
+  pushMessageNotification(input: MessageNotificationInput!): MessageNotification
+    @aws_iam
+  conversationCreated(input: MessageNotificationInput!): MessageNotification
+    @aws_iam
+  profilePresenceStatus(input: ProfilePresenceNotificationInput!): ProfilePresenceNotification
+    @aws_iam
+  notifyStaffShiftAlarmBeforeStart(input: StaffShiftAlarmBeforeStartInput!): StaffShiftAlarmBeforeStart
+    @aws_iam
+  notifyPatronShiftAlarmBeforeStart(input: PatronShiftAlarmBeforeStartInput!): PatronShiftAlarmBeforeStart
+    @aws_iam
+  notifyRequestSWM(input: NotifyRequestSWMInput!): RequestSWMNotification
+    @aws_iam
+  notifyAcceptRequestSWM(input: NotifyAcceptRequestSWMInput!): AcceptRequestSWMNotification
+    @aws_iam
+  notifyDirectMessage(input: NotifyDirectMessageInput!): DirectMessageNotification
+    @aws_iam
+  notifyProfileConversationUpdated(input: ProfileConversationUpdatedInput!): ProfileConversationUpdated
+    @aws_iam
+  notifyLeaveTable(input: NotifyLeaveTableInput!): LeaveTableNotification
+    @aws_iam
+  notifyBlockProfile(input: NotifyBlockProfileInput!): BlockProfileNotification
+    @aws_iam
+  notifyReportProfile(input: NotifyReportProfileInput!): ReportProfileNotification
+    @aws_iam
+  notifyDisableUser(input: NotifyDisableUserInput!): DisableUserNotification
+    @aws_iam
+  notifyProfileDuty(input: NotifyProfileDutyInput!): ProfileDutyNotification
+    @aws_iam
+  notifyProfileMemberShipUpdated(input: NotifyProfileMemberShipUpdated!): ProfileMemberShipUpdatedNotification
+    @aws_iam
+  notifyMessageReaction(input: NotifyMessageReactionInput!): MessageReactionNotification
+    @aws_iam
+  notifyUserDeleted(input: NotifyUserDeletedInput!): UserDeletedNotification
+    @aws_iam
+  notifyChangePrivacy(input: NotifyChangePrivacyInput!): ChangePrivacyNotification
+    @aws_iam
+
+  testSubAuth(input: TestSubAuthInput!): TestSubAuthNotification
+
+  # admin
+  deleteJob(input: DeleteJobInput!): Boolean
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+  enableUser(input: UserIdentifyInput!): Boolean
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+    @function(name: "sitwithmeUser-${env}")
+  disableUser(input: UserIdentifyInput!): Boolean
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+    @function(name: "sitwithmeUser-${env}")
+  softDeleteUser(input: UserIdentifyInput!): Boolean
+    @aws_cognito_user_pools(cognito_groups: ["admin"])
+    @function(name: "sitwithmeUser-${env}")
+
+  confirmUser(input: ConfirmUserInput!): Boolean @function(name: "sitwithmeUser-${env}")
+    @auth(rules: [{ allow: public, provider: iam }])
+  sendCodeToPhone(input: SendCodeToPhoneInput!): Boolean @function(name: "sitwithmeUser-${env}")
+    @auth(rules: [{ allow: public, provider: iam }])
+  sendCodeToEmail(input: SendCodeToEmailInput!): Boolean @function(name: "sitwithmeUser-${env}")
+    @auth(rules: [{ allow: public, provider: iam }])
+}

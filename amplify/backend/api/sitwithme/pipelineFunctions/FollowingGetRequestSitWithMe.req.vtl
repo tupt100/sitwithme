@@ -1,0 +1,43 @@
+## Call GetProfileByRole.req.vtl and GetProfileByRole.res.vtl
+## Call GetReceipientProfile.req.vtl and GetReceipientProfile.res.vtl
+
+#set($profile = $ctx.stash.get("profile"))
+#set($receipientProfile = $ctx.stash.get("receipientProfile"))
+
+#if(!$profile)
+  $util.error("Your profile not found", "BAD_REQUEST")
+#end
+
+#if(!$receipientProfile)
+  $util.error("Receipient's profile not found", "BAD_REQUEST")
+#end
+
+#if($profile.role == $receipientProfile.role)
+  $util.error("$profile.role cannot send request to $profile.role", "BAD_REQUEST")
+#end
+
+#if($profile.role == "STAFF")
+  #set($staffID = $profile.id)
+  #set($patronID = $receipientProfile.id)
+#else
+  #set($staffID = $receipientProfile.id)
+  #set($patronID = $profile.id)
+#end
+
+#set( $query = {
+  "expression": "#patronID = :patronID AND #staffID = :staffID",
+  "expressionNames": {
+      "#patronID": "patronID",
+      "#staffID": "staffID"
+  },
+  "expressionValues": {
+      ":patronID": $util.dynamodb.toDynamoDB($patronID),
+      ":staffID": $util.dynamodb.toDynamoDB($staffID)
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query)
+}

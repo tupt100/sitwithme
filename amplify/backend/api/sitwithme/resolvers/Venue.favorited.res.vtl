@@ -1,0 +1,7 @@
+#set($favorited = false)
+
+#if($ctx.prev.result.items.size() > 0)
+  #set($favorited = true)
+#end
+
+$util.toJson($favorited)

@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  sqsPrefix:
+    Type: String
+
+Resources:
+  DisconnectQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${sqsPrefix}-${env}-disconnect
+      VisibilityTimeout: 180
+      DelaySeconds: 5
+
+Outputs:
+  DisconnectQueueArn:
+    Value: !GetAtt DisconnectQueue.Arn
+  DisconnectQueueUrl:
+    Value: !Ref DisconnectQueue

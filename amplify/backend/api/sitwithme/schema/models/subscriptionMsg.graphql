@@ -1,0 +1,12 @@
+type SubscriptionMsg @model(
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["hashKey", "deliveredAt"])
+{
+  hashKey: String!
+  deliveredAt: AWSDateTime!
+  data: AWSJSON!
+  expiredAt: AWSTimestamp! @ttl
+  name: String
+}

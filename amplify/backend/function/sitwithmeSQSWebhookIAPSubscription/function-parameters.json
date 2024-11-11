@@ -1,0 +1,29 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "Profile:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Transaction:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "TransactionHistory:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileSubscription:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

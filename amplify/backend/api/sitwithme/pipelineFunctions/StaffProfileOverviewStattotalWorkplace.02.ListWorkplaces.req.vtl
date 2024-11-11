@@ -1,0 +1,20 @@
+#if(!$ctx.stash.get("profileID"))
+  #return(0)
+#end
+
+#set( $query = {
+  "expression": "#profileID = :profileID",
+  "expressionNames": {
+      "#profileID": "profileID"
+  },
+  "expressionValues": {
+      ":profileID": $util.dynamodb.toDynamoDB($ctx.stash.get("profileID"))
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byProfile"
+}

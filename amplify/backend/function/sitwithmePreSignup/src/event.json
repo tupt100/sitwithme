@@ -1,0 +1,11 @@
+{
+    "request": {
+      "userAttributes": {
+        "email": "testEmail@domain.com",
+        "preferred_username": "username01",
+        "name": "firstName",
+        "given_name": "lastName"
+      }
+    },
+    "response": {}
+}

@@ -1,0 +1,5 @@
+#if (!$ctx.source.savingTime)
+  $util.toJson("NONE")
+#else
+  $util.toJson($ctx.source.savingTime)
+#end

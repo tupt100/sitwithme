@@ -1,0 +1,12 @@
+
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("userID", $ctx.identity.claims["custom:id"]))
+$util.qr($ctx.stash.put("role", $ctx.args.input.role))
+$util.qr($ctx.stash.put("deviceToken", $ctx.args.input.deviceToken))
+
+#if($util.isNullOrBlank($ctx.args.input.deviceToken))
+  $util.error("device token is required", "BAD_REQUEST")
+#end
+
+{}
+## [End] Stash resolver specific context.. **

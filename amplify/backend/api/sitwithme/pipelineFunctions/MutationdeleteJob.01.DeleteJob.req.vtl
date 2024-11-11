@@ -1,0 +1,15 @@
+## Call ListShiftByJobID.req.vtl and ListShiftByJobID.res.vtl first
+
+#set( $existedShift = $ctx.stash.get("shifts") )
+
+#if($existedShift && !$existedShift.isEmpty())
+  $util.error("Disallowed to delete this job because it is being used in some shifts", "BAD_REQUEST")
+#end
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($ctx.arguments.input.id)
+  }
+}

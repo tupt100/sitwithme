@@ -1,0 +1,119 @@
+{
+  "permissions": {
+    "storage": {
+      "ExploreProfile:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Following:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "FollowingReport:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "StaffLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "VenueLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Mailing:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "Conversation:@model(appsync)": [
+        "create",
+        "read",
+        "delete"
+      ],
+      "Message:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileConversation:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "SWMNotification:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Profile:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "ProfileRecentView:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileDeviceToken:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Shift:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "Transaction:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "User:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "Workplace:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "VenueFavorite:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "VenueFavoriteV2:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

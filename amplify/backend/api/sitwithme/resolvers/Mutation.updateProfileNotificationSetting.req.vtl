@@ -1,0 +1,9 @@
+
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("userID", $ctx.identity.claims["custom:id"]))
+$util.qr($ctx.stash.put("role", $ctx.args.input.role))
+$util.qr($ctx.stash.put("muteMessage", $ctx.args.input.muteMessage))
+$util.qr($ctx.stash.put("muteSWMRequest", $ctx.args.input.muteSWMRequest))
+$util.qr($ctx.stash.put("muteAll", $ctx.args.input.muteAll))
+{}
+## [End] Stash resolver specific context.. **

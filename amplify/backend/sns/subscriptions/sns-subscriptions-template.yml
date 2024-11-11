@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  sqsalarmQueueAlarmStaffQueueArn:
+    Type: String
+  sqsalarmQueueAlarmPatronQueueArn:
+    Type: String
+  sqsalarmQueueAlarmIAPQueueArn:
+    Type: String
+  snsalarmAlarmTopicArn:
+    Type: String
+  snsalarmNotificationTopicArn:
+    Type: String
+  functionsitwithmePushNotificationArn:
+    Type: String
+  snsyelpYelpVenueSyncTopicArn:
+    Type: String
+  functionsitwithmeSNSYelpVenueSyncArn:
+    Type: String
+
+Resources:
+  AlarmStaffSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      Endpoint: !Ref sqsalarmQueueAlarmStaffQueueArn
+      TopicArn: !Ref snsalarmAlarmTopicArn
+      FilterPolicy:
+        type:
+          - "staff.shift.alert"
+
+  AlarmPatronSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      Endpoint: !Ref sqsalarmQueueAlarmPatronQueueArn
+      TopicArn: !Ref snsalarmAlarmTopicArn
+      FilterPolicy:
+        type:
+          - "patron.shift.alert"
+          - "patron.shift.start"
+          - "patron.shift.end"
+
+  AlarmIAPExpiredSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Protocol: sqs
+      Endpoint: !Ref sqsalarmQueueAlarmIAPQueueArn
+      TopicArn: !Ref snsalarmAlarmTopicArn
+      FilterPolicy:
+        type:
+          - "iap.expired"
+
+  NotificationSubscription:
+    Type: AWS::SNS::Subscription
+    DependsOn:
+      - NotificationTopicLambdaPermission
+    Properties:
+      Protocol: lambda
+      Endpoint: !Ref functionsitwithmePushNotificationArn
+      TopicArn: !Ref snsalarmNotificationTopicArn
+
+  NotificationTopicLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Principal: sns.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !Ref snsalarmNotificationTopicArn
+      FunctionName: !Ref functionsitwithmePushNotificationArn
+
+  YelpVenueSyncSubscription:
+    Type: AWS::SNS::Subscription
+    DependsOn:
+      - YelpVenueSyncTopicLambdaPermission
+    Properties:
+      Protocol: lambda
+      Endpoint: !Ref functionsitwithmeSNSYelpVenueSyncArn
+      TopicArn: !Ref snsyelpYelpVenueSyncTopicArn
+
+  YelpVenueSyncTopicLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Principal: sns.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !Ref snsyelpYelpVenueSyncTopicArn
+      FunctionName: !Ref functionsitwithmeSNSYelpVenueSyncArn

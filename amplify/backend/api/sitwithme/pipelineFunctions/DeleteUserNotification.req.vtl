@@ -1,0 +1,34 @@
+#set($profiles = $ctx.stash.get("profiles"))
+#if(!$profiles || $profiles.isEmpty())
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+
+#set($keys = "")
+#set($values = {})
+#foreach($profile in $profiles)
+  #set ($index = $foreach.index)
+  #set($keys = "${keys}:p${index}")
+  $util.qr($values.put(":p${index}", $util.dynamodb.toDynamoDB("${profile.id}")))
+  #if($foreach.hasNext)
+    #set($keys = "${keys},")
+  #end
+#end
+
+#set($notificationID = $ctx.stash.get("notificationID"))
+
+#set( $condition = {
+  "expression": "#recipientProfileID IN (${keys})",
+  "expressionNames": {
+      "#recipientProfileID": "recipientProfileID"
+  },
+  "expressionValues": $values
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "DeleteItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($notificationID)
+  },
+  "condition": $util.toJson($condition)
+}

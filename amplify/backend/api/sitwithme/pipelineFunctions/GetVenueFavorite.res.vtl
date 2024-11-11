@@ -1,0 +1,6 @@
+#if($ctx.result.items.size() > 0)
+  #set($record = $ctx.result.items[0])
+  $util.qr($ctx.stash.put("venueFavorite", $record))
+#end
+
+$util.toJson($ctx.result)

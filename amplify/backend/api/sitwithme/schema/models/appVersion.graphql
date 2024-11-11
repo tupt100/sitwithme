@@ -1,0 +1,10 @@
+type AppVersion @model
+@auth(rules: [
+  { allow: public, provider: iam, operations: [read] },
+  { allow: groups, groups: ["admin"] }
+])
+{
+  id: ID!
+  forceUpdated: Boolean!
+  currentAppVersion: String!
+}

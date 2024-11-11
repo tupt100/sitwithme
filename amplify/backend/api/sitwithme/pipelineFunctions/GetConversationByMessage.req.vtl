@@ -1,0 +1,13 @@
+#set($message = $ctx.stash.get('message'))
+#if(!$message)
+  $util.error("Message not found", "BAD_REQUEST")
+#end
+#set($conversationID = $message.conversationID)
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($conversationID)
+  }
+}

@@ -1,0 +1,11 @@
+#set($userID = $ctx.identity.claims["custom:id"])
+#if($ctx.source.userID == $userID || !$ctx.source.privacy)
+  $util.qr($ctx.stash.put("bio", $ctx.source.bio))
+  #return($ctx.source.bio)
+#else
+  $util.qr($ctx.stash.put("userID", $userID))
+  $util.qr($ctx.stash.put("profileID", $ctx.source.id))
+  $util.qr($ctx.stash.put("role", $ctx.source.role))
+#end
+
+{}

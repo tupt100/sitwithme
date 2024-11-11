@@ -1,0 +1,8 @@
+#if( $ctx.error )
+$util.error($ctx.error.message, $ctx.error.type)
+#else
+$util.toJson({
+  "showedNumber": $util.defaultIfNull($ctx.result.showedNumberPopup, 0),
+  "dontShow": $util.defaultIfNull($ctx.result.dontShowPopup, false)
+})
+#end

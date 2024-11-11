@@ -1,0 +1,28 @@
+#set($result = [])
+#set($jobWorkplace = {})
+#set($now = $util.time.nowEpochMilliSeconds())
+#if( $ctx.error )
+  $util.error($ctx.error.message, $ctx.error.type)
+#else
+  #foreach($shift in $ctx.result.items)
+    #set($endDate = 0)
+    #if(!$util.isNull($shift.repeat) && !$util.isNull($shift.endRepeat))
+      #set( $delta = $shift.start.split("T")[1] )
+      #set($endDate = $util.time.parseISO8601ToEpochMilliSeconds("${shift.endRepeat}T${delta}") + $util.time.parseISO8601ToEpochMilliSeconds($shift.end) - $util.time.parseISO8601ToEpochMilliSeconds($shift.start))
+    #elseif($util.isNull($shift.repeat))
+      #set($endDate = $util.time.parseISO8601ToEpochMilliSeconds($shift.end))
+    #end
+
+    #if($endDate == 0 || ($endDate != 0 && $now <= $endDate))
+      #set($key = "${shift.jobID}#${shift.workplaceID}")
+      #if(!$jobWorkplace.get("${key}"))
+        $util.qr($result.add($shift))
+        $util.qr($jobWorkplace.put("${key}", true))
+      #end
+    #end
+  #end
+#end
+
+$util.toJson({
+  "items": $result
+})

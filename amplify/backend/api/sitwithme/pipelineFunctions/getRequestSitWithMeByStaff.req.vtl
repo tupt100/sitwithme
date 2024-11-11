@@ -1,0 +1,17 @@
+## Call GetStaffProfileByUser.req.vtl and GetStaffProfileByUser.res.vtl
+
+#set($staffProfile = $ctx.stash.get("staffProfile"))
+#if(!$staffProfile)
+  $util.error("Staff not found", "BAD_REQUEST")
+#end
+
+#set($staffID = $staffProfile.id)
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "staffID": $util.dynamodb.toDynamoDBJson($staffID),
+    "patronID": $util.dynamodb.toDynamoDBJson($ctx.stash.get("patronID"))
+  }
+}

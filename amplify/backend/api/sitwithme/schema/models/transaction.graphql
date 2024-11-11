@@ -1,0 +1,71 @@
+type Transaction @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byProfileIDSortByCreatedAt", fields: ["profileID", "createdAt"])
+@key(name: "byOriginalTransactionID", fields: ["originalTransactionID"])
+@key(name: "byAppleTransactionID", fields: ["appleTransactionID"])
+{
+  id: ID!
+  profileID: ID!
+  receipt: String
+  originalTransactionId: ID
+    @deprecated(reason: "Use originalTransactionID field instead.")
+  originalTransactionID: ID
+  appleTransactionID: ID
+  failedReason: String
+  cancellationReason: String
+  profileSubscriptionID: ProfileSubscription
+  state: TransactionState!
+  createdAt: AWSDateTime!
+}
+
+type TransactionHistory @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byTransactionIDSortByCreatedAt", fields: ["transactionID", "createdAt"])
+{
+  id: ID!
+  transactionID: ID!
+  failedReason: String
+  state: TransactionHistoryState!
+  createdAt: AWSDateTime!
+}
+
+type ProfileSubscription @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byProfileID", fields: ["profileID"])
+{
+  profileID: ID!
+  appleProductID: String!
+  status: ProfileSubscriptionStatus!
+  activatedAt: AWSDateTime!
+  expiredAt: AWSDateTime
+}
+
+input ReceiptInput {
+  receipt: String!
+}
+
+enum TransactionState {
+  PENDING
+  SUCCEED
+  FAILED
+}
+
+enum TransactionHistoryState {
+  PENDING
+  SUCCEED
+  FAILED
+}
+
+enum ProfileSubscriptionStatus {
+  ACTIVATED
+  INACTIVATED
+}

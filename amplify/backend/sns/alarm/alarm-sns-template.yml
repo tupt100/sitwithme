@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  env:
+    Type: String
+  snsPrefix:
+    Type: String
+
+Resources:
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Alarm Topic
+      TopicName: !Sub ${snsPrefix}-${env}-alarm
+
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Notification Topic
+      TopicName: !Sub ${snsPrefix}-${env}-notification
+
+Outputs:
+  AlarmTopicArn:
+    Value: !Ref AlarmTopic
+  NotificationTopicArn:
+    Value: !Ref NotificationTopic

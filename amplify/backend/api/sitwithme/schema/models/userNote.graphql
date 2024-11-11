@@ -1,0 +1,52 @@
+"""
+UserNote contain Staff's note and Patron's note
+"""
+type UserNote @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+)
+@key(fields: ["userID", "recipientProfileID"])  
+{
+  "UserNote's id"
+  id: ID!
+
+  "Owner's id of note"
+  userID: ID!
+
+  "Owner of note"
+  user: User! @connection(fields: ["userID"])
+
+  title: String
+  description: String!
+  recipientProfileID: ID!
+  recipientProfile: Profile @connection(fields: ["recipientProfileID"])
+
+  preferences: AWSJSON!
+}
+
+input UpdateUserNoteInput {
+  title: String
+  description: String!
+  preferences: AWSJSON!
+}
+
+input CreateUserNoteInput {
+  role: UserRole!
+  title: String
+  description: String!
+  preferences: AWSJSON!
+}
+
+input DeleteUserNoteInput {
+  id: ID!
+}
+
+input ListUserNotesFilter {
+  recipientProfileID: ID!
+}
+
+type ModelListUserNotesConnection {
+  items: [UserNote!]!
+  nextToken: String
+}

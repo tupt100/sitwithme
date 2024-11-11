@@ -1,0 +1,6 @@
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("userID", $ctx.identity.claims["custom:id"]))
+$util.qr($ctx.stash.put("profileID", $ctx.source.id))
+$util.qr($ctx.stash.put("role", $ctx.source.role))
+{}
+## [End] Stash resolver specific context.. **

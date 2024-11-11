@@ -1,0 +1,24 @@
+type Mailing @model(
+  mutations: null,
+  queries: null,
+  subscriptions: null
+)
+@key(fields: ["email"])
+{
+  email: AWSEmail!
+  status: MailingStatus!
+  notificationType: MailingNotificationType!
+  timestamp: AWSDateTime!
+  expiredAt: AWSTimestamp! @ttl
+}
+
+enum MailingNotificationType {
+  COMPLAINT
+  BOUNCE
+  DELIVERY
+}
+
+enum MailingStatus {
+  DISABLE
+  ENABLE
+}

@@ -1,0 +1,17 @@
+## call GetProfileByUser.req.vtl and GetProfileByUser.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "conversationID": $util.dynamodb.toDynamoDBJson($ctx.stash.get('conversationID')),
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID)
+  }
+}

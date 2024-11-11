@@ -1,0 +1,10 @@
+type ShiftAlarm @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byShiftID", fields: ["shiftID"])
+{
+  id: ID!
+  shiftID: ID!
+}

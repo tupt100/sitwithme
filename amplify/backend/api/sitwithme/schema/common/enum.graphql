@@ -1,0 +1,44 @@
+"Role indicate user is admin role or standard role(Staff/Patron)"
+enum Role {
+  "Default user's role"
+  USER
+  ADMIN
+}
+
+"UserRole indicate user is Staff or Patron role"
+enum UserRole {
+  STAFF
+  PATRON
+}
+
+"User's gender"
+enum Gender {
+  MALE
+  FEMALE
+  NONBINARY
+}
+
+enum RepeatFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum WeekDay {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum OnboardingStep {
+  ADD_PHOTO
+  ADD_SHIFT
+  ADD_LOCATION
+  ADD_PAYMENT_LINK
+  COMPLETED
+}

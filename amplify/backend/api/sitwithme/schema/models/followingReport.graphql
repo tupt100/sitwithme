@@ -1,0 +1,45 @@
+type FollowingReport @model(
+  mutations: null,
+  queries: null,
+  subscriptions: null
+)
+@key(name: "byStaffID", fields: ["staffID"])
+@key(name: "byPatronID", fields: ["patronID"])
+@searchable
+{
+  staffID: ID!
+  staffProfileConnection: FollowingReportProfileConnection
+
+  patronID: ID
+  patronProfileConnection: FollowingReportProfileConnection
+
+  confirmedAt: AWSDateTime
+  leftAt: AWSDateTime
+}
+
+type FollowingReportProfileConnection {
+  userName: String!
+  firstName: String!
+  lastName: String!
+  email: AWSEmail!
+}
+
+input ListFollowingReportFilter {
+  term: String
+  start: AWSDateTime!
+  end: AWSDateTime!
+}
+
+type FollowingReportItem {
+  id: ID!
+  staffID: ID!
+  staffProfileConnection: FollowingReportProfileConnection
+
+  totalFollowers: Int!
+  newFollowers: Int!
+}
+
+type ListFollowingReportOutput {
+  items: [FollowingReportItem!]
+  nextToken: String
+}

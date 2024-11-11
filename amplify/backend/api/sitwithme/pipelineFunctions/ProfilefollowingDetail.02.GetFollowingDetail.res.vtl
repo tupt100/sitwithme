@@ -1,0 +1,17 @@
+#set($following = $ctx.stash.get('following'))
+#set($profile = $ctx.stash.get('profile'))
+
+#set($rs = {})
+
+#if($following)
+  $util.qr($rs.put("requestedBy", $following.requestedBy))
+  #if($following.confirmedAt)
+    $util.qr($rs.put("followingStatus", "ACCEPTED"))
+    $util.qr($rs.put("presenceStatus", $profile.presenceStatus))
+    $util.qr($rs.put("lastOnlineAt", $profile.lastOnlineAt))
+  #else
+    $util.qr($rs.put("followingStatus", "PENDING"))
+  #end
+#end
+
+$util.toJson($rs)

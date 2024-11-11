@@ -1,0 +1,61 @@
+{
+  "parentResource": "sitwithme",
+  "functionName": "sitwithmeUser",
+  "resourceName": "sitwithmeUser",
+  "permissions": {
+    "auth": {
+      "sitwithme": [
+        "read",
+        "update"
+      ]
+    },
+    "storage": {
+      "Job:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Mailing:@model(appsync)": [
+        "read"
+      ],
+      "Photo:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Profile:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "User:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "UserConfirmation:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "UserPhoto:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "TWILIO_ACCOUNT_SID",
+    "TWILIO_API_KEY",
+    "TWILIO_API_SECRET",
+    "TWILIO_MESSAGING_SERVICE_SID_NAME"
+  ]
+}

@@ -1,0 +1,328 @@
+type Conversation @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byParentConversationID", fields: ["parentConversationID"])
+@key(name: "byCreatorProfileIDSortByConversationType", fields: ["creatorProfileID", "conversationType"])
+{
+  id: ID!
+  creatorProfileID: ID!
+  creatorProfile: Profile @connection(fields: ["creatorProfileID"])
+
+  conversationType: ConversationType!
+  lastMessageAt: AWSDateTime
+  totalMessage: Int!
+  hide: Boolean
+  broadcastName: String
+  blockedByProfileIDs: [ID!]
+
+  messages: [Message!]! @connection(keyName: "byConversationIDSortByCreatedAt", fields: ["id"])
+  profileConversations: [ProfileConversation!]! @connection(keyName: "byConversationIDSortByProfileID", fields: ["id"])
+
+  parentConversationID: ID
+}
+
+type Message @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(name: "byConversationIDSortByCreatedAt", fields: ["conversationID", "createdAt"])
+@key(name: "bySenderProfileIDSoryByConversationID", fields: ["senderProfileID", "conversationID"])
+@key(name: "bySentFromConversationID", fields: ["sentFromConversationID"])
+{
+  id: ID!
+  conversationID: ID!
+  conversation: Conversation @connection(fields: ["conversationID"])
+  messageDetail: MessageDetail!
+  senderProfileID: ID!
+  senderProfile: Profile @connection(fields: ["senderProfileID"])
+  createdAt: AWSDateTime!
+  sentFromConversationID: ID
+  messageReactions: [MessageReaction!] @connection(keyName: "byMessageIDSortByCreatedAt", fields: ["id"])
+}
+
+type ProfileConversation @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["profileID", "conversationID"])
+@key(name: "byConversationIDSortByProfileID", fields: ["conversationID", "profileID"])
+@key(name: "byRecipientUserID", fields: ["recipientUserID"])
+@searchable
+{
+  id: ID!
+  profileID: ID!
+  profile: Profile @connection(fields: ["profileID"])
+
+  conversationID: ID!
+  conversation: Conversation @connection(fields: ["conversationID"])
+  conversationType: ConversationType!
+  lastMessageAt: AWSDateTime
+  read: Boolean!
+  muteUntil: AWSDateTime
+  totalMessage: Int!
+  hide: Boolean
+  ignore: Boolean
+  blockedByProfileID: ID
+
+  recipientConnection: RecipientConnection
+  recipientUserID: ID
+
+  broadcastName: String
+
+  deletedAt: AWSDateTime
+}
+
+type MessageReaction @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["messageID", "profileID", "messageReactionType"])
+@key(name: "byMessageIDSortByCreatedAt", fields: ["messageID", "createdAt"])
+@key(name: "byProfileIDSortByCreatedAt", fields: ["profileID", "createdAt"])
+{
+  messageID: ID!
+  profileID: ID!
+  messageReactionType: MessageReactionType!
+  createdAt: AWSDateTime!
+}
+
+input MessageNotificationInput {
+  id: ID!
+  profileID: ID!
+  conversationID: ID!
+  conversationType: ConversationType!
+  messageFrom: MessageFromInput!
+  broadcastName: String
+  messageDetail: MessageDetailInput!
+  sentAt: AWSDateTime!
+}
+
+type MessageNotification @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  profileID: ID!
+  conversationID: ID!
+  conversationType: ConversationType!
+  messageFrom: MessageFrom!
+  broadcastName: String
+  messageDetail: MessageDetail!
+  sentAt: AWSDateTime!
+}
+
+input MessageFromInput {
+  profileID: ID!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  avatarUrl: AWSURL
+}
+
+type MessageFrom @aws_iam @aws_cognito_user_pools {
+  profileID: ID!
+  userName: String!
+  firstName: String!
+  lastName: String!
+  avatarUrl: AWSURL
+}
+
+type MessageDetail @aws_iam @aws_cognito_user_pools {
+  messageType: MessageType!
+  text: String
+  fileUrl: AWSURL
+}
+
+type RecipientConnection {
+  userName: String!
+  firstName: String!
+  lastName: String!
+  # Currently, client app can get avatar from conversation -> profileConversations
+  # avatarUrl: AWSURL
+}
+
+enum ConversationType {
+  NORMAL,
+  BROADCAST
+}
+
+enum MessageType {
+  TEXT,
+  FILE
+}
+
+enum MessageReactionType {
+  HEART
+}
+
+input MessageDetailInput {
+  messageType: MessageType!
+  text: String
+  fileUrl: String
+}
+
+input SendMessageInput {
+  role: UserRole!
+  messageDetail: MessageDetailInput!
+  recipientProfileID: ID!
+}
+
+input CreateMessageInput {
+  role: UserRole!
+  messageDetail: MessageDetailInput!
+  conversationID: ID!
+}
+
+input DeleteConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input MarkAsReadConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input MarkAsUnreadConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input MuteConversationInput {
+  role: UserRole!
+  conversationID: ID!
+  minute: Int
+}
+
+input IgnoreConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input UnignoreConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input BlockConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input UnblockConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input GetConversationInput {
+  role: UserRole!
+  conversationID: ID!
+}
+
+input GetConversationBySenderInput {
+  role: UserRole!
+  senderProfileID: String!
+}
+
+input SearchConversationsFilter {
+  role: UserRole!
+  term: String
+}
+
+type SearchConversationsConnection {
+  items: [ProfileConversation!]!
+  hasNext: Boolean!
+  offset: Int
+}
+
+input ListRecipientSuggestionFilter {
+  role: UserRole!
+}
+
+input ListPatronsByBroadcastConversationIDInput {
+  id: ID!
+}
+
+input CreateBroadcastConversationInput {
+  recipientProfileIDs: [ID!]!
+  broadcastName: String!
+}
+
+input CreateBroadcastMessageInput {
+  messageDetail: MessageDetailInput!
+  conversationID: ID!
+}
+
+input UpdateBroadcastConversationInput {
+  id: ID!
+  broadcastName: String
+}
+
+input DeleteBroadcastConversationInput {
+  id: ID!
+}
+
+input DeletePatronInBroadcastConversationInput {
+  conversationID: ID!
+  patronID: ID!
+}
+
+input CreatePatronsInBroadcastConversationInput {
+  patronIDs: [ID!]!
+  conversationID: ID!
+}
+
+input UpdatePatronsInBroadcastConversationInput {
+  patronIDs: [ID!]!
+  conversationID: ID!
+}
+
+input ProfileConversationUpdatedInput {
+  recipientProfileID: ID!
+  conversationID: ID!
+  hide: Boolean
+  block: Boolean
+  blockedByProfileID: ID
+}
+
+type ProfileConversationUpdated @aws_iam @aws_cognito_user_pools {
+  recipientProfileID: ID!
+  conversationID: ID!
+  hide: Boolean
+  block: Boolean
+  blockedByProfileID: ID
+}
+
+input SendMessageReactionInput {
+  messageID: ID!
+  role: UserRole!
+  messageReactionType: MessageReactionType!
+}
+
+input DeleteMessageReactionInput {
+  messageID: ID!
+  role: UserRole!
+  messageReactionType: MessageReactionType!
+}
+
+type MessageReactionNotification @aws_iam @aws_cognito_user_pools {
+  messageID: ID!
+  profileID: ID!
+  messageReactionType: MessageReactionType!
+  conversationID: ID!
+  messageFrom: MessageFrom!
+  sentAt: AWSDateTime!
+  deleted: Boolean
+}
+
+input NotifyMessageReactionInput {
+  messageID: ID!
+  profileID: ID!
+  messageReactionType: MessageReactionType!
+  conversationID: ID!
+  messageFrom: MessageFromInput!
+  sentAt: AWSDateTime!
+  deleted: Boolean
+}

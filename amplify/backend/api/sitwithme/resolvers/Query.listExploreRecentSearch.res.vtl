@@ -1,0 +1,8 @@
+## Call GetPatronProfileByUser.req.vtl and GetPatronProfileByUser.res.vtl
+#set( $profile = $ctx.stash.get("patronProfile") )
+
+#if (!$profile)
+  $util.error("Patron not found", "BAD_REQUEST")
+#end
+
+$util.toJson($profile.exploreRecentSearch)

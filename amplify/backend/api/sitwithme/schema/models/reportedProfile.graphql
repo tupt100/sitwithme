@@ -1,0 +1,72 @@
+type ReportedProfile @model(
+  mutations: {
+    update: "updateReportedProfile"
+  },
+  subscriptions: null
+)
+@auth(
+  rules: [{ allow: groups, groups: ["admin"], operations: [read, update] }]
+)
+@key(name: "byStatusSortByCreatedAt", fields: ["status", "createdAt"], queryField: "listReportedProfilesByStatus")
+@key(name: "byGroupSortByCreatedAt", fields: ["group", "createdAt"], queryField: "listReportedProfilesByGroup")
+@key(name: "byProfileIDSortByCreatedAt", fields: ["profileID", "createdAt"])
+@key(name: "byReportedProfileIDSortByCreatedAt", fields: ["reportedProfileID", "createdAt"])
+{
+  id: ID!
+  profileID: ID!
+  reporterProfileDetail: Profile @connection(fields: ["profileID"])
+  reportedProfileID: ID!
+  reportedProfileDetail: Profile @connection(fields: ["reportedProfileID"])
+  type: ReportType!
+  content: ReportContent
+  archivedAt: AWSDateTime
+  completedAt: AWSDateTime
+  createdAt: AWSDateTime!
+  group: String!
+  status: ReportedProfileStatus!
+}
+
+enum ReportedProfileStatus {
+  UNRESOLVED,
+  RESOLVED
+}
+
+enum ReportType {
+  SPAM
+  INAPPROPRIATE
+}
+
+type ReportContent {
+  type: ReportContentType!
+}
+
+enum ReportContentType {
+  SEXUAL
+  VIOLENT_OR_REPULSIVE
+  HATEFUL_OR_ABUSIVE
+  PRETENDING_TO_BE_SOMEONE
+  HARASSMENT_OR_BULLYING
+}
+
+input ReportProfileInput {
+  role: UserRole!
+  reportedProfileID: ID!
+  type: ReportType!
+  content: ReportContentInput
+}
+
+input ReportContentInput {
+  type: ReportContentType!
+}
+
+input NotifyReportProfileInput {
+  recipientUserID: ID!
+  profileID: ID!
+  reportedProfileID: ID!
+}
+
+type ReportProfileNotification @aws_iam @aws_cognito_user_pools {
+  recipientUserID: ID!
+  profileID: ID!
+  reportedProfileID: ID!
+}

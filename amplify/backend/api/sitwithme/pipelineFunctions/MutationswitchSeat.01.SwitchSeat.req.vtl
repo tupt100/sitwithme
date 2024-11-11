@@ -1,0 +1,48 @@
+## Call GetCurrentUser.req.vtl and GetCurrentUser.res.vtl
+## Call ListProfilesByUserID.req.vtl and ListProfilesByUserID.res.vtl
+
+#set( $id = $ctx.identity.claims["custom:id"] )
+#set( $currentUser = $ctx.stash.get("user") )
+#set( $profiles = $ctx.stash.get("profiles") )
+
+#if($currentUser && $currentUser.lastSeat == "PATRON")
+  #set( $seat = "STAFF" )
+#else
+  #set( $seat = "PATRON" )
+#end
+
+#if ( $profiles && $profiles.size() == 0 )
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+
+## If user have 1 profile
+## 1. If profile role == lastSeat => disallow switch seat
+## 2. If profile role != lastSeat => revert lastSeat to match current profile
+#if ( $profiles && $profiles.size() == 1 )
+  #if ( $profiles[0].role == $currentUser.lastSeat )
+    $util.error("Disallowed to switch seat because $util.str.toLower($seat)'s profile is not existed", "BAD_REQUEST")
+  #end
+
+  #if ( $profiles[0].role == "STAFF" )
+    #set( $seat = "STAFF" )
+  #else
+    #set( $seat = "PATRON" )
+  #end
+#end
+
+#set( $update = {
+  "expression": "SET #lastSeat = :lastSeat",
+  "expressionNames": { "#lastSeat": "lastSeat" },
+  "expressionValues": { ":lastSeat": $util.dynamodb.toDynamoDB($seat) }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": {
+      "S": $util.toJson($id)
+    }
+  },
+  "update": $util.toJson($update)
+}

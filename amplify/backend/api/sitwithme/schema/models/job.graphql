@@ -1,0 +1,25 @@
+"""
+Job contains staff's job
+"""
+type Job
+@model(
+  subscriptions: null,
+  mutations: {
+    create: "createJob",
+    update: "updateJob"
+  }
+)
+@auth(
+  rules: [{ allow: groups, groups: ["admin"], operations: [create, update, delete] }]
+)
+@key(name: "byTypeSortByPriority", fields: ["type", "priority"], queryField: "listJobsByType") {
+  id: ID!
+  name: String!
+  type: String!
+  priority: Int!
+}
+
+
+input DeleteJobInput {
+  id: ID!
+}

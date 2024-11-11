@@ -1,0 +1,43 @@
+{
+  "Records": [
+    {
+      "eventName": "INSERT",
+      "dynamodb": {
+        "NewImage":{
+    "__typename": {
+        "S": "ProfileBlocked"
+    },
+    "blockedProfileID": {
+        "S": "897a9fe2-2f74-4113-a870-51b95f7216a7"
+    },
+    "createdAt": {
+        "S": "2021-09-14T06:37:56.739Z"
+    },
+    "profileID": {
+        "S": "22577fe0-a448-4d0b-b0e5-f396518be023"
+    },
+    "updatedAt": {
+        "S": "2021-09-14T06:37:56.739Z"
+    }
+},
+        "OldImage":{
+    "__typename": {
+        "S": "ProfileBlocked"
+    },
+    "blockedProfileID": {
+        "S": "897a9fe2-2f74-4113-a870-51b95f7216a7"
+    },
+    "createdAt": {
+        "S": "2021-09-14T06:37:56.739Z"
+    },
+    "profileID": {
+        "S": "22577fe0-a448-4d0b-b0e5-f396518be023"
+    },
+    "updatedAt": {
+        "S": "2021-09-14T06:37:56.739Z"
+    }
+}
+      }
+    }
+  ]
+}

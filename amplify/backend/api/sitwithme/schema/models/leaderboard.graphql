@@ -1,0 +1,50 @@
+type StaffLeaderboard @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["staffID"])
+@key(name: "sortByConnectionCount", fields: ["gsiHash", "connectionCount"])
+{
+  staffID: ID!
+  staffProfile: Profile @connection(fields: ["staffID"])
+  gsiHash: String!
+  connectionCount: Int!
+}
+
+type VenueLeaderboard @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["yelpBusinessID"])
+@searchable
+{
+  yelpBusinessID: ID!
+  gsiHash: String!
+  favoriteCount: Int!
+}
+
+type ProfileLeaderboard @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null
+)
+@key(fields: ["profileID"])
+@key(name: "sortByConnectionCount", fields: ["gsiHash", "connectionCount"])
+{
+  profileID: ID!
+  profile: Profile @connection(fields: ["profileID"])
+  gsiHash: String!
+  connectionCount: Int!
+}
+
+type ModelStaffLeaderboardConnection {
+  items: [StaffLeaderboard]
+  nextToken: String
+}
+
+type ModelProfileLeaderboardConnection {
+  items: [ProfileLeaderboard]
+  nextToken: String
+}

@@ -1,0 +1,9 @@
+#if( $ctx.error )
+$util.error($ctx.error.message, $ctx.error.type)
+#else
+  #if($ctx.result.isEmpty())
+    $util.error('You already unblocked this profile', 'BAD_REQUEST')
+  #end
+
+  $util.toJson($ctx.result)
+#end

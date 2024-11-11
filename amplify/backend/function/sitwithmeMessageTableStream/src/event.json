@@ -1,0 +1,53 @@
+{
+    "Records": [
+        {
+            "eventID": "80d7d8fade6c63dde69c4af4e3b7f9c1",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "us-east-2",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1628240009,
+                "Keys": {
+                    "id": {
+                        "S": "620017e8-8694-440c-97a9-2e9e487106d3"
+                    }
+                },
+                "NewImage": {
+                    "__typename": {
+                        "S": "Message"
+                    },
+                    "conversationID": {
+                        "S": "c9dec014-bf8c-45a1-b5b5-45fe0ed56444"
+                    },
+                    "createdAt": {
+                        "S": "2021-08-31T09:07:45.143Z"
+                    },
+                    "id": {
+                        "S": "d0f79b5a-5b51-489a-8211-3b12f0cc5687"
+                    },
+                    "messageDetail": {
+                        "M": {
+                            "messageType": {
+                                "S": "TEXT"
+                            },
+                            "text": {
+                                "S": "Hi Patron 2"
+                            }
+                        }
+                    },
+                    "senderProfileID": {
+                        "S": "3695d755-95ed-4add-b73b-141f46f21e65"
+                    },
+                    "updatedAt": {
+                        "S": "2021-08-31T09:07:45.143Z"
+                    }
+                },
+                "SequenceNumber": "146451300000000009409180201",
+                "SizeBytes": 520,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:us-east-2:937833379153:table/Message-k6mw73tsx5cjppsd7cx3oi2yx4-dev/stream/2021-07-06T10:23:20.865"
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+## null
+#if($ctx.result.items.size() > 0)
+  #set($auth = false)
+  #foreach($profile in $ctx.result.items)
+    #if($profile.id == $ctx.args.profileID || $profile.id == $ctx.args.recipientProfileID)
+      #set($auth = true)
+    #end
+  #end
+
+  #if(!$auth)
+    $utils.unauthorized()
+  #else
+    null
+  #end
+#else
+  null
+#end

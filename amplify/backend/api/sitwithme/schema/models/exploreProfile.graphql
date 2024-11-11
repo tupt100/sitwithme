@@ -1,0 +1,83 @@
+type ExploreProfile @model(
+  queries: null,
+  mutations: null,
+  subscriptions: null,
+) @key(fields: ["profileID", "workplaceID", "jobID"])
+@key(name: "byProfileID", fields: ["profileID"])
+@key(name: "byJobID", fields: ["jobID"])
+@key(name: "byWorkplaceID", fields: ["workplaceID"])
+@searchable
+{
+  jobID: ID!
+  job: Job @connection(fields: ["jobID"])
+  jobConnection: ShiftJobConnection
+  workplaceID: ID!
+  workplace: Workplace @connection(fields: ["workplaceID"])
+  workplaceConnection: ShiftWorkplaceConnection
+  profileID: ID!
+  profile: Profile @connection(fields: ["profileID"])
+  profileConnection: ShiftProfileConnection
+  duty(date: AWSDateTime!): Boolean! @function(name: "sitwithmeExplore-${env}")
+  expired: Boolean
+}
+
+type ShiftWorkplaceConnection {
+  name: String!
+  yelpBusinessID: String!
+  location: Location!
+  distance: Float
+  yelpCategories: [YelpCategory!]!
+  fullAddress: String!
+  price: Int!
+  reviewCount: Int!
+  imageUrl: AWSURL
+  rating: Float
+}
+
+type ShiftJobConnection {
+  name: String!
+}
+
+type ShiftProfileConnection {
+  fullName: String!
+  avatarID: ID
+  blockedProfileIDs: [ID!]
+  connectionCount: Int!
+  userName: String
+}
+
+input exploreStaffProfileInput {
+  keyword: String
+  jobType: [String!]
+  duty: [Boolean!]
+  geoLocation: ExploreGeoLocation!
+  price: [Int!]
+  cuisine: [String!]
+}
+
+input ExploreGeoLocation {
+  distance: Float
+  location: LocationInput!
+}
+
+type ModelExploreStaffProfileConnection {
+  items: [ExploreProfile!]!
+  offset: Int
+  hasNext: Boolean!
+}
+
+enum ExploreProfileSortBy {
+  DISTANCE
+  POPULAR
+}
+
+input SearchStaffProfileInput {
+  keyword: String
+  geoLocation: ExploreGeoLocation
+}
+
+type ModelSearchStaffProfileConnection {
+  items: [ExploreProfile!]!
+  offset: Int
+  hasNext: Boolean!
+}

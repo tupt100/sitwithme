@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "storage": {
+      "Following:@model(appsync)": [
+        "read"
+      ],
+      "Job:@model(appsync)": [
+        "read"
+      ],
+      "SWMNotification:@model(appsync)": [
+        "create",
+        "read"
+      ],
+      "Profile:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Shift:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ],
+      "Workplace:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

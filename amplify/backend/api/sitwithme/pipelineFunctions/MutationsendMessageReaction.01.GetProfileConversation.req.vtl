@@ -1,0 +1,20 @@
+#set($message = $ctx.stash.get('message'))
+#if(!$message)
+  $util.error("Message not found", "BAD_REQUEST")
+#end
+#set($conversationID = $message.conversationID)
+
+#set($profile = $ctx.stash.get("profile"))
+#if(!$profile)
+  $util.error("Profile not found", "BAD_REQUEST")
+#end
+#set($profileID = $profile.id)
+
+{
+  "version": "2018-05-29",
+  "operation": "GetItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "conversationID": $util.dynamodb.toDynamoDBJson($conversationID)
+  }
+}

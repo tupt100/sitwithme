@@ -1,0 +1,5 @@
+#if(!$ctx.identity.claims["custom:id"])
+  $util.error("Unauthorized")
+#end
+
+{}

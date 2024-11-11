@@ -1,0 +1,37 @@
+## call ConversationAuth.req.vtl and ConversationAuth.res.vtl first
+
+#set($profile = $ctx.stash.get('profile'))
+#if(!$profile)
+  $util.error('Profile not found', 'BAD_REQUEST')
+#end
+
+#set($profileID = $profile.id)
+#set($conversationID = $ctx.stash.get("conversationID"))
+#set($nowEpochMilliSeconds = $util.time.nowEpochMilliSeconds())
+#set($minute = $ctx.stash.get('minute'))
+
+## minute = 0: unMute now
+## minute > 0: unMute after X minutes
+## minute = null: mute until unMute again === ignore message
+#if($minute || $minute == 0)
+  #set($time = $nowEpochMilliSeconds + $minute * 60000)
+  #set($muteUntil = $util.dynamodb.toDynamoDB($util.time.epochMilliSecondsToISO8601($time)))
+#else
+  #set($muteUntil = $util.dynamodb.toDynamoDB(null))
+#end
+
+#set($update = {
+  "expression": "SET #muteUntil = :muteUntil",
+  "expressionNames": { "#muteUntil": "muteUntil" },
+  "expressionValues": { ":muteUntil": $muteUntil }
+})
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "profileID": $util.dynamodb.toDynamoDBJson($profileID),
+    "conversationID": $util.dynamodb.toDynamoDBJson($conversationID)
+  },
+  "update": $util.toJson($update)
+}

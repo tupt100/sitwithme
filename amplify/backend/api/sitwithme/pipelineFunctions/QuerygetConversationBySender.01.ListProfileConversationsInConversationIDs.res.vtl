@@ -1,0 +1,21 @@
+#if( $ctx.error )
+  $util.error($ctx.error.message, $ctx.error.type)
+#else
+  #set($conversationIDs = [])
+  #foreach($pc in $ctx.stash.get('profileConversations'))
+    $util.qr($conversationIDs.add($pc.conversationID))
+  #end
+
+  #foreach($item in $ctx.result.items)
+    #if($conversationIDs.contains("${item.conversationID}"))
+      #set($conversationID = $item.conversationID)
+      $util.qr($ctx.stash.put('conversationID', $conversationID))
+    #end
+  #end
+
+  #if(!$conversationID)
+    #return
+  #end
+
+  $util.toJson($ctx.result)
+#end

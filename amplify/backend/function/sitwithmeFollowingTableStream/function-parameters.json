@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "storage": {
+      "FollowingReport:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "StaffLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "ProfileLeaderboard:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Conversation:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "ProfileConversation:@model(appsync)": [
+        "read",
+        "update",
+        "delete"
+      ],
+      "SWMNotification:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Profile:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ],
+      "User:@model(appsync)": [
+        "create",
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

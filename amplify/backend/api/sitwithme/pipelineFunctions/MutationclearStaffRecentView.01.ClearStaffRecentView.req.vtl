@@ -1,0 +1,24 @@
+## Call GetPatronProfileByUser.req.vtl and GetPatronProfileByUser.res.vtl
+
+#set( $profile = $ctx.stash.get("patronProfile") )
+
+#if (!$profile)
+  $util.error("Patron not found", "BAD_REQUEST")
+#end
+
+#set( $update = {
+  "expression": "SET #staffRecentView = :staffRecentView",
+  "expressionNames": { "#staffRecentView": "staffRecentView" },
+  "expressionValues": { ":staffRecentView": $util.dynamodb.toDynamoDB(null) }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": {
+      "S": $util.toJson($profile.id)
+    }
+  },
+  "update": $util.toJson($update)
+}

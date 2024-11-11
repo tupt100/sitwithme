@@ -1,0 +1,16 @@
+#set( $query = {
+  "expression": "#jobID = :jobID",
+  "expressionNames": {
+    "#jobID": "jobID"
+  },
+  "expressionValues": {
+    ":jobID": $util.dynamodb.toDynamoDB($ctx.stash.get("jobID"))
+  }
+} )
+
+{
+  "version": "2018-05-29",
+  "operation": "Query",
+  "query": $util.toJson($query),
+  "index": "byJobID"
+}
